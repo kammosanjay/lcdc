@@ -1,0 +1,9 @@
+{
+    "welcome": "Bienvenido!",
+    "mobile": "Número de teléfono móvil",
+    "remember": "¡Acuérdate de mí!",
+    "forgot": "¿Has olvidado tu contraseña?",
+    "loginwithuserandpass": "Iniciar sesión con usuario y contraseña",
+    "signin": "Iniciar sesión",
+    "donthavacct": "¿No tienes una cuenta? Regístrate"
+}
