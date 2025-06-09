@@ -41,9 +41,14 @@ dependencies:
   path: 
   sqflite: 
   lottie: 
-  
-  google_fonts: ^6.2.1
+  url_launcher: 
+  otp_resend_timer:
+  google_fonts: 
   file_picker: 
+  http: 
+  shared_preferences: 
+  logger: 
+  fluttertoast: 
   
 
 dev_dependencies:
@@ -67,6 +72,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/data.json
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

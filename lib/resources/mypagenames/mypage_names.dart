@@ -6,5 +6,6 @@
   static const String  login='/login';
   static const String  signup='/singup';
   static const String  forgot='/forgot';
+  static const String  threeStepForm='/threeStepForm';
 
  }

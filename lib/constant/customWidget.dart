@@ -12,7 +12,9 @@ class CustomWidgets {
     FocusNode? focusNode,
     Widget? icon,
     double? width,
+    AutovalidateMode? autovalidateMode,
     int? maxLines,
+    int? maxLength,
     Color? color,
     double? height,
     TextInputType? keyboardtype,
@@ -23,43 +25,54 @@ class CustomWidgets {
     Widget? suffIcons,
     TextInputAction? action,
   }) {
-    return Card(
-      color: Colors.white,
-      margin: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      elevation: 5,
-      child: TextFormField(
-        focusNode: focusNode,
-        keyboardType: keyboardtype,
-        validator: validate,
-        maxLines: maxLines ?? 1,
-        controller: controller ?? TextEditingController(),
-        textAlignVertical: TextAlignVertical.center,
-        textInputAction: action,
-        onTap: () {
-          if (onTap != null) {
-            onTap();
-          }
-        },
-        obscureText: isPassword,
-        decoration: InputDecoration(
-          suffixIcon: suffIcons,
-          prefixIcon: icon,
-          prefixIconColor: iconColor,
-
-          hintText: hint,
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.blueAccent.withOpacity(0.5)),
+    return Column(
+      children: [
+        Card(
+          color: Colors.white,
+          margin: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.blue),
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+          elevation: 5,
+          child: TextFormField(
+            focusNode: focusNode,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            keyboardType: keyboardtype,
+            validator: validate,
+
+            maxLength: maxLength,
+            maxLines: maxLines ?? 1,
+            controller: controller ?? TextEditingController(),
+            textAlignVertical: TextAlignVertical.center,
+            textInputAction: action,
+
+            onTap: () {
+              if (onTap != null) {
+                onTap();
+              }
+            },
+            obscureText: isPassword,
+            decoration: InputDecoration(
+              suffixIcon: suffIcons,
+
+              prefixIcon: icon,
+              prefixIconColor: iconColor,
+
+              hintText: hint,
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.blueAccent.withOpacity(0.5),
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 
@@ -77,6 +90,7 @@ class CustomWidgets {
     Widget? suffixIcon,
     double? width,
     FocusNode? focusNode,
+    AutovalidateMode? autovalidateMode,
     var validate,
   }) {
     return Card(
@@ -91,6 +105,7 @@ class CustomWidgets {
         isExpanded: true,
         focusNode: focusNode,
         validator: validate,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         icon: suffixIcon,
         decoration: InputDecoration(
           prefixIcon: icon,

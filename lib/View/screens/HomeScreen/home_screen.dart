@@ -47,88 +47,170 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
         child: const Icon(Icons.add),
       ),
       appBar: appBar(context),
-      body: Column(children: [
-
-        
-        Obx(
-          () => selectedView.value == "Grid View"
-              ? GridView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: usersList.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 5,
-                    mainAxisExtent: 100,
-                  ),
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        modalBottomSheet(type: "Update Note", index: index);
-                      },
-                      child: Card(
-                        child: Stack(
-                          children: [
-                            // Main content of the card
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 15.0, left: 5, right: 5),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    usersList[index]
-                                        [DBHelper.COLUMN_NOTE_TITLE],
-                                    style: TextStyle(
-                                        color: Colors.blue, fontSize: 16),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
+      body: Column(
+        children: [
+          Obx(
+            () =>
+                selectedView.value == "Grid View"
+                    ? GridView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: usersList.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 5,
+                            mainAxisSpacing: 5,
+                            mainAxisExtent: 100,
+                          ),
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            modalBottomSheet(type: "Update Note", index: index);
+                          },
+                          child: Card(
+                            child: Stack(
+                              children: [
+                                // Main content of the card
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 15.0,
+                                    left: 5,
+                                    right: 5,
                                   ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    usersList[index][DBHelper.COLUMN_NOTE_DESC],
-                                    style: const TextStyle(fontSize: 16),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        usersList[index][DBHelper
+                                            .COLUMN_NOTE_TITLE],
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: 16,
+                                        ),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        usersList[index][DBHelper
+                                            .COLUMN_NOTE_DESC],
+                                        style: const TextStyle(fontSize: 16),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                                // Delete button in the top-right corner
+                                Positioned(
+                                  top: -18,
+                                  right: -10,
+                                  child: IconButton(
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      size: 20,
+                                      color: Colors.red,
+                                    ),
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text('Delete Note'),
+                                            content: const Text(
+                                              'Are you sure you want to delete this note?',
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(
+                                                    context,
+                                                  ); // Close dialog
+                                                },
+                                                child: const Text('No'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(
+                                                    context,
+                                                  ); // Close dialog
+                                                  dbHelper!.delete(
+                                                    usersList[index][DBHelper
+                                                        .COLUMN_NOTE_SNO],
+                                                  );
+                                                  getUsersList(); // Refresh the list
+                                                },
+                                                child: const Text('Yes'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
-                            // Delete button in the top-right corner
-                            Positioned(
-                              top: -18,
-                              right: -10,
-                              child: IconButton(
-                                icon: const Icon(Icons.delete,
-                                    size: 20, color: Colors.red),
+                          ),
+                        );
+                      },
+                    )
+                    : ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: usersList.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            modalBottomSheet(type: "Update Note", index: index);
+                          },
+                          child: Card(
+                            margin: EdgeInsets.all(8),
+                            child: ListTile(
+                              title: Text(
+                                usersList[index][DBHelper.COLUMN_NOTE_TITLE],
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 15,
+                                ),
+                              ),
+                              subtitle: Text(
+                                usersList[index][DBHelper.COLUMN_NOTE_DESC],
+                              ),
+                              trailing: IconButton(
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
                                 onPressed: () {
                                   showDialog(
                                     context: context,
                                     builder: (context) {
                                       return AlertDialog(
-                                        title: const Text('Delete Note'),
-                                        content: const Text(
+                                        title: Text('Delete Note'),
+                                        content: Text(
                                           'Are you sure you want to delete this note?',
                                         ),
                                         actions: [
                                           TextButton(
                                             onPressed: () {
-                                              Navigator.pop(
-                                                  context); // Close dialog
+                                              Get.back();
                                             },
-                                            child: const Text('No'),
+                                            child: Text('No'),
                                           ),
                                           TextButton(
                                             onPressed: () {
-                                              Navigator.pop(
-                                                  context); // Close dialog
-                                              dbHelper!.delete(usersList[index]
-                                                  [DBHelper.COLUMN_NOTE_SNO]);
-                                              getUsersList(); // Refresh the list
+                                              Get.back();
+                                              dbHelper!.delete(
+                                                usersList[index][DBHelper
+                                                    .COLUMN_NOTE_SNO],
+                                              );
+                                              getUsersList();
                                             },
-                                            child: const Text('Yes'),
+                                            child: Text('Yes'),
                                           ),
                                         ],
                                       );
@@ -137,68 +219,13 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                                 },
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                )
-              : ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  itemCount: usersList.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        modalBottomSheet(type: "Update Note", index: index);
+                          ),
+                        );
                       },
-                      child: Card(
-                        margin: EdgeInsets.all(8),
-                        child: ListTile(
-                          title: Text(
-                            usersList[index][DBHelper.COLUMN_NOTE_TITLE],
-                            style: TextStyle(color: Colors.blue, fontSize: 15),
-                          ),
-                          subtitle:
-                              Text(usersList[index][DBHelper.COLUMN_NOTE_DESC]),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: Text('Delete Note'),
-                                    content: Text(
-                                        'Are you sure you want to delete this note?'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Get.back();
-                                        },
-                                        child: Text('No'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          Get.back();
-                                          dbHelper!.delete(usersList[index]
-                                              [DBHelper.COLUMN_NOTE_SNO]);
-                                          getUsersList();
-                                        },
-                                        child: Text('Yes'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
-        ),
-      ]),
+                    ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -216,8 +243,9 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
       isScrollControlled: true,
       builder: (context) {
         return Padding(
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
@@ -260,7 +288,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                           // Insert new note
                           var check = await dbHelper!.insert({
                             DBHelper.COLUMN_NOTE_TITLE: titleC.text,
-                            DBHelper.COLUMN_NOTE_DESC: DescC.text
+                            DBHelper.COLUMN_NOTE_DESC: DescC.text,
                           });
                           if (check > 0) {
                             getUsersList();
@@ -271,8 +299,8 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                           var check = await dbHelper!.update({
                             DBHelper.COLUMN_NOTE_TITLE: titleC.text,
                             DBHelper.COLUMN_NOTE_DESC: DescC.text,
-                            DBHelper.COLUMN_NOTE_SNO: usersList[index!]
-                                [DBHelper.COLUMN_NOTE_SNO]
+                            DBHelper.COLUMN_NOTE_SNO:
+                                usersList[index!][DBHelper.COLUMN_NOTE_SNO],
                           });
                           if (check > 0) {
                             getUsersList();
@@ -301,15 +329,24 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             // ignore: unnecessary_null_comparison
-            Obx(() => selectedView.value == null
-                ? Text(
-                    "Change Layout",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
-                  )
-                : Text(selectedView.value,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white))),
+            Obx(
+              () =>
+                  selectedView.value == null
+                      ? Text(
+                        "Change Layout",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      )
+                      : Text(
+                        selectedView.value,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+            ),
           ],
         ),
         PopupMenuButton(
@@ -318,10 +355,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
           },
           itemBuilder: (BuildContext context) {
             return ["List View", "Grid View"].map((String choice) {
-              return PopupMenuItem(
-                value: choice,
-                child: Text(choice),
-              );
+              return PopupMenuItem(value: choice, child: Text(choice));
             }).toList();
           },
         ),
