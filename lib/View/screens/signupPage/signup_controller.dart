@@ -3,9 +3,13 @@ import 'package:getwidget/getwidget.dart';
 import 'package:lcdc_mobile_app/View/screens/FeePayment/payment_page.dart';
 import 'package:lcdc_mobile_app/View/screens/Otp/otpPage.dart';
 import 'package:lcdc_mobile_app/constant/myshared_sharedprefrences.dart';
+import 'package:lcdc_mobile_app/modal/RequestModal/payment_modal.dart';
 import 'package:lcdc_mobile_app/modal/RequestModal/studentReqModal.dart';
 import 'package:flutter/material.dart';
+import 'package:lcdc_mobile_app/modal/ResponseModal/create_order.dart';
+import 'package:lcdc_mobile_app/modal/ResponseModal/student_detail_info.dart';
 import 'package:lcdc_mobile_app/resources/apiconstants/Repository/user_repositories.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -17,7 +21,12 @@ class SignupController extends GetxController {
   var gender = [].obs;
   var category = [].obs;
   var messages = "".obs;
+  var studentRegNo = ''.obs;
   var isLoading = false.obs;
+  Rx<StudentDetailsInfo> studentDetails = StudentDetailsInfo().obs;
+  RxBool isProcessing = false.obs;
+  RxString paymentStatus = 'InActive'.obs;
+  Rx<CreateOrder> paymentOrder = CreateOrder().obs;
 
   @override
   void onInit() {
@@ -73,7 +82,7 @@ class SignupController extends GetxController {
 
       // Navigate after delay
       Future.delayed(Duration(seconds: 2), () {
-        Get.to(OTPScreen(), arguments: studentReq);
+        Get.to(OTPScreen());
       });
     }
     // Handle error response (status 400 or others)
@@ -150,13 +159,13 @@ class SignupController extends GetxController {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
 
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.green,
         textColor: Colors.white,
         fontSize: 16.0,
       );
-      // Future.delayed(Duration(seconds: 3), () {
-      //   Get.to(RegistrationDetailsPage(),);
-      // });
+      Future.delayed(Duration(seconds: 3), () {
+        Get.to(RegistrationDetailsPage());
+      });
     } else if (res['status'] == 400 || res['status'] == 401) {
       messages.value = res['message'];
       Fluttertoast.showToast(
@@ -172,5 +181,67 @@ class SignupController extends GetxController {
 
     print("OTP Response => $res");
     return res;
+  }
+
+  ///
+  /// Student Detail Information
+  ///
+
+  Future<StudentDetailsInfo> studentDetailInfo() async {
+    var tokenMap = await SharedPrefsHelper.getToken();
+    final response = await UserRepositories.studentdetailrepo(tokenMap!);
+
+    if (response.isNotEmpty && response['status'] == 200) {
+      studentDetails.value = StudentDetailsInfo.fromJson(response['data']);
+      studentRegNo.value = response['data']['enterence_no']; // optional
+      print("Student fetched: ${studentDetails.value.candidatename}");
+    } else {
+      print("Failed to fetch student details");
+    }
+    return StudentDetailsInfo();
+  }
+
+  ///
+  /// resent Otp
+  ///
+  Future<void> resendOtp() async {
+    var tokenMap = await SharedPrefsHelper.getToken();
+    final response = await UserRepositories.resendOTP(tokenMap!);
+    print("Resend OTP Response==>" + response.toString());
+  }
+
+  ///
+  /// Create Order
+  ///
+  Future<CreateOrder> createOrderByRazorPay() async {
+    var tokenMap = await SharedPrefsHelper.getToken();
+    final response = await UserRepositories.createOrderPayment(tokenMap!);
+
+    if (response.isNotEmpty &&
+        (response['status'] == 200 || response['status'] == 201)) {
+      paymentOrder.value = CreateOrder.fromJson(response['data']);
+      
+
+      print("Amount: ${paymentOrder.value.amountPaid}");
+    } else {
+      print("Failed to fetch Order details");
+    }
+    return CreateOrder();
+  }
+
+  ///
+  /// verify payment on server
+  ///
+
+  Future<void> verifyPaymentOnServer({
+    required VerifyPaymentModal verifyPaymentModal,
+  }) async {
+    var tokenMap = await SharedPrefsHelper.getToken();
+    final response = await UserRepositories.verifyPayment(
+      verifyPayment: verifyPaymentModal,
+      token: tokenMap!,
+    );
+    print(response.toString());
+    print("Verified payment response ==>" + response.toString());
   }
 }

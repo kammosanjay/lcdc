@@ -505,7 +505,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               dateofbirth: dateOnly,
                               emailid: emailController.text,
                               category: selectCategory!.value.toString(),
-                              eduCourseType: selectDegree.value,
+                              eduCourseType: selectDegree.value.toLowerCase(),
                             ),
                           );
                           // clearForm();

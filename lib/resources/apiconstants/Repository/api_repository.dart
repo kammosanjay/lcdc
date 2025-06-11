@@ -15,15 +15,16 @@ class ApiService {
   // Get method (for example purposes)
   ///
 
-  Future<http.Response> get(String endpoint) async {
+  Future<http.Response> get(String endpoint, {String? token}) async {
     try {
       var response = await http.get(
         Uri.parse(endpoint),
-        headers: {'x-api-key': 'reqres-free-v1'},
+        headers: {'Authorization': 'Bearer $token'},
       );
 
       // Handle non-2xx response status
       if (response.statusCode >= 200 && response.statusCode < 300) {
+        print(response);
         return response;
       } else {
         throw Exception('Failed to load data: ${response.statusCode}');
@@ -37,9 +38,26 @@ class ApiService {
   // Dio  Get Method
   ///
 
-  Future<Map<String, dynamic>> getData(String url) async {
+  Future<Map<String, dynamic>> getData(String url, {String? token}) async {
+    print("📡 Requesting URL: $url");
+    print("🔐 Token: $token");
+
     try {
-      final response = await dio.get(url);
+      final response = await dio.get(
+        url,
+        options: Options(
+          headers: {
+            if (token != null) 'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          },
+          validateStatus:
+              (status) =>
+                  status != null && status < 500, // Let 400 be handled manually
+        ),
+      );
+
+      print("📥 Response status code: ${response.statusCode}");
+      print("📥 Response data: ${response.data}");
 
       if (response.statusCode == 200) {
         if (response.data is Map<String, dynamic>) {
@@ -48,11 +66,33 @@ class ApiService {
           return jsonDecode(response.data);
         }
       } else {
-        return {};
+        return {
+          "error": true,
+          "status": response.statusCode,
+          "message":
+              response.data is String
+                  ? response.data
+                  : response.data.toString(),
+        };
       }
+    } on DioException catch (e) {
+      print("❌ DioException: ${e.message}");
+
+      return {
+        "error": true,
+        "message": e.message,
+        "type": e.type.toString(),
+        "details": e.response?.data ?? "No response body",
+        "status": e.response?.statusCode,
+      };
     } catch (e) {
-      print("API call error: $e");
-      return {};
+      print("❌ General Exception: $e");
+
+      return {
+        "error": true,
+        "message": "Unexpected error occurred",
+        "details": e.toString(),
+      };
     }
   }
 
@@ -182,8 +222,6 @@ class ApiService {
             final firstKey = messages.keys.first;
             final firstMessage = messages[firstKey];
             errorMessage = firstMessage.toString();
-
-            
           }
         } else {
           errorMessage = "Server error: ${res?.statusCode}";

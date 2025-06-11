@@ -25,7 +25,7 @@ class _OTPScreenState extends State<OTPScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final StudentRequestModal studentRequestModal = Get.arguments;
+    // final StudentRequestModal studentRequestModal = Get.arguments;
     return Scaffold(
       backgroundColor: Color(0xFF00306E),
       appBar: AppBar(
@@ -81,7 +81,10 @@ class _OTPScreenState extends State<OTPScreen> {
 
                 // readyMessage: "",
                 // onFinish: () {},
-                // onResendClicked: () {},
+                onResendClicked: () {
+                  print('onResendOtpClicked');
+                  signupController.resendOtp();
+                },
                 // onStart: () {},
                 // holdMessageStyle: TextStyle(
                 //   color: Color.fromARGB(255, 218, 220, 224),
@@ -103,21 +106,16 @@ class _OTPScreenState extends State<OTPScreen> {
               () => ElevatedButton(
                 onPressed: () async {
                   try {
-                    // PhoneAuthCredential phoneAuthCredential =
-                    //     await PhoneAuthProvider.credential(
-                    //         verificationId: widget.verID.toString(),
-                    //         smsCode: OtpController.text.toString());
-
-                    // FirebaseAuth.instance
-                    //     .signInWithCredential(phoneAuthCredential)
-                    //     .then((value) {
                     signupController.otpVerification(otp: OtpController.text);
                     print(OtpController.text);
-                    Future.delayed(Duration(seconds: 3), () {
-                      Get.to(
-                        RegistrationDetailsPage(),
-                        arguments: studentRequestModal,
-                      );
+                    // Future.delayed(Duration(seconds: 3), () {
+                    //   Get.to(
+                    //     RegistrationDetailsPage(),
+                    //     // arguments: studentRequestModal,
+                    //   );
+                    // });
+                    Future.delayed(Duration(seconds: 2), () {
+                      signupController.studentDetailInfo();
                     });
 
                     // });

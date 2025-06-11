@@ -49,6 +49,8 @@ dependencies:
   shared_preferences: 
   logger: 
   fluttertoast: 
+  razorpay_flutter:
+  
   
 
 dev_dependencies:
@@ -73,6 +75,7 @@ flutter:
   assets:
     - assets/images/
     - assets/data.json
+   
     
 
   # An image asset can refer to one or more resolution-specific "variants", see
