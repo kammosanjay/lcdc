@@ -1,19 +1,18 @@
 class LoginRequset {
-  String? email;
-  String? password;
+  String? mobile;
+  String? entranceNo;
 
-  LoginRequset({this.email, this.password});
+  LoginRequset({this.mobile, this.entranceNo});
 
   LoginRequset.fromJson(Map<String, dynamic> json) {
-    email = json['email'];
-    password = json['password'];
+    mobile = json['mobile_no'];
+    entranceNo = json['enterence_no'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
-    data['email'] = email;
-    data['password'] = password;
+    data['mobile_no'] = mobile;
+    data['enterence_no'] = entranceNo;
     return data;
   }
 }
-  

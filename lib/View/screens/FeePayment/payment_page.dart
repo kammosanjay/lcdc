@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lcdc_mobile_app/View/screens/HomeScreen/new_home_screen.dart';
 
 import 'package:lcdc_mobile_app/View/screens/signupPage/signup_controller.dart';
 import 'package:lcdc_mobile_app/modal/RequestModal/payment_modal.dart';
@@ -123,11 +124,20 @@ class _RegistrationDetailsPageState extends State<RegistrationDetailsPage> {
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
             width: 160,
             child: Text(
-              "$title : ",
+              "$title  ",
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          SizedBox(
+            width: 10,
+            child: Text(
+              ": ",
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
@@ -173,7 +183,7 @@ class _RegistrationDetailsPageState extends State<RegistrationDetailsPage> {
                 buildRow("Father's Name", studentInfo.fathername.toString()),
                 buildRow("Mobile Number", studentInfo.mobileNo.toString()),
                 buildRow(
-                  "Mobile Number Status",
+                  "Mobile Status",
                   "Verified",
                   valueColor: Colors.green,
                 ),
@@ -287,10 +297,11 @@ class _RegistrationDetailsPageState extends State<RegistrationDetailsPage> {
                   child: Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        Get.toNamed(MyPageNames.login);
+                        // Get.toNamed(MyPageNames.login);
+                        Get.to(ThreeStepForm());
                       },
                       child: Text(
-                        "Go to Login Page",
+                        "Three Step Form",
                         style: GoogleFonts.poppins(
                           color: Colors.white,
                           fontSize: 16,

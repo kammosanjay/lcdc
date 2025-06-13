@@ -11,8 +11,8 @@ class UserRepositories {
   static final ApiService apiService = ApiService();
 
   static Future<Map<String, dynamic>> login({LoginRequset? request}) async {
-    var responseData = await apiService.post(
-      ApiConstraints.BASE_URL,
+    var responseData = await apiService.postApi(
+      ApiConstraints.loginApi,
       request!.toJson(),
     );
 

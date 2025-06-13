@@ -50,6 +50,9 @@ dependencies:
   logger: 
   fluttertoast: 
   razorpay_flutter:
+  dropdown_button2: 
+  get_storage:
+  responsive_framework: 
   
   
 

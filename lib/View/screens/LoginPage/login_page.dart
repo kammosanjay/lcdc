@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -29,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
   String captchaCode = '';
   RxString? loginType = "".obs;
   LoginController loginController = Get.put(LoginController());
-
+  var mobileError = ''.obs;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   late TextEditingController userLoginC;
@@ -41,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    captchaCode = generateCaptcha(6);
+    captchaCode = generateCaptcha6();
 
     dbHelper = DBHelper.instance;
   }
@@ -122,16 +124,17 @@ class _LoginPageState extends State<LoginPage> {
 
                         keyboardtype: TextInputType.text,
 
-                        // validate: (usermobile) {
-                        //   if (usermobile.isEmpty || usermobile.length > 10) {
-                        //     return "   Enter valid Mobile No";
-                        //   }
-                        // },
+                        validate: (usermobile) {
+                          if (usermobile.isEmpty || usermobile.length > 10) {
+                            return "   Enter valid Mobile No";
+                          }
+                        },
                         hint: "Mobile No",
                         icon: Image.asset("assets/images/mobile.png"),
                         iconColor: Colors.lightBlue,
                         action: TextInputAction.next,
                       ),
+
                       SizedBox(height: h * 0.02),
                       CustomWidgets.customTextFeild(
                         context: context,
@@ -178,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                                   GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        captchaCode = generateCaptcha(6);
+                                        captchaCode = generateCaptcha6();
                                       });
                                     },
                                     child: Image.asset(
@@ -250,12 +253,12 @@ class _LoginPageState extends State<LoginPage> {
                                     await SharedPrefsHelper.getUserData();
                                 // debugPrint('User Data: $userData');eve
                                 // debugPrint(userData['mobile']);
-                                  
+
                                 if (_formKey.currentState!.validate()) {
                                   loginController.loginUser(
                                     loginRequest: LoginRequset(
-                                      email: mobileC.text,
-                                      password: regisC.text,
+                                      mobile: mobileC.text,
+                                      entranceNo: regisC.text,
                                     ),
                                   );
                                   // loginController.postres();
@@ -310,13 +313,13 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  String generateCaptcha(int length) {
+  String generateCaptcha6() {
     const chars =
-        'abcdefghijklmnopqrstuvwxyz!@#^&*1234567890'; // avoid ambiguous chars
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#\$%^&*';
+    final rand = Random.secure();
     return List.generate(
-      length,
-      (index) =>
-          chars[(DateTime.now().millisecondsSinceEpoch + index) % chars.length],
+      6,
+      (index) => chars[rand.nextInt(chars.length)],
     ).join();
   }
 

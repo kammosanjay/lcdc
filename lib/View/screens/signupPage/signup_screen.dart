@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -47,7 +49,7 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   void initState() {
     super.initState();
-    captchaCode = generateCaptcha(6);
+    captchaCode = generateCaptcha6();
   }
 
   @override
@@ -81,6 +83,8 @@ class _SignupScreenState extends State<SignupScreen> {
               children: [
                 SizedBox(height: 20),
 
+                // eductation drop down
+                ///
                 Obx(() {
                   final courseTypeList = signupController.courseType;
 
@@ -119,6 +123,8 @@ class _SignupScreenState extends State<SignupScreen> {
                   );
                 }),
                 SizedBox(height: 20),
+
+                /// Student name
                 CustomWidgets.customTextFeild(
                   context: context,
                   name: 'name',
@@ -140,6 +146,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   action: TextInputAction.next,
                 ),
                 SizedBox(height: 20),
+
+                /// father Name
+                ///
                 CustomWidgets.customTextFeild(
                   context: context,
                   name: 'father name',
@@ -159,6 +168,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   action: TextInputAction.next,
                 ),
                 SizedBox(height: 20),
+
+                // mobile number
+                ///
                 CustomWidgets.customTextFeild(
                   context: context,
                   name: 'mobile',
@@ -177,14 +189,18 @@ class _SignupScreenState extends State<SignupScreen> {
                   action: TextInputAction.done,
                 ),
                 SizedBox(height: 20),
+
+                ///
+                ///Aadhaar Number
+                ///
                 CustomWidgets.customTextFeild(
                   context: context,
                   name: 'aadhaar',
                   controller: aadhaarController,
                   keyboardtype: TextInputType.number,
                   validate: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your Aadhaar number';
+                    if (value == null || value.length > 12) {
+                      return 'Please enter 12-digit your Aadhaar number';
                     }
                     return null;
                   },
@@ -197,6 +213,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 SizedBox(height: 20),
 
+                ///
+                ///Course type if UG
                 Obx(
                   () => Visibility(
                     visible: selectDegree.value == "UG",
@@ -225,6 +243,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ),
                 ),
+
+                ///
+                ///Course type if PG
                 Obx(
                   () => Visibility(
                     visible: selectDegree.value == "PG",
@@ -249,6 +270,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ),
                 ),
+                //
+                /// course type if Bped
                 Obx(
                   () => Visibility(
                     visible: selectDegree.value == "BPED",
@@ -276,6 +299,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ),
                 ),
+
+                ///
+                ///Gender
                 SizedBox(height: 20),
                 Row(
                   children: [
@@ -310,6 +336,9 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                     ),
                     SizedBox(width: 10),
+
+                    ///
+                    ///Date picker
                     Expanded(
                       flex: 1,
                       child: GestureDetector(
@@ -363,6 +392,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   ],
                 ),
                 SizedBox(height: 20),
+
+                ///
+                ///Email
                 CustomWidgets.customTextFeild(
                   context: context,
                   name: 'email',
@@ -384,6 +416,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 SizedBox(height: 20),
 
+                ///
+                ///Category
                 CustomWidgets.customDropdownField(
                   context: context,
                   items: signupController.category,
@@ -408,6 +442,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   suffixIcon: Image.asset("assets/images/dropArrow.png"),
                 ),
                 SizedBox(height: 20),
+
+                ///
+                ///Captcha
                 Container(
                   padding: EdgeInsets.only(left: 5, right: 0),
                   height: h * 0.06,
@@ -432,7 +469,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  captchaCode = generateCaptcha(6);
+                                  captchaCode = generateCaptcha6();
                                 });
                               },
                               child: Image.asset("assets/images/refresh.png"),
@@ -578,13 +615,13 @@ class _SignupScreenState extends State<SignupScreen> {
     selectedDate.value = DateTime.now();
   }
 
-  String generateCaptcha(int length) {
+  String generateCaptcha6() {
     const chars =
-        'abcdefghijklmnopqrstuvwxyz!@#^&*1234567890'; // avoid ambiguous chars
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#\$%^&*';
+    final rand = Random.secure();
     return List.generate(
-      length,
-      (index) =>
-          chars[(DateTime.now().millisecondsSinceEpoch + index) % chars.length],
+      6,
+      (index) => chars[rand.nextInt(chars.length)],
     ).join();
   }
 }

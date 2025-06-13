@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+
 import 'package:getwidget/getwidget.dart';
 import 'package:lcdc_mobile_app/View/screens/FeePayment/payment_page.dart';
 import 'package:lcdc_mobile_app/View/screens/Otp/otpPage.dart';
@@ -194,6 +195,7 @@ class SignupController extends GetxController {
     if (response.isNotEmpty && response['status'] == 200) {
       studentDetails.value = StudentDetailsInfo.fromJson(response['data']);
       studentRegNo.value = response['data']['enterence_no']; // optional
+
       print("Student fetched: ${studentDetails.value.candidatename}");
     } else {
       print("Failed to fetch student details");
@@ -220,7 +222,6 @@ class SignupController extends GetxController {
     if (response.isNotEmpty &&
         (response['status'] == 200 || response['status'] == 201)) {
       paymentOrder.value = CreateOrder.fromJson(response['data']);
-      
 
       print("Amount: ${paymentOrder.value.amountPaid}");
     } else {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:lcdc_mobile_app/View/screens/FeePayment/payment_page.dart';
-import 'package:lcdc_mobile_app/database/dbHelper.dart';
-import 'package:lcdc_mobile_app/database/secHelpher.dart';
+
+import 'package:lcdc_mobile_app/View/screens/signupPage/signup_binding.dart';
+
 import 'package:lcdc_mobile_app/resources/mypagenames/mypage_names.dart';
 import 'package:lcdc_mobile_app/resources/myroutes/myroutes_pages.dart';
 
@@ -24,7 +24,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: MyPageNames.splash,
       getPages: MyRoutesNames.pages,
-      // home: RegistrationDetailsPage(),
+      initialBinding: SignupBinding(),
+
+      // home: OTPScreen(),
     );
   }
 }

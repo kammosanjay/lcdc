@@ -21,7 +21,10 @@ class _OTPScreenState extends State<OTPScreen> {
   @override
   void initState() {
     super.initState();
+    
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -71,34 +74,27 @@ class _OTPScreenState extends State<OTPScreen> {
             ),
             SizedBox(height: 20),
             TextButtonTheme(
-              data: TextButtonThemeData(
-                style: TextButton.styleFrom(foregroundColor: Colors.white),
-              ),
+              data: TextButtonThemeData(),
               child: OtpResendTimer(
                 controller: controller,
                 autoStart: true,
-                // timerMessage: "",
-
-                // readyMessage: "",
+                timerMessage: "OTP sent on Mobile/Email ID",
+                timerMessageStyle: GoogleFonts.poppins(
+                  color: Color.fromARGB(255, 245, 246, 247),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12,
+                ),
+                resendMessageStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
                 // onFinish: () {},
                 onResendClicked: () {
                   print('onResendOtpClicked');
                   signupController.resendOtp();
                 },
-                // onStart: () {},
-                // holdMessageStyle: TextStyle(
-                //   color: Color.fromARGB(255, 218, 220, 224),
-                // ),
-                timerMessageStyle: GoogleFonts.poppins(
-                  color: Color.fromARGB(255, 245, 246, 247),
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20,
-                ),
-                readyMessageStyle: TextStyle(
-                  color: Colors.white, // 👈 Set Resend text color to white
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                onStart: () {},
               ),
             ),
             SizedBox(height: 20),
