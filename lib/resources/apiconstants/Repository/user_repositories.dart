@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:lcdc_mobile_app/View/screens/signupPage/signup_controller.dart';
+import 'package:lcdc_mobile_app/constant/myshared_sharedprefrences.dart';
 import 'package:lcdc_mobile_app/modal/RequestModal/login.dart';
 import 'package:lcdc_mobile_app/modal/RequestModal/payment_modal.dart';
 import 'package:lcdc_mobile_app/modal/RequestModal/studentReqModal.dart';
@@ -121,6 +122,19 @@ class UserRepositories {
     );
     print(response.toString());
 
+    return response;
+  }
+
+  ///
+  ///
+  ///dropdownfor UG
+
+  static Future<Map<String, dynamic>> dropdownforUG({String? token}) async {
+    var response = await apiService.getData(
+      ApiConstraints.dropDownsforUg,
+      token: token,
+    );
+    print("dropdownforUG Response==>$response");
     return response;
   }
 }

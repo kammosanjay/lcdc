@@ -1,6 +1,4 @@
 import 'package:get/get.dart';
-
-import 'package:getwidget/getwidget.dart';
 import 'package:lcdc_mobile_app/View/screens/FeePayment/payment_page.dart';
 import 'package:lcdc_mobile_app/View/screens/Otp/otpPage.dart';
 import 'package:lcdc_mobile_app/constant/myshared_sharedprefrences.dart';
@@ -10,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:lcdc_mobile_app/modal/ResponseModal/create_order.dart';
 import 'package:lcdc_mobile_app/modal/ResponseModal/student_detail_info.dart';
 import 'package:lcdc_mobile_app/resources/apiconstants/Repository/user_repositories.dart';
-import 'package:razorpay_flutter/razorpay_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class SignupController extends GetxController {

@@ -2,7 +2,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lcdc_mobile_app/View/screens/HomeScreen/home_controller.dart';
 import 'package:lcdc_mobile_app/constant/customWidget.dart';
+
+import '../signupPage/signup_controller.dart';
 
 class ThreeStepForm extends StatefulWidget {
   @override
@@ -17,35 +20,35 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
   final TextEditingController _step2Controller = TextEditingController();
   final TextEditingController _step3Controller = TextEditingController();
   final TextEditingController _step4Controller = TextEditingController();
-  TextEditingController mobileController = TextEditingController();
-  TextEditingController lurnController = TextEditingController();
-  TextEditingController categoryController = TextEditingController();
-  TextEditingController GparticipatedController = TextEditingController();
-  TextEditingController fannualController = TextEditingController();
-  TextEditingController mothernameController = TextEditingController();
-  TextEditingController mAnnualController = TextEditingController();
-  TextEditingController nationalityController = TextEditingController();
-  TextEditingController lastExmController = TextEditingController();
-  TextEditingController lastInstController = TextEditingController();
-  TextEditingController BoarduniverController = TextEditingController();
-  TextEditingController mmController = TextEditingController();
-  TextEditingController OmController = TextEditingController();
-  TextEditingController perController = TextEditingController();
-  TextEditingController fatherMobileNoController = TextEditingController();
-  TextEditingController motherMobileNoCont = TextEditingController();
-  TextEditingController presentAddressController = TextEditingController();
-  TextEditingController presentPinController = TextEditingController();
-  TextEditingController NRSController = TextEditingController();
-  TextEditingController NPSController = TextEditingController();
-  TextEditingController permanentAddController = TextEditingController();
-  TextEditingController permanentPinController = TextEditingController();
-  TextEditingController permanNRSController = TextEditingController();
-  TextEditingController permanentNPSController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController aadhaarController = TextEditingController();
-  TextEditingController fatherNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController regisC = TextEditingController();
+  var mobileController = TextEditingController();
+  var lurnController = TextEditingController();
+  var categoryController = TextEditingController();
+  var GparticipatedController = TextEditingController();
+  var fannualController = TextEditingController();
+  var mothernameController = TextEditingController();
+  var mAnnualController = TextEditingController();
+  var nationalityController = TextEditingController();
+  var lastExmController = TextEditingController();
+  var lastInstController = TextEditingController();
+  var BoarduniverController = TextEditingController();
+  var mmController = TextEditingController();
+  var OmController = TextEditingController();
+  var perController = TextEditingController();
+  var fatherMobileNoController = TextEditingController();
+  var motherMobileNoCont = TextEditingController();
+  var presentAddressController = TextEditingController();
+  var presentPinController = TextEditingController();
+  var NRSController = TextEditingController();
+  var NPSController = TextEditingController();
+  var permanentAddController = TextEditingController();
+  var permanentPinController = TextEditingController();
+  var permanNRSController = TextEditingController();
+  var permanentNPSController = TextEditingController();
+  var nameController = TextEditingController();
+  var aadhaarController = TextEditingController();
+  var fatherNameController = TextEditingController();
+  var emailController = TextEditingController();
+  var regisC = TextEditingController();
   FocusNode _focusReg = FocusNode();
   FocusNode _lastExmFocus = FocusNode();
 
@@ -76,31 +79,49 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
   final GlobalKey<FormState> _formKey0 = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKey1 = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKey2 = GlobalKey<FormState>();
+  late SignupController signupController;
+  HomeController homeController = Get.put(HomeController());
+
+  @override
+  void initState() {
+    super.initState();
+    signupController = Get.find<SignupController>();
+    var fetch = signupController.studentDetails.value;
+    regisC.text = fetch.enterenceNo.toString();
+    nameController.text = fetch.candidatename.toString();
+    emailController.text = fetch.emailid.toString();
+    mobileController.text = fetch.mobileNo.toString();
+    aadhaarController.text = fetch.aadharid.toString();
+    fatherNameController.text = fetch.fathername.toString();
+    selectCategory.value = fetch.category.toString();
+    selectCourse.value = fetch.course.toString();
+  }
 
   List<String> category = [
-    '1-General',
-    '2a-Christian Candidate',
-    '2b-LCDC Employees Ward',
-    '2c-Blind/Physically Challenged',
-    '3a-Children of Alumni/Teachers/Defence Personnel',
-    '3b-NCC',
-    '3c-OBC/Grand Children of Freedom Fighters',
-    '3d-LCIC/CHSS STUDENT',
-    '4-SC/ST',
-    '5-Foreign Students',
-    '6-SPORTS QUOTA',
+    "General",
+    "Christian Candidate",
+    "LCDC Employees Ward",
+    "Blind/Physically Challenged",
+    "COATD",
+    "NCC",
+    "OBC/Grand Children of Freedom Fighters",
+    "LC",
+    "SCST",
+    "FS",
+    "Sports Quota",
   ];
   List<String> domicile = ['UP', 'Outside UP'];
 
-  List<String> occupation = [
-    '1-Private Sector',
-    '2-Government Sector',
-    '3-Self Employed',
-    '4-Student',
-    '5-House Wife',
-    '6-Unemployed',
-    '7-Other',
-  ];
+  // List<String> occupation = [
+  //   '1-Private Sector',
+  //   '2-Government Sector',
+  //   '3-Self Employed',
+  //   '4-Student',
+  //   '5-House Wife',
+  //   '6-Unemployed',
+  //   '7-Other',
+  // ];
+
   @override
   Widget build(BuildContext context) {
     var h = MediaQuery.of(context).size.height;
@@ -130,9 +151,10 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             return Padding(
               padding: const EdgeInsets.only(top: 20.0),
               child: Row(
-                mainAxisAlignment: _currentStep == 0
-                    ? MainAxisAlignment.end
-                    : MainAxisAlignment.spaceBetween,
+                mainAxisAlignment:
+                    _currentStep == 0
+                        ? MainAxisAlignment.end
+                        : MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   if (_currentStep != 0)
                     ElevatedButton(
@@ -144,8 +166,9 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        backgroundColor: Colors
-                            .white, // You can set different color for Back
+                        backgroundColor:
+                            Colors
+                                .white, // You can set different color for Back
                       ),
                       child: Text(
                         'Previous',
@@ -248,13 +271,24 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           SizedBox(height: 20),
 
           // Dropdown for Degree
-          Obx(
-            () => CustomWidgets.customDropdownField(
+          Obx(() {
+            final courseTypeList = signupController.courseType;
+
+            // Show loading or empty state if courseType is not yet loaded
+            if (courseTypeList == null || courseTypeList.isEmpty) {
+              return SizedBox(); // or SizedBox(), or 'Select Degree' hint
+            }
+
+            final upperCaseItems =
+                courseTypeList.map((e) => e.toUpperCase()).toList();
+            return CustomWidgets.customDropdownField(
               context: context,
-              items: ['UG', 'PG', 'B.P.Ed'],
-              selectedItem: ['UG', 'PG', 'B.P.Ed'].contains(selectDegree.value)
-                  ? selectDegree.value
-                  : null,
+              items: upperCaseItems,
+              selectedItem:
+                  upperCaseItems.contains(selectDegree.value.toUpperCase())
+                      ? selectDegree.value.toUpperCase()
+                      : null,
+
               onChanged: (value) {
                 if (value != null) {
                   selectDegree.value = value;
@@ -270,8 +304,8 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               hint: 'Select Degree',
               icon: Image.asset("assets/images/student_as.png"),
               suffixIcon: Image.asset("assets/images/dropArrow.png"),
-            ),
-          ),
+            );
+          }),
           SizedBox(height: 20),
           // Dropdown for LURN
           CustomWidgets.customTextFeild(
@@ -332,6 +366,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
 
             action: TextInputAction.next,
           ),
+
           SizedBox(height: 20),
           // Dropdown for Gender and Date of Birth
           Row(
@@ -339,8 +374,8 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               Flexible(
                 child: CustomWidgets.customDropdownField(
                   context: context,
-                  items: ['Male', 'Female', 'Other'],
-                  selectedItem: 'Male',
+                  items: signupController.gender,
+                  selectedItem: signupController.studentDetails.value.gender,
                   onChanged: (value) {},
                   icon: Image.asset("assets/images/gender.png"),
                   suffixIcon: Image.asset("assets/images/dropArrow.png"),
@@ -376,7 +411,9 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                       children: [
                         Obx(
                           () => Text(
-                            "${selectedDate.value!.day}/${selectedDate.value!.month}/${selectedDate.value!.year}",
+                            // "${selectedDate.value!.day}/${selectedDate.value!.month}/${selectedDate.value!.year}",
+                            signupController.studentDetails.value.dateofbirth
+                                .toString(),
                             style: GoogleFonts.poppins(
                               textStyle: TextStyle(
                                 color: Colors.black.withOpacity(0.6),
@@ -390,6 +427,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                           width: 24,
                           height: 24,
                           color: const Color.fromARGB(255, 52, 64, 73),
+
                         ),
                       ],
                     ),
@@ -497,27 +535,29 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             action: TextInputAction.done,
           ),
           SizedBox(height: 20),
-          CustomWidgets.customDropdownField(
-            context: context,
-            items: occupation,
-            selectedItem: occupation.contains(selectFOccupation.value)
-                ? selectFOccupation.value
-                : null,
-            onChanged: (value) {
-              if (value != null) {
-                selectFOccupation.value = value;
-              }
-              print(occupation);
-            },
-            validate: (userC) {
-              if (userC == null || userC.isEmpty) {
-                return "    Father Occupation";
-              }
-              return null;
-            },
-            hint: 'Father Occupation',
-            icon: Image.asset("assets/images/category.png"),
-            suffixIcon: Image.asset("assets/images/dropArrow.png"),
+          Obx(
+            () => CustomWidgets.customDropdownField(
+              context: context,
+              items: homeController.occupation,
+              selectedItem:
+                  homeController.occupation.contains(selectFOccupation.value)
+                      ? selectFOccupation.value
+                      : null,
+              onChanged: (value) {
+                if (value != null) {
+                  selectFOccupation.value = value;
+                }
+              },
+              validate: (userC) {
+                if (userC == null || userC.isEmpty) {
+                  return "    Father Occupation";
+                }
+                return null;
+              },
+              hint: 'Father Occupation',
+              icon: Image.asset("assets/images/category.png"),
+              suffixIcon: Image.asset("assets/images/dropArrow.png"),
+            ),
           ),
           Obx(() {
             return selectDegree.value == 'B.P.Ed'
@@ -621,15 +661,15 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           SizedBox(height: 20),
           CustomWidgets.customDropdownField(
             context: context,
-            items: occupation,
-            selectedItem: occupation.contains(selectMOccupation.value)
-                ? selectMOccupation.value
-                : null,
+            items: homeController.motheroccupation,
+            selectedItem:
+                homeController.occupation.contains(selectMOccupation.value)
+                    ? selectMOccupation.value
+                    : null,
             onChanged: (value) {
               if (value != null) {
                 selectMOccupation.value = value;
               }
-              print(occupation);
             },
             validate: (userC) {
               if (userC == null || userC.isEmpty) {
@@ -679,15 +719,12 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               visible: selectDegree.value == "UG",
               child: CustomWidgets.customDropdownField(
                 context: context,
-                items: ['BCA', 'BCOM', 'BSc(Bio)', 'BSc(Math)'],
-                selectedItem: [
-                  'BCA',
-                  'BCOM',
-                  'BSc(Bio)',
-                  'BSc(Math)',
-                ].contains(selectCourse.value)
-                    ? selectCourse.value
-                    : null,
+                items: signupController.course,
+                selectedItem:
+                    signupController.course.contains(selectCourse.value)
+                        ? selectCourse.value
+                        : null,
+                // signupController.studentDetails.value.course,
                 onChanged: (value) {
                   if (value != null) {
                     selectCourse.value = value;
@@ -712,12 +749,13 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               child: CustomWidgets.customDropdownField(
                 context: context,
                 items: ['M.A(English)', 'M.Sc(Chemistry)'],
-                selectedItem: [
-                  'M.A(English)',
-                  'M.Sc(Chemistry)',
-                ].contains(selectCourse.value)
-                    ? selectCourse.value
-                    : null,
+                selectedItem:
+                    [
+                          'M.A(English)',
+                          'M.Sc(Chemistry)',
+                        ].contains(selectCourse.value)
+                        ? selectCourse.value
+                        : null,
                 onChanged: (value) {
                   if (value != null) {
                     selectCourse.value = value;
@@ -742,9 +780,10 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               child: CustomWidgets.customDropdownField(
                 context: context,
                 items: ['B.P.Ed.'],
-                selectedItem: ['B.P.Ed.'].contains(selectCourse.value)
-                    ? selectCourse.value
-                    : null,
+                selectedItem:
+                    ['B.P.Ed.'].contains(selectCourse.value)
+                        ? selectCourse.value
+                        : null,
                 onChanged: (value) {
                   if (value != null) {
                     selectCourse.value = value;
@@ -772,10 +811,11 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
 
             return CustomWidgets.customDropdownField(
               context: context,
-              items: category,
-              selectedItem: category.contains(selectCategory.value)
-                  ? selectCategory.value
-                  : null,
+              items: signupController.category,
+              selectedItem:
+                  signupController.category.contains(selectCategory.value)
+                      ? selectCategory.value
+                      : null,
               onChanged: (value) {
                 if (value != null) {
                   selectCategory.value = value;
@@ -805,9 +845,10 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               child: CustomWidgets.customDropdownField(
                 context: context,
                 items: domicile,
-                selectedItem: domicile.contains(selectDomicile.value)
-                    ? selectDomicile.value
-                    : null,
+                selectedItem:
+                    domicile.contains(selectDomicile.value)
+                        ? selectDomicile.value
+                        : null,
                 onChanged: (value) {
                   if (value != null) {
                     selectDomicile.value = value;
@@ -961,19 +1002,11 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           Obx(
             () => CustomWidgets.customDropdownField(
               context: context,
-              items: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
-              selectedItem: [
-                "A+",
-                "A-",
-                "B+",
-                "B-",
-                "AB+",
-                "AB-",
-                "O+",
-                "O-",
-              ].contains(selectBloodGroup.value)
-                  ? selectBloodGroup.value
-                  : null,
+              items: homeController.bloodgroup,
+              selectedItem:
+                  homeController.bloodgroup.contains(selectBloodGroup.value)
+                      ? selectBloodGroup.value
+                      : null,
               onChanged: (value) {
                 if (value != null) {
                   selectBloodGroup.value = value;
@@ -1024,15 +1057,11 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
 
             return CustomWidgets.customDropdownField(
               context: context,
-              items: ["Hindu", "Muslim", "Sikh", "Christian"],
-              selectedItem: [
-                "Hindu",
-                "Muslim",
-                "Sikh",
-                "Christian",
-              ].contains(selectReligon.value)
-                  ? selectReligon.value
-                  : null,
+              items: homeController.religion,
+              selectedItem:
+                  homeController.religion.contains(selectReligon.value)
+                      ? selectReligon.value
+                      : null,
               onChanged: (value) {
                 if (value != null) {
                   selectReligon.value = value;
@@ -1059,9 +1088,9 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           Obx(
             () => CustomWidgets.customDropdownField(
               context: context,
-              items: ["Gen", "OBC", "SC", "ST"],
+              items: homeController.caste,
               selectedItem:
-                  ["Gen", "OBC", "SC", "ST"].contains(selectCaste.value)
+                  homeController.caste.contains(selectCaste.value)
                       ? selectCaste.value
                       : null,
               onChanged: (value) {
@@ -1211,17 +1240,11 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           SizedBox(height: 20),
           CustomWidgets.customDropdownField(
             context: context,
-            items: ['2020', '2021', '2022', '2023', '2024', '2025'],
-            selectedItem: [
-              '2020',
-              '2021',
-              '2022',
-              '2023',
-              '2024',
-              '2025',
-            ].contains(selectYear.value)
-                ? selectYear.value
-                : null,
+            items: homeController.passingyear,
+            selectedItem:
+                homeController.passingyear.contains(selectYear.value)
+                    ? selectYear.value
+                    : null,
             onChanged: (value) {
               if (value != null) {
                 selectYear.value = value;
@@ -1365,14 +1388,15 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               child: CustomWidgets.customDropdownField(
                 context: context,
                 items: ["1st-level", "2nd-level", "3rd-level", "4th-level"],
-                selectedItem: [
-                  "1st-level",
-                  "2nd-level",
-                  "3rd-level",
-                  "4th-level",
-                ].contains(selectLevel.value)
-                    ? selectLevel.value
-                    : null,
+                selectedItem:
+                    [
+                          "1st-level",
+                          "2nd-level",
+                          "3rd-level",
+                          "4th-level",
+                        ].contains(selectLevel.value)
+                        ? selectLevel.value
+                        : null,
                 onChanged: (value) {
                   if (value != null) {
                     selectLevel.value = value;
@@ -1408,14 +1432,15 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                   "3rd-Position",
                   "4th-Position",
                 ],
-                selectedItem: [
-                  "1st-Position",
-                  "2nd-Position",
-                  "3rd-Position",
-                  "4th-Position",
-                ].contains(selectPosition.value)
-                    ? selectPosition.value
-                    : null,
+                selectedItem:
+                    [
+                          "1st-Position",
+                          "2nd-Position",
+                          "3rd-Position",
+                          "4th-Position",
+                        ].contains(selectPosition.value)
+                        ? selectPosition.value
+                        : null,
                 onChanged: (value) {
                   if (value != null) {
                     selectPosition.value = value;
@@ -1464,11 +1489,11 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             child: Obx(
               () => GestureDetector(
                 onTap: () async {
-                  FilePickerResult? result =
-                      await FilePicker.platform.pickFiles(
-                    type: FileType.custom,
-                    allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
-                  );
+                  FilePickerResult? result = await FilePicker.platform
+                      .pickFiles(
+                        type: FileType.custom,
+                        allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+                      );
 
                   if (result != null) {
                     fileName.value = result.files.single.name;
@@ -1532,9 +1557,10 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               child: CustomWidgets.customDropdownField(
                 context: context,
                 items: ["Yes", "No"],
-                selectedItem: ["Yes", "No"].contains(selectStudent.value)
-                    ? selectStudent.value
-                    : null,
+                selectedItem:
+                    ["Yes", "No"].contains(selectStudent.value)
+                        ? selectStudent.value
+                        : null,
                 onChanged: (value) {
                   if (value != null) {
                     selectStudent.value = value;
@@ -1776,9 +1802,10 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                 margin: EdgeInsets.only(left: 10),
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: isChecked
-                        ? Colors.transparent
-                        : Colors.white, // White border when not selected
+                    color:
+                        isChecked
+                            ? Colors.transparent
+                            : Colors.white, // White border when not selected
                     width: 2,
                   ),
                   borderRadius: BorderRadius.circular(
@@ -2015,11 +2042,11 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             child: Obx(
               () => GestureDetector(
                 onTap: () async {
-                  FilePickerResult? result =
-                      await FilePicker.platform.pickFiles(
-                    type: FileType.custom,
-                    allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
-                  );
+                  FilePickerResult? result = await FilePicker.platform
+                      .pickFiles(
+                        type: FileType.custom,
+                        allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+                      );
 
                   if (result != null) {
                     fileName.value = result.files.single.name;
@@ -2083,11 +2110,11 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             child: Obx(
               () => GestureDetector(
                 onTap: () async {
-                  FilePickerResult? result =
-                      await FilePicker.platform.pickFiles(
-                    type: FileType.custom,
-                    allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
-                  );
+                  FilePickerResult? result = await FilePicker.platform
+                      .pickFiles(
+                        type: FileType.custom,
+                        allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+                      );
 
                   if (result != null) {
                     fileName.value = result.files.single.name;
@@ -2151,11 +2178,11 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             child: Obx(
               () => GestureDetector(
                 onTap: () async {
-                  FilePickerResult? result =
-                      await FilePicker.platform.pickFiles(
-                    type: FileType.custom,
-                    allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
-                  );
+                  FilePickerResult? result = await FilePicker.platform
+                      .pickFiles(
+                        type: FileType.custom,
+                        allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+                      );
 
                   if (result != null) {
                     fileName.value = result.files.single.name;
@@ -2440,9 +2467,10 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                 margin: EdgeInsets.only(left: 10),
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: isCheckedTerms
-                        ? Colors.transparent
-                        : Colors.white, // White border when not selected
+                    color:
+                        isCheckedTerms
+                            ? Colors.transparent
+                            : Colors.white, // White border when not selected
                     width: 2,
                   ),
                   borderRadius: BorderRadius.circular(
