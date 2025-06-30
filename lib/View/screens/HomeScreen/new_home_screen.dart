@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lcdc_mobile_app/View/screens/HomeScreen/home_controller.dart';
 import 'package:lcdc_mobile_app/constant/customWidget.dart';
+import 'package:lcdc_mobile_app/modal/RequestModal/student_threeStepFrom_request.dart';
 
 import '../signupPage/signup_controller.dart';
 
@@ -121,7 +122,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
   //   '6-Unemployed',
   //   '7-Other',
   // ];
-
+StudentRegistrationModel? studentRegistrationModel;
   @override
   Widget build(BuildContext context) {
     var h = MediaQuery.of(context).size.height;
@@ -194,6 +195,8 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                           print("Step 2: ${_step2Controller.text}");
                           print("Step 3: ${_step3Controller.text}");
                           // Add your submit logic here
+
+                          // homeController.submitForm(studentRegistrationModel.);
                         }
                       } else {
                         details.onStepContinue!();
@@ -427,7 +430,6 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                           width: 24,
                           height: 24,
                           color: const Color.fromARGB(255, 52, 64, 73),
-
                         ),
                       ],
                     ),
@@ -1653,7 +1655,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             name: 'Present Address',
             controller: presentAddressController,
             maxLines: 5,
-            keyboardtype: TextInputType.name,
+            keyboardtype: TextInputType.text,
             validate: (value) {
               if (value == null || value.isEmpty) {
                 return '   Please enter your present address';
@@ -1829,7 +1831,8 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           CustomWidgets.customTextFeild(
             context: context,
             name: 'Permanent Address',
-            controller: permanentAddController,
+            controller:
+                isChecked ? presentAddressController : permanentAddController,
             maxLines: 5,
             keyboardtype: TextInputType.name,
             validate: (value) {

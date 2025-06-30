@@ -1,11 +1,13 @@
 // services/api_service.dart
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide MultipartFile, FormData, Response;
 import 'package:http/http.dart' as http;
 import 'package:lcdc_mobile_app/modal/ResponseModal/login_res.dart';
+import 'package:lcdc_mobile_app/resources/apiconstants/apiConstant.dart';
 import 'package:path/path.dart';
 
 class ApiService {
@@ -129,45 +131,35 @@ class ApiService {
   deleteApi(String url) async {
     final response = await http.delete(Uri.parse(url));
   }
+  //
+  //
 
-  Future<void> uploadData({String? file}) async {
-    final url = Uri.parse('https://your-api-endpoint.com/upload');
+  Future<Map<String, dynamic>> uploadDataWithImage(
+    Map<String, dynamic> request, {
+    String? token,
+  }) async {
+    try {
+      Dio dio = Dio();
 
-    // Create the multipart request
-    final request = http.MultipartRequest('POST', url);
+      FormData formData = FormData.fromMap(request);
 
-    // Add form fields
-    request.fields['name'] = 'John Doe';
-    request.fields['rollNo'] = '12345';
-    request.fields['age'] = '25';
+      Response response = await dio.post(
+        ApiConstraints.submitAppForm, // 🔁 Replace with your API
+        data: formData,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+          },
+          contentType: 'multipart/form-data',
+        ),
+      );
 
-    // Add one or more files
-
-    request.files.add(
-      await http.MultipartFile.fromPath(
-        'file', // name expected by backend (like $_FILES['file'] in PHP)
-        file!,
-      ),
-    );
-
-    // Optional: Add headers (e.g., authorization)
-    request.headers.addAll({
-      'Authorization': 'Bearer YOUR_TOKEN_HERE',
-      'Accept': 'application/json',
-    });
-
-    // Send the request
-    final response = await request.send();
-
-    // Handle the streamed response
-    if (response.statusCode == 200) {
-      final responseBody = await response.stream.bytesToString();
-      print('Upload success: $responseBody');
-    } else {
-      print('Upload failed with status: ${response.statusCode}');
-      final errorBody = await response.stream.bytesToString();
-      print('Error: $errorBody');
+      print('Response: ${response.data}');
+    } catch (e) {
+      print('Upload Error: $e');
     }
+    return {};
   }
 
   //dio post

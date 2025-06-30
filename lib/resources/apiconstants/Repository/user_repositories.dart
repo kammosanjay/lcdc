@@ -4,6 +4,7 @@ import 'package:lcdc_mobile_app/constant/myshared_sharedprefrences.dart';
 import 'package:lcdc_mobile_app/modal/RequestModal/login.dart';
 import 'package:lcdc_mobile_app/modal/RequestModal/payment_modal.dart';
 import 'package:lcdc_mobile_app/modal/RequestModal/studentReqModal.dart';
+import 'package:lcdc_mobile_app/modal/RequestModal/student_threeStepFrom_request.dart';
 import 'package:lcdc_mobile_app/resources/apiconstants/Repository/api_repository.dart';
 import 'package:lcdc_mobile_app/resources/apiconstants/apiConstant.dart';
 import 'package:flutter/material.dart';
@@ -135,6 +136,17 @@ class UserRepositories {
       token: token,
     );
     print("dropdownforUG Response==>$response");
+    return response;
+  }
+
+  //
+  //
+
+  static Future<Map<String, dynamic>> submitApplicationForm({
+    required String token,
+    required StudentRegistrationModel requset,
+  }) async {
+    var response = await apiService.uploadDataWithImage(requset.toJson());
     return response;
   }
 }

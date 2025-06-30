@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:lcdc_mobile_app/constant/myshared_sharedprefrences.dart';
+import 'package:lcdc_mobile_app/modal/RequestModal/student_threeStepFrom_request.dart';
 
 import '../../../resources/apiconstants/Repository/user_repositories.dart';
 
@@ -46,4 +47,15 @@ class HomeController extends GetxController {
   ///
   ///
   ///
+
+  Future<Map<String, dynamic>> submitForm(
+    StudentRegistrationModel studentform,
+  ) async {
+    var token = await SharedPrefsHelper.getToken();
+    final response = await UserRepositories.submitApplicationForm(
+      token: token!,
+      requset: studentform,
+    );
+    return response;
+  }
 }
