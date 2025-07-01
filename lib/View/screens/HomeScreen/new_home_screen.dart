@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:lcdc_mobile_app/View/screens/HomeScreen/home_controller.dart';
 import 'package:lcdc_mobile_app/constant/customWidget.dart';
 import 'package:lcdc_mobile_app/modal/RequestModal/student_threeStepFrom_request.dart';
@@ -54,8 +55,31 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
   FocusNode _lastExmFocus = FocusNode();
 
   TextEditingController captchaController = TextEditingController();
-  final RxString fileName = ''.obs;
-  final RxString filePath = ''.obs;
+  final RxString domicilefileName = ''.obs;
+  final RxString domicilefilePath = ''.obs;
+  final RxString castefileName = ''.obs;
+  final RxString castefilePath = ''.obs;
+  final RxString gamefileName = "".obs;
+  final RxString gamefilePath = "".obs;
+  final RxString aadharfileName = "".obs;
+  final RxString aadharfilePath = "".obs;
+  final RxString candidatefileName = "".obs;
+  final RxString candidatefilePath = "".obs;
+  final RxString candidateSignaturefileName = "".obs;
+  final RxString candidateSignaturefilePath = "".obs;
+  final RxString gra2yrfileName = "".obs;
+  final RxString gra2yrfilePath = "".obs;
+  final RxString highSchMarkfileName = "".obs;
+  final RxString highSchMarkfilePath = "".obs;
+  final RxString castCertifileName = "".obs;
+  final RxString castCertifilePath = "".obs;
+  final RxString graduatinMarkfileName = "".obs;
+  final RxString graduatinMarkfilePath = "".obs;
+  final RxString ugpart2fileName = "".obs;
+  final RxString ugpart2filePath = "".obs;
+  final RxString intermediatefileName = "".obs;
+  final RxString intermediatefilePath = "".obs;
+
   bool isChecked = false;
   bool isCheckedTerms = false;
 
@@ -73,7 +97,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
   RxString selectDomicile = "".obs;
   RxString selectPosition = "".obs;
   RxString selectLevel = "".obs;
-
+  String gender = "";
   RxString selectCaste = "".obs;
   RxString selectSkillTest = "".obs;
   RxString selectYearOfPassing = "".obs;
@@ -82,7 +106,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
   final GlobalKey<FormState> _formKey2 = GlobalKey<FormState>();
   late SignupController signupController;
   HomeController homeController = Get.put(HomeController());
-
+  StudentRegistrationModel mdl = StudentRegistrationModel();
   @override
   void initState() {
     super.initState();
@@ -111,6 +135,16 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
     "FS",
     "Sports Quota",
   ];
+
+  checkForUpdate() async {
+    try {
+      var update = await InAppUpdate.checkForUpdate();
+      if (update.updateAvailability == UpdateAvailability.updateAvailable) {
+        InAppUpdate.performImmediateUpdate();
+      }
+    } catch (e) {}
+  }
+
   List<String> domicile = ['UP', 'Outside UP'];
 
   // List<String> occupation = [
@@ -122,7 +156,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
   //   '6-Unemployed',
   //   '7-Other',
   // ];
-StudentRegistrationModel? studentRegistrationModel;
+
   @override
   Widget build(BuildContext context) {
     var h = MediaQuery.of(context).size.height;
@@ -196,7 +230,136 @@ StudentRegistrationModel? studentRegistrationModel;
                           print("Step 3: ${_step3Controller.text}");
                           // Add your submit logic here
 
-                          // homeController.submitForm(studentRegistrationModel.);
+                          homeController.submitForm(
+                            studentform: StudentRegistrationModel(
+                              lurnCertificate: lurnController.text,
+                              registrationNumber: regisC.text,
+                              candidateName: nameController.text,
+                              gender:
+                                  signupController.studentDetails.value.gender,
+                              dateOfBirth:
+                                  signupController
+                                      .studentDetails
+                                      .value
+                                      .dateofbirth,
+                              emailId: emailController.text,
+                              mobileNumber: mobileController.text,
+                              aadharId: aadhaarController.text,
+                              fatherName: fatherNameController.text,
+                              annualIncomeRs: fannualController.text,
+                              occupation: selectFOccupation.value,
+                              motherName: mothernameController.text,
+                              motherAnnualIncomeRs: mAnnualController.text,
+                              motherOccupation: selectMOccupation.value,
+                              course: selectCourse.value,
+                              category: selectCategory.value,
+                              domicileCertificatePath: domicilefilePath.value,
+                              casteCertificatePath: castCertifilePath.value,
+                              bloodGroup: selectBloodGroup.value,
+                              religion: selectReligon.value,
+                              caste: selectCaste.value,
+                              nationality: nationalityController.text,
+                              examinationName: lastExmController.text,
+                              institution: lastInstController.text,
+                              boardUniversity: BoarduniverController.text,
+                              passingYear: selectYear.value,
+                              maximumMarks: mmController.text,
+                              marksObtained: OmController.text,
+                              marksPercentage: perController.text,
+                              fatherMobileNo: fatherMobileNoController.text,
+                              motherMobileNumber: motherMobileNoCont.text,
+                              presentAddress: presentAddressController.text,
+                              presentPincode: presentPinController.text,
+                              presentNearRailway: NRSController.text,
+                              presentNearPolice: NPSController.text,
+                              addressProofPath: aadharfileName.value,
+                              permanentAddress:
+                                  isChecked
+                                      ? presentAddressController.text
+                                      : permanentAddController.text,
+
+                              permanentNearPolice: permanentNPSController.text,
+                              permanentNearRailway: permanNRSController.text,
+                              permanentPincode: permanentPinController.text,
+                              studentPhotoPath: candidatefilePath.value,
+                              studentSignaturePath:
+                                  candidateSignaturefilePath.value,
+                              interMarksheetPath: intermediatefilePath.value,
+                            ),
+                          );
+                          print('lurnCertificate: ${lurnController.text}');
+                          print('registrationNumber: ${regisC.text}');
+                          print('candidateName: ${nameController.text}');
+                          print(
+                            'gender: ${signupController.studentDetails.value.gender}',
+                          );
+                          print(
+                            'dateOfBirth: ${signupController.studentDetails.value.dateofbirth}',
+                          );
+                          print('emailId: ${emailController.text}');
+                          print('mobileNumber: ${mobileController.text}');
+                          print('aadharId: ${aadhaarController.text}');
+                          print('fatherName: ${fatherNameController.text}');
+                          print('annualIncomeRs: ${fannualController.text}');
+                          print('occupation: ${selectFOccupation.value}');
+                          print('motherName: ${mothernameController.text}');
+                          print(
+                            'motherAnnualIncomeRs: ${mAnnualController.text}',
+                          );
+                          print('motherOccupation: ${selectMOccupation.value}');
+                          print('course: ${selectCourse.value}');
+                          print('category: ${selectCategory.value}');
+                          print(
+                            'domicileCertificatePath: ${domicilefilePath.value}',
+                          );
+                          print(
+                            'casteCertificatePath: ${castCertifilePath.value}',
+                          );
+                          print('bloodGroup: ${selectBloodGroup.value}');
+                          print('religion: ${selectReligon.value}');
+                          print('caste: ${selectCaste.value}');
+                          print('nationality: ${nationalityController.text}');
+                          print('examinationName: ${lastExmController.text}');
+                          print('institution: ${lastInstController.text}');
+                          print(
+                            'boardUniversity: ${BoarduniverController.text}',
+                          );
+                          print('passingYear: ${selectYear.value}');
+                          print('maximumMarks: ${mmController.text}');
+                          print('marksObtained: ${OmController.text}');
+                          print('marksPercentage: ${perController.text}');
+                          print(
+                            'fatherMobileNo: ${fatherMobileNoController.text}',
+                          );
+                          print(
+                            'motherMobileNumber: ${motherMobileNoCont.text}',
+                          );
+                          print(
+                            'presentAddress: ${presentAddressController.text}',
+                          );
+                          print('presentPincode: ${presentPinController.text}');
+                          print('presentNearRailway: ${NRSController.text}');
+                          print('presentNearPolice: ${NPSController.text}');
+                          print('addressProofPath: ${aadharfileName.value}');
+                          print(
+                            'permanentAddress: ${isChecked ? presentAddressController.text : permanentAddController.text}',
+                          );
+                          print(
+                            'permanentNearPolice: ${permanentNPSController.text}',
+                          );
+                          print(
+                            'permanentNearRailway: ${permanNRSController.text}',
+                          );
+                          print(
+                            'permanentPincode: ${permanentPinController.text}',
+                          );
+                          print('studentPhotoPath: ${candidatefilePath.value}');
+                          print(
+                            'studentSignaturePath: ${candidateSignaturefilePath.value}',
+                          );
+                          print(
+                            'interMarksheetPath: ${intermediatefilePath.value}',
+                          );
                         }
                       } else {
                         details.onStepContinue!();
@@ -354,7 +517,7 @@ StudentRegistrationModel? studentRegistrationModel;
             context: context,
             name: 'name',
             controller: nameController,
-            keyboardtype: TextInputType.name,
+            keyboardtype: TextInputType.text,
             validate: (value) {
               if (value == null || value.isEmpty) {
                 return '   Please enter your name';
@@ -379,7 +542,10 @@ StudentRegistrationModel? studentRegistrationModel;
                   context: context,
                   items: signupController.gender,
                   selectedItem: signupController.studentDetails.value.gender,
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    gender = value.toString();
+                    print(gender);
+                  },
                   icon: Image.asset("assets/images/gender.png"),
                   suffixIcon: Image.asset("assets/images/dropArrow.png"),
                 ),
@@ -465,7 +631,7 @@ StudentRegistrationModel? studentRegistrationModel;
             name: 'mobile',
             controller: mobileController,
             hint: 'Enter your mobile number',
-            keyboardtype: TextInputType.phone,
+            keyboardtype: TextInputType.number,
             validate: (usermobile) {
               if (usermobile.isEmpty || usermobile.length > 10) {
                 return "   Enter valid Mobile No";
@@ -502,7 +668,7 @@ StudentRegistrationModel? studentRegistrationModel;
             context: context,
             name: 'father name',
             controller: fatherNameController,
-            keyboardtype: TextInputType.name,
+            keyboardtype: TextInputType.text,
             validate: (value) {
               if (value == null || value.isEmpty) {
                 return '   Enter your father name';
@@ -522,7 +688,7 @@ StudentRegistrationModel? studentRegistrationModel;
             context: context,
             name: 'Annual Income',
             controller: fannualController,
-            keyboardtype: TextInputType.number,
+            keyboardtype: TextInputType.text,
             validate: (value) {
               if (value == null || value.isEmpty) {
                 return '   Father Annual Income';
@@ -598,7 +764,7 @@ StudentRegistrationModel? studentRegistrationModel;
             context: context,
             name: 'Mother name',
             controller: mothernameController,
-            keyboardtype: TextInputType.name,
+            keyboardtype: TextInputType.text,
             validate: (value) {
               if (value == null || value.isEmpty) {
                 return '   Enter your Mother name';
@@ -625,7 +791,7 @@ StudentRegistrationModel? studentRegistrationModel;
                 context: context,
                 name: 'Nationality',
                 controller: nationalityController,
-                keyboardtype: TextInputType.name,
+                keyboardtype: TextInputType.text,
                 validate: (value) {
                   if (value == null || value.isEmpty) {
                     return '   Nationality*';
@@ -646,7 +812,7 @@ StudentRegistrationModel? studentRegistrationModel;
             context: context,
             name: 'Annual Income',
             controller: mAnnualController,
-            keyboardtype: TextInputType.number,
+            keyboardtype: TextInputType.text,
             validate: (value) {
               if (value == null || value.isEmpty) {
                 return '   Mother Annual Income';
@@ -661,29 +827,57 @@ StudentRegistrationModel? studentRegistrationModel;
             action: TextInputAction.done,
           ),
           SizedBox(height: 20),
-          CustomWidgets.customDropdownField(
-            context: context,
-            items: homeController.motheroccupation,
-            selectedItem:
-                homeController.occupation.contains(selectMOccupation.value)
-                    ? selectMOccupation.value
-                    : null,
-            onChanged: (value) {
-              if (value != null) {
-                selectMOccupation.value = value;
-              }
-            },
-            validate: (userC) {
-              if (userC == null || userC.isEmpty) {
-                return "    Mother  Occupation";
-              }
-              return null;
-            },
-            hint: 'Mother Occupation',
-            icon: Image.asset("assets/images/category.png"),
-            suffixIcon: Image.asset("assets/images/dropArrow.png"),
-          ),
 
+          // CustomWidgets.customDropdownField(
+          //   context: context,
+          //   items: homeController.motheroccupation,
+          //   selectedItem:
+          //       homeController.motheroccupation.contains(
+          //             selectMOccupation.value,
+          //           )
+          //           ? selectMOccupation.value
+          //           : null,
+          //   onChanged: (value) {
+          //     if (value != null) {
+          //       selectMOccupation.value = value;
+          //     }
+          //   },
+          //   validate: (userC) {
+          //     if (userC == null || userC.isEmpty) {
+          //       return "    Mother  Occupation";
+          //     }
+          //     return null;
+          //   },
+          //   hint: 'Mother Occupation',
+          //   icon: Image.asset("assets/images/category.png"),
+          //   suffixIcon: Image.asset("assets/images/dropArrow.png"),
+          // ),
+          Obx(
+            () => CustomWidgets.customDropdownField(
+              context: context,
+              items: homeController.motheroccupation,
+              selectedItem:
+                  homeController.motheroccupation.contains(
+                        selectMOccupation.value,
+                      )
+                      ? selectMOccupation.value
+                      : null,
+              onChanged: (value) {
+                if (value != null) {
+                  selectMOccupation.value = value;
+                }
+              },
+              validate: (userC) {
+                if (userC == null || userC.isEmpty) {
+                  return "    Mother Occupation";
+                }
+                return null;
+              },
+              hint: 'Mother Occupation',
+              icon: Image.asset("assets/images/category.png"),
+              suffixIcon: Image.asset("assets/images/dropArrow.png"),
+            ),
+          ),
           Obx(() {
             return selectDegree.value == 'B.P.Ed'
                 ? SizedBox(height: 20) // Hide SizedBox
@@ -904,9 +1098,9 @@ StudentRegistrationModel? studentRegistrationModel;
                 );
 
                 if (result != null) {
-                  fileName.value = result.files.single.name;
-                  filePath.value = result.files.single.path ?? '';
-                  print("Selected path: ${filePath.value}");
+                  domicilefileName.value = result.files.single.name;
+                  domicilefilePath.value = result.files.single.path ?? '';
+                  print("Selected path: ${domicilefilePath.value}");
                 }
               },
               child: Container(
@@ -922,8 +1116,8 @@ StudentRegistrationModel? studentRegistrationModel;
                   children: [
                     Expanded(
                       child: Text(
-                        fileName.value.isNotEmpty
-                            ? fileName.value
+                        domicilefileName.value.isNotEmpty
+                            ? domicilefileName.value
                             : "Domicile Certificate (jpg, png, gif)",
                         style: TextStyle(
                           color: Colors.black.withOpacity(0.7),
@@ -953,9 +1147,9 @@ StudentRegistrationModel? studentRegistrationModel;
                 );
 
                 if (result != null) {
-                  fileName.value = result.files.single.name;
-                  filePath.value = result.files.single.path ?? '';
-                  print("Selected path: ${filePath.value}");
+                  castefileName.value = result.files.single.name;
+                  castefilePath.value = result.files.single.path ?? '';
+                  print("Selected path: ${domicilefilePath.value}");
                 }
               },
               child: Container(
@@ -971,8 +1165,8 @@ StudentRegistrationModel? studentRegistrationModel;
                   children: [
                     Expanded(
                       child: Text(
-                        fileName.value.isNotEmpty
-                            ? fileName.value
+                        castefileName.value.isNotEmpty
+                            ? castefileName.value
                             : "Caste Certificate (jpg, png, gif)",
                         style: TextStyle(
                           color: Colors.black.withOpacity(0.7),
@@ -1164,7 +1358,7 @@ StudentRegistrationModel? studentRegistrationModel;
               context: context,
               name: 'Nationality',
               controller: nationalityController,
-              keyboardtype: TextInputType.name,
+              keyboardtype: TextInputType.text,
               validate: (value) {
                 if (value == null || value.isEmpty) {
                   return '   Nationality*';
@@ -1204,7 +1398,7 @@ StudentRegistrationModel? studentRegistrationModel;
             context: context,
             name: 'Last Institution Attended',
             controller: lastInstController,
-            keyboardtype: TextInputType.name,
+            keyboardtype: TextInputType.text,
             validate: (value) {
               if (value == null || value.isEmpty) {
                 return '    Last Institution Attended';
@@ -1226,7 +1420,7 @@ StudentRegistrationModel? studentRegistrationModel;
             name: 'Board',
             hint: 'Board/University',
             controller: BoarduniverController,
-            keyboardtype: TextInputType.emailAddress,
+            keyboardtype: TextInputType.text,
             validate: (value) {
               if (value == null || value.isEmpty) {
                 return '   Board/University';
@@ -1279,7 +1473,7 @@ StudentRegistrationModel? studentRegistrationModel;
             name: 'maxmarks',
             controller: mmController,
             hint: 'Maximum Marks*',
-            keyboardtype: TextInputType.phone,
+            keyboardtype: TextInputType.number,
             validate: (value) {
               if (value == null || value.isEmpty) {
                 return '  Please enter your Maximum Marks*';
@@ -1316,7 +1510,7 @@ StudentRegistrationModel? studentRegistrationModel;
             context: context,
             name: 'Percentage(%)*',
             controller: perController,
-            keyboardtype: TextInputType.name,
+            keyboardtype: TextInputType.number,
             validate: (value) {
               if (value == null || value.isEmpty) {
                 return '   Please enter your Percentage(%)*';
@@ -1348,7 +1542,7 @@ StudentRegistrationModel? studentRegistrationModel;
               context: context,
               name: 'Name of Game Participated**',
               controller: GparticipatedController,
-              keyboardtype: TextInputType.name,
+              keyboardtype: TextInputType.text,
               validate: (value) {
                 if (value == null || value.isEmpty) {
                   return '   Name of Game Participated**';
@@ -1498,9 +1692,9 @@ StudentRegistrationModel? studentRegistrationModel;
                       );
 
                   if (result != null) {
-                    fileName.value = result.files.single.name;
-                    filePath.value = result.files.single.path ?? '';
-                    print("Selected path: ${filePath.value}");
+                    gamefileName.value = result.files.single.name;
+                    gamefilePath.value = result.files.single.path ?? '';
+                    print("Selected path: ${gamefilePath.value}");
                   }
                 },
                 child: Container(
@@ -1516,8 +1710,8 @@ StudentRegistrationModel? studentRegistrationModel;
                     children: [
                       Expanded(
                         child: Text(
-                          fileName.value.isNotEmpty
-                              ? fileName.value
+                          gamefileName.value.isNotEmpty
+                              ? gamefileName.value
                               : "Upload 1 Game-Participation Certificate*",
                           style: TextStyle(
                             color: Colors.black.withOpacity(0.7),
@@ -1634,7 +1828,7 @@ StudentRegistrationModel? studentRegistrationModel;
             }
             return CustomWidgets.customTextFeild(
               context: context,
-              keyboardtype: TextInputType.text,
+              keyboardtype: TextInputType.number,
               controller: motherMobileNoCont,
               validate: (userC) {
                 if (userC!.isEmpty) {
@@ -1678,7 +1872,7 @@ StudentRegistrationModel? studentRegistrationModel;
             name: 'pincode',
             hint: 'Pincode',
             controller: presentPinController,
-            keyboardtype: TextInputType.emailAddress,
+            keyboardtype: TextInputType.number,
             validate: (value) {
               if (value == null || value.isEmpty) {
                 return '   Please enter your pincode';
@@ -1698,7 +1892,7 @@ StudentRegistrationModel? studentRegistrationModel;
             hint: 'Nearest Railway Station',
 
             controller: NRSController,
-            keyboardtype: TextInputType.emailAddress,
+            keyboardtype: TextInputType.text,
             validate: (value) {
               if (value == null || value.isEmpty) {
                 return '   Nearest Railway Station*';
@@ -1718,7 +1912,7 @@ StudentRegistrationModel? studentRegistrationModel;
             hint: 'Nearest Police Station',
 
             controller: NPSController,
-            keyboardtype: TextInputType.emailAddress,
+            keyboardtype: TextInputType.text,
             validate: (value) {
               if (value == null || value.isEmpty) {
                 return '   Nearest Police Station*';
@@ -1748,9 +1942,9 @@ StudentRegistrationModel? studentRegistrationModel;
                 );
 
                 if (result != null) {
-                  fileName.value = result.files.single.name;
-                  filePath.value = result.files.single.path ?? '';
-                  print("Selected path: ${filePath.value}");
+                  aadharfileName.value = result.files.single.name;
+                  aadharfilePath.value = result.files.single.path ?? '';
+                  print("Selected path: ${aadharfilePath.value}");
                 }
               },
               child: Container(
@@ -1766,8 +1960,8 @@ StudentRegistrationModel? studentRegistrationModel;
                   children: [
                     Expanded(
                       child: Text(
-                        fileName.value.isNotEmpty
-                            ? fileName.value
+                        aadharfileName.value.isNotEmpty
+                            ? aadharfileName.value
                             : "Aadhaar Card (jpg, png, gif)",
                         style: TextStyle(
                           color: Colors.black.withOpacity(0.7),
@@ -1834,7 +2028,7 @@ StudentRegistrationModel? studentRegistrationModel;
             controller:
                 isChecked ? presentAddressController : permanentAddController,
             maxLines: 5,
-            keyboardtype: TextInputType.name,
+            keyboardtype: TextInputType.text,
             validate: (value) {
               if (value == null || value.isEmpty) {
                 return '   Please enter your Permanent address';
@@ -1857,7 +2051,7 @@ StudentRegistrationModel? studentRegistrationModel;
             name: 'pincode',
             hint: 'Pincode',
             controller: permanentPinController,
-            keyboardtype: TextInputType.emailAddress,
+            keyboardtype: TextInputType.number,
             validate: (value) {
               if (value == null || value.isEmpty) {
                 return '   Please enter your pincode';
@@ -1877,7 +2071,7 @@ StudentRegistrationModel? studentRegistrationModel;
             hint: 'Nearest Railway Station',
 
             controller: permanNRSController,
-            keyboardtype: TextInputType.emailAddress,
+            keyboardtype: TextInputType.text,
             validate: (value) {
               if (value == null || value.isEmpty) {
                 return '   Nearest Railway Station*';
@@ -1897,7 +2091,7 @@ StudentRegistrationModel? studentRegistrationModel;
             hint: 'Nearest Police Station',
 
             controller: permanentNPSController,
-            keyboardtype: TextInputType.emailAddress,
+            keyboardtype: TextInputType.text,
             validate: (value) {
               if (value == null || value.isEmpty) {
                 return '   Nearest Police Station*';
@@ -1928,9 +2122,9 @@ StudentRegistrationModel? studentRegistrationModel;
                 );
 
                 if (result != null) {
-                  fileName.value = result.files.single.name;
-                  filePath.value = result.files.single.path ?? '';
-                  print("Selected path: ${filePath.value}");
+                  candidatefileName.value = result.files.single.name;
+                  candidatefilePath.value = result.files.single.path ?? '';
+                  print("Selected path: ${candidatefilePath.value}");
                 }
               },
               child: Container(
@@ -1946,8 +2140,8 @@ StudentRegistrationModel? studentRegistrationModel;
                   children: [
                     Expanded(
                       child: Text(
-                        fileName.value.isNotEmpty
-                            ? fileName.value
+                        candidatefileName.value.isNotEmpty
+                            ? candidatefileName.value
                             : "Candidate Photo (jpg, png, gif)",
                         style: TextStyle(
                           color: Colors.black.withOpacity(0.7),
@@ -1986,9 +2180,10 @@ StudentRegistrationModel? studentRegistrationModel;
                 );
 
                 if (result != null) {
-                  fileName.value = result.files.single.name;
-                  filePath.value = result.files.single.path ?? '';
-                  print("Selected path: ${filePath.value}");
+                  candidateSignaturefileName.value = result.files.single.name;
+                  candidateSignaturefilePath.value =
+                      result.files.single.path ?? '';
+                  print("Selected path: ${candidateSignaturefilePath.value}");
                 }
               },
               child: Container(
@@ -2004,8 +2199,8 @@ StudentRegistrationModel? studentRegistrationModel;
                   children: [
                     Expanded(
                       child: Text(
-                        fileName.value.isNotEmpty
-                            ? fileName.value
+                        candidateSignaturefileName.value.isNotEmpty
+                            ? candidateSignaturefileName.value
                             : "Candidate Signature (jpg, png, gif)",
                         style: TextStyle(
                           color: Colors.black.withOpacity(0.7),
@@ -2052,9 +2247,9 @@ StudentRegistrationModel? studentRegistrationModel;
                       );
 
                   if (result != null) {
-                    fileName.value = result.files.single.name;
-                    filePath.value = result.files.single.path ?? '';
-                    print("Selected path: ${filePath.value}");
+                    gra2yrfileName.value = result.files.single.name;
+                    gra2yrfilePath.value = result.files.single.path ?? '';
+                    print("Selected path: ${gra2yrfilePath.value}");
                   }
                 },
                 child: Container(
@@ -2070,8 +2265,8 @@ StudentRegistrationModel? studentRegistrationModel;
                     children: [
                       Expanded(
                         child: Text(
-                          fileName.value.isNotEmpty
-                              ? fileName.value
+                          gra2yrfileName.value.isNotEmpty
+                              ? gra2yrfilePath.value
                               : "Graduation 2nd Year (jpg, png, gif)",
                           style: TextStyle(
                             color: Colors.black.withOpacity(0.7),
@@ -2120,9 +2315,9 @@ StudentRegistrationModel? studentRegistrationModel;
                       );
 
                   if (result != null) {
-                    fileName.value = result.files.single.name;
-                    filePath.value = result.files.single.path ?? '';
-                    print("Selected path: ${filePath.value}");
+                    highSchMarkfileName.value = result.files.single.name;
+                    highSchMarkfilePath.value = result.files.single.path ?? '';
+                    print("Selected path: ${highSchMarkfilePath.value}");
                   }
                 },
                 child: Container(
@@ -2138,8 +2333,8 @@ StudentRegistrationModel? studentRegistrationModel;
                     children: [
                       Expanded(
                         child: Text(
-                          fileName.value.isNotEmpty
-                              ? fileName.value
+                          highSchMarkfileName.value.isNotEmpty
+                              ? highSchMarkfileName.value
                               : "High School Marksheet* (jpg, png, gif)",
                           style: TextStyle(
                             color: Colors.black.withOpacity(0.7),
@@ -2188,9 +2383,9 @@ StudentRegistrationModel? studentRegistrationModel;
                       );
 
                   if (result != null) {
-                    fileName.value = result.files.single.name;
-                    filePath.value = result.files.single.path ?? '';
-                    print("Selected path: ${filePath.value}");
+                    castCertifileName.value = result.files.single.name;
+                    castCertifilePath.value = result.files.single.path ?? '';
+                    print("Selected path: ${castCertifilePath.value}");
                   }
                 },
                 child: Container(
@@ -2206,8 +2401,8 @@ StudentRegistrationModel? studentRegistrationModel;
                     children: [
                       Expanded(
                         child: Text(
-                          fileName.value.isNotEmpty
-                              ? fileName.value
+                          castCertifileName.value.isNotEmpty
+                              ? castCertifileName.value
                               : "Caste Certificate* (jpg, png, gif)",
                           style: TextStyle(
                             color: Colors.black.withOpacity(0.7),
@@ -2261,9 +2456,9 @@ StudentRegistrationModel? studentRegistrationModel;
                 );
 
                 if (result != null) {
-                  fileName.value = result.files.single.name;
-                  filePath.value = result.files.single.path ?? '';
-                  print("Selected path: ${filePath.value}");
+                  graduatinMarkfileName.value = result.files.single.name;
+                  graduatinMarkfilePath.value = result.files.single.path ?? '';
+                  print("Selected path: ${graduatinMarkfilePath.value}");
                 }
               },
               child: Visibility(
@@ -2281,8 +2476,8 @@ StudentRegistrationModel? studentRegistrationModel;
                     children: [
                       Expanded(
                         child: Text(
-                          fileName.value.isNotEmpty
-                              ? fileName.value
+                          graduatinMarkfileName.value.isNotEmpty
+                              ? graduatinMarkfileName.value
                               : "Graduation/Marksheet (jpg, png, gif)",
                           style: TextStyle(
                             color: Colors.black.withOpacity(0.7),
@@ -2333,9 +2528,9 @@ StudentRegistrationModel? studentRegistrationModel;
                 );
 
                 if (result != null) {
-                  fileName.value = result.files.single.name;
-                  filePath.value = result.files.single.path ?? '';
-                  print("Selected path: ${filePath.value}");
+                  ugpart2fileName.value = result.files.single.name;
+                  ugpart2filePath.value = result.files.single.path ?? '';
+                  print("Selected path: ${ugpart2filePath.value}");
                 }
               },
               child: Visibility(
@@ -2353,8 +2548,8 @@ StudentRegistrationModel? studentRegistrationModel;
                     children: [
                       Expanded(
                         child: Text(
-                          fileName.value.isNotEmpty
-                              ? fileName.value
+                          ugpart2fileName.value.isNotEmpty
+                              ? ugpart2fileName.value
                               : "UG part-2/5th Sem. Marksheet* (jpg, png, gif)",
                           style: TextStyle(
                             color: Colors.black.withOpacity(0.7),
@@ -2409,9 +2604,9 @@ StudentRegistrationModel? studentRegistrationModel;
                 );
 
                 if (result != null) {
-                  fileName.value = result.files.single.name;
-                  filePath.value = result.files.single.path ?? '';
-                  print("Selected path: ${filePath.value}");
+                  intermediatefileName.value = result.files.single.name;
+                  intermediatefilePath.value = result.files.single.path ?? '';
+                  print("Selected path: ${intermediatefilePath.value}");
                 }
               },
               child: Visibility(
@@ -2429,8 +2624,8 @@ StudentRegistrationModel? studentRegistrationModel;
                     children: [
                       Expanded(
                         child: Text(
-                          fileName.value.isNotEmpty
-                              ? fileName.value
+                          intermediatefileName.value.isNotEmpty
+                              ? intermediatefileName.value
                               : "Intermediate/equivalent Marksheet(jpg, png, gif)",
                           style: TextStyle(
                             color: Colors.black.withOpacity(0.7),

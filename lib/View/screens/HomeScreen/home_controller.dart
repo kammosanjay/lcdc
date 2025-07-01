@@ -49,12 +49,12 @@ class HomeController extends GetxController {
   ///
 
   Future<Map<String, dynamic>> submitForm(
-    StudentRegistrationModel studentform,
+    {StudentRegistrationModel? studentform}
   ) async {
     var token = await SharedPrefsHelper.getToken();
     final response = await UserRepositories.submitApplicationForm(
       token: token!,
-      requset: studentform,
+      requset: studentform!,
     );
     return response;
   }

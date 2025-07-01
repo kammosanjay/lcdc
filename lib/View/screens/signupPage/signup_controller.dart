@@ -41,6 +41,7 @@ class SignupController extends GetxController {
     // courseType.value = CourseType.fromJson(response);
     Map<String, dynamic> allType = response;
     courseType.value = response['data']['edu_course_type'] as List;
+    print("CourseType==>$courseType");
 
     return allType;
   }

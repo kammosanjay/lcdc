@@ -43,49 +43,97 @@ class StudentRegistrationModel {
   String? studentSignaturePath;
   String? interMarksheetPath;
 
-  Map<String, dynamic> toJson() => {
-        'registrationnumber': registrationNumber,
-        'lurncertificate': lurnCertificate,
-        'candidatename': candidateName,
-        'fathername': fatherName,
-        'annualincomers': annualIncomeRs,
-        'occupation': occupation,
-        'mothername': motherName,
-        'motherannualincomers': motherAnnualIncomeRs,
-        'motheroccupation': motherOccupation,
-        'dateofbirth': dateOfBirth,
-        'mobilenumber': mobileNumber,
-        'aadharid': aadharId,
-        'emailid': emailId,
-        'gender': gender,
-        'category': category,
-        'course': course,
-        'bloodgroup': bloodGroup,
-        'religion': religion,
-        'caste': caste,
-        'nationality': nationality,
-        'examinationname': examinationName,
-        'institution': institution,
-        'boarduniversity': boardUniversity,
-        'passingyear': passingYear,
-        'maximummarks': maximumMarks,
-        'marksobtained': marksObtained,
-        'markspercentage': marksPercentage,
-        'fathermobileno': fatherMobileNo,
-        'mothermobilenumber': motherMobileNumber,
-        'presentaddress': presentAddress,
-        'presentpincode': presentPincode,
-        'presentnearrailway': presentNearRailway,
-        'presentnearpolice': presentNearPolice,
-        'permanentaddress': permanentAddress,
-        'permanentpincode': permanentPincode,
-        'permanentnearrailway': permanentNearRailway,
-        'permanentnearpolice': permanentNearPolice,
-        'domicilecertificate': domicileCertificatePath,
-        'castecertificate': casteCertificatePath,
-        'addressproof': addressProofPath,
-        'studentphoto': studentPhotoPath,
-        'studentsignature': studentSignaturePath,
-        'intermarksheet': interMarksheetPath,
-      };
+  StudentRegistrationModel({
+    this.registrationNumber,
+    this.lurnCertificate,
+    this.candidateName,
+    this.fatherName,
+    this.annualIncomeRs,
+    this.occupation,
+    this.motherName,
+    this.motherAnnualIncomeRs,
+    this.motherOccupation,
+    this.dateOfBirth,
+    this.mobileNumber,
+    this.aadharId,
+    this.emailId,
+    this.gender,
+    this.category,
+    this.course,
+    this.bloodGroup,
+    this.religion,
+    this.caste,
+    this.nationality,
+    this.examinationName,
+    this.institution,
+    this.boardUniversity,
+    this.passingYear,
+    this.maximumMarks,
+    this.marksObtained,
+    this.marksPercentage,
+    this.fatherMobileNo,
+    this.motherMobileNumber,
+    this.presentAddress,
+    this.presentPincode,
+    this.presentNearRailway,
+    this.presentNearPolice,
+    this.permanentAddress,
+    this.permanentPincode,
+    this.permanentNearRailway,
+    this.permanentNearPolice,
+    this.domicileCertificatePath,
+    this.casteCertificatePath,
+    this.addressProofPath,
+    this.studentPhotoPath,
+    this.studentSignaturePath,
+    this.interMarksheetPath,
+  });
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['registrationnumber'] = registrationNumber;
+    data['lurncertificate'] = lurnCertificate;
+    data['candidatename'] = candidateName;
+    data['fathername'] = fatherName;
+    data['annualincomers'] = annualIncomeRs;
+    data['occupation'] = occupation;
+    data['mothername'] = motherName;
+    data['motherannualincomers'] = motherAnnualIncomeRs;
+    data['motheroccupation'] = motherOccupation;
+    data['dateofbirth'] = dateOfBirth;
+    data['mobilenumber'] = mobileNumber;
+    data['aadharid'] = aadharId;
+    data['emailid'] = emailId;
+    data['gender'] = gender;
+    data['category'] = category;
+    data['course'] = course;
+    data['bloodgroup'] = bloodGroup;
+    data['religion'] = religion;
+    data['caste'] = caste;
+    data['nationality'] = nationality;
+    data['examinationname'] = examinationName;
+    data['institution'] = institution;
+    data['boarduniversity'] = boardUniversity;
+    data['passingyear'] = passingYear;
+    data['maximummarks'] = maximumMarks;
+    data['marksobtained'] = marksObtained;
+    data['markspercentage'] = marksPercentage;
+    data['fathermobileno'] = fatherMobileNo;
+    data['mothermobilenumber'] = motherMobileNumber;
+    data['presentaddress'] = presentAddress;
+    data['presentpincode'] = presentPincode;
+    data['presentnearrailway'] = presentNearRailway;
+    data['presentnearpolice'] = presentNearPolice;
+    data['permanentaddress'] = permanentAddress;
+    data['permanentpincode'] = permanentPincode;
+    data['permanentnearrailway'] = permanentNearRailway;
+    data['permanentnearpolice'] = permanentNearPolice;
+    data['domicilecertificate'] = domicileCertificatePath;
+    data['castecertificate'] = casteCertificatePath;
+    data['addressproof'] = addressProofPath;
+    data['studentphoto'] = studentPhotoPath;
+    data['studentsignature'] = studentSignaturePath;
+    data['intermarksheet'] = interMarksheetPath;
+    return data;
+  }
 }
