@@ -254,7 +254,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                               course: selectCourse.value,
                               category: selectCategory.value,
                               domicileCertificatePath: domicilefilePath.value,
-                              casteCertificatePath: castCertifilePath.value,
+                              casteCertificatePath: castefilePath.value,
                               bloodGroup: selectBloodGroup.value,
                               religion: selectReligon.value,
                               caste: selectCaste.value,
@@ -272,7 +272,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                               presentPincode: presentPinController.text,
                               presentNearRailway: NRSController.text,
                               presentNearPolice: NPSController.text,
-                              addressProofPath: aadharfileName.value,
+                              addressProofPath: aadharfilePath.value,
                               permanentAddress:
                                   isChecked
                                       ? presentAddressController.text
@@ -287,6 +287,8 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                               interMarksheetPath: intermediatefilePath.value,
                             ),
                           );
+
+                          
                           print('lurnCertificate: ${lurnController.text}');
                           print('registrationNumber: ${regisC.text}');
                           print('candidateName: ${nameController.text}');
@@ -313,7 +315,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                             'domicileCertificatePath: ${domicilefilePath.value}',
                           );
                           print(
-                            'casteCertificatePath: ${castCertifilePath.value}',
+                            'casteCertificatePath: ${castefilePath.value}',
                           );
                           print('bloodGroup: ${selectBloodGroup.value}');
                           print('religion: ${selectReligon.value}');
@@ -1149,7 +1151,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                 if (result != null) {
                   castefileName.value = result.files.single.name;
                   castefilePath.value = result.files.single.path ?? '';
-                  print("Selected path: ${domicilefilePath.value}");
+                  print("Selected path: ${castefilePath.value}");
                 }
               },
               child: Container(

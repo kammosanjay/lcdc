@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart' hide MultipartFile, FormData, Response;
 import 'package:http/http.dart' as http;
+import 'package:lcdc_mobile_app/modal/RequestModal/student_threeStepFrom_request.dart';
 import 'package:lcdc_mobile_app/modal/ResponseModal/login_res.dart';
 import 'package:lcdc_mobile_app/resources/apiconstants/apiConstant.dart';
 import 'package:path/path.dart';
@@ -131,7 +132,8 @@ class ApiService {
   deleteApi(String url) async {
     final response = await http.delete(Uri.parse(url));
   }
-  //
+
+  // post Api with Dio method for multipart
   //
 
   Future<Map<String, dynamic>> uploadDataWithImage(
@@ -160,6 +162,75 @@ class ApiService {
       print('Upload Error: $e');
     }
     return {};
+  }
+
+  //
+  //post api with http for multipart
+
+  Future<Map<String, dynamic>> uploadDataWithImageHttp(
+    Map<String, dynamic> request, {
+    String? token,
+  }) async {
+    final url = Uri.parse(
+      ApiConstraints.submitAppForm,
+    ); // Replace with your URL
+    final multipartRequest = http.MultipartRequest('POST', url);
+
+    try {
+      // Add text fields
+      request.forEach((key, value) async {
+        if (value is String &&
+            !value.contains('/') &&
+            !value.endsWith('.png') &&
+            !value.endsWith('.jpg')) {
+          multipartRequest.fields[key] = value;
+        }
+      });
+
+      // Add file fields (you may need to check file keys manually)
+      final fileFields = [
+        'domicilecertificate',
+        'castecertificate',
+        'addressproof',
+        'studentphoto',
+        'studentsignature',
+        'intermarksheet',
+      ];
+
+      for (String key in fileFields) {
+        if (request.containsKey(key) &&
+            request[key] != null &&
+            File(request[key]).existsSync()) {
+          multipartRequest.files.add(
+            await http.MultipartFile.fromPath(key, request[key]),
+          );
+        }
+      }
+
+      // Optional headers
+      if (token != null) {
+        multipartRequest.headers.addAll({
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        });
+      }
+
+      // Send request
+      final response = await multipartRequest.send();
+
+      if (response.statusCode == 200) {
+        final responseBody = await response.stream.bytesToString();
+        print('Upload success: $responseBody');
+        return json.decode(responseBody);
+      } else {
+        final errorBody = await response.stream.bytesToString();
+        print('Upload failed [${response.statusCode}]: $errorBody');
+        return {'error': 'Upload failed', 'details': errorBody};
+      }
+    } catch (e) {
+      print('Exception: $e');
+      return {'error': e.toString()};
+    }
   }
 
   //dio post

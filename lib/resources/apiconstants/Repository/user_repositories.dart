@@ -146,7 +146,7 @@ class UserRepositories {
     required String token,
     required StudentRegistrationModel requset,
   }) async {
-    var response = await apiService.uploadDataWithImage(requset.toJson());
+    var response = await apiService.uploadDataWithImageHttp(requset.toJson(),token: token);
     return response;
   }
 }
