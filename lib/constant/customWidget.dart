@@ -25,6 +25,7 @@ class CustomWidgets {
     Color? iconColor,
     Widget? suffIcons,
     TextInputAction? action,
+    bool isReadyOnly = false,
   }) {
     return Column(
       children: [
@@ -37,6 +38,7 @@ class CustomWidgets {
           elevation: 5,
           child: TextFormField(
             focusNode: focusNode,
+            readOnly: isReadyOnly,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             keyboardType: keyboardtype,
             validator: validate,
@@ -55,7 +57,8 @@ class CustomWidgets {
             obscureText: isPassword,
             decoration: InputDecoration(
               suffixIcon: suffIcons,
-
+              fillColor: isReadyOnly ? Colors.grey.shade400 : Colors.white,
+              filled: true,
               prefixIcon: icon,
               prefixIconColor: iconColor,
 
@@ -90,10 +93,11 @@ class CustomWidgets {
     double? width,
     FocusNode? focusNode,
     AutovalidateMode? autovalidateMode,
+    bool readOnly = false,
     var validate,
   }) {
     return Card(
-      color: Colors.white,
+      color: readOnly ? Colors.grey.shade400 : Colors.white,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -103,6 +107,7 @@ class CustomWidgets {
         value: selectedItem,
         isExpanded: true,
         focusNode: focusNode,
+
         validator: validate,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         icon: suffixIcon,
@@ -131,93 +136,10 @@ class CustomWidgets {
                 child: Text(value.toString()),
               );
             }).toList(),
-        onChanged: onChanged,
+        onChanged: readOnly ? null : onChanged,
       ),
     );
   }
-
-  // static Widget customDropdownField<T>({
-  //   required BuildContext context,
-  //   required List<T> items,
-  //   required T? selectedItem,
-  //   required ValueChanged<T?> onChanged,
-  //   String? hint,
-  //   Widget? icon,
-  //   Color? iconColor,
-  //   Widget? suffixIcon,
-  //   double? width,
-  //   FocusNode? focusNode,
-  //   AutovalidateMode? autovalidateMode,
-  //   String? Function(T?)? validate,
-  // }) {
-  //   return DropdownButtonFormField2<T>(
-  //     value: selectedItem,
-  //     isExpanded: true,
-  //     focusNode: focusNode,
-  //     validator: validate,
-  //     autovalidateMode: autovalidateMode ?? AutovalidateMode.onUserInteraction,
-  //     decoration: InputDecoration(
-  //       contentPadding: EdgeInsets.zero,
-  //       border: OutlineInputBorder(
-  //         borderRadius: BorderRadius.circular(10),
-  //         borderSide: BorderSide.none,
-  //       ),
-  //     ),
-  //     buttonStyleData: ButtonStyleData(
-  //       height: 60,
-  //       padding: const EdgeInsets.symmetric(horizontal: 10),
-  //       decoration: BoxDecoration(
-  //         color: Colors.white,
-  //         borderRadius: BorderRadius.circular(10),
-  //         border: Border.all(color: Colors.transparent),
-  //       ),
-  //     ),
-  //     iconStyleData: IconStyleData(
-  //       icon: suffixIcon ?? const Icon(Icons.keyboard_arrow_down),
-  //       iconEnabledColor: iconColor ?? Colors.black,
-  //     ),
-  //     dropdownStyleData: DropdownStyleData(
-  //       maxHeight: 200,
-  //       width: width ?? MediaQuery.of(context).size.width * 0.9,
-  //       decoration: BoxDecoration(
-  //         borderRadius: BorderRadius.circular(10),
-  //         color: Colors.white,
-  //       ),
-  //     ),
-  //     hint: Row(
-  //       children: [
-  //         if (icon != null) ...[icon, const SizedBox(width: 8)],
-  //         Text(hint ?? '', style: const TextStyle(fontSize: 14)),
-  //       ],
-  //     ),
-
-  //     // 🔥 This ensures icon is shown even when value is selected
-  //     selectedItemBuilder: (BuildContext context) {
-  //       return items.map((T item) {
-  //         return Row(
-  //           children: [
-  //             if (icon != null) ...[
-  //               const SizedBox(width: 0),
-  //               icon,
-  //               SizedBox(width: 10),
-  //               Text(item.toString(), style: const TextStyle(fontSize: 14)),
-  //             ],
-  //           ],
-  //         );
-  //       }).toList();
-  //     },
-
-  //     items:
-  //         items.map((T value) {
-  //           return DropdownMenuItem<T>(
-  //             value: value,
-  //             child: Text(value.toString()),
-  //           );
-  //         }).toList(),
-
-  //     onChanged: onChanged,
-  //   );
-  // }
 
   ///Button Widget
 

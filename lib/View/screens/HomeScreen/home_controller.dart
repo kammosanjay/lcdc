@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:lcdc_mobile_app/View/screens/HomeScreen/application_form.dart';
 import 'package:lcdc_mobile_app/constant/myshared_sharedprefrences.dart';
 import 'package:lcdc_mobile_app/modal/RequestModal/student_threeStepFrom_request.dart';
@@ -20,7 +23,9 @@ class HomeController extends GetxController {
     super.onInit();
 
     getdropdownforUG();
+    
   }
+  
 
   ///
   ///
@@ -48,6 +53,10 @@ class HomeController extends GetxController {
   ///
   ///
   ///
+  final box = GetStorage();
+  void saveFormToStorage(StudentRegistrationModel model) {
+    box.write('formData', model.toJson());
+  }
 
   Future<Map<String, dynamic>> submitForm({
     StudentRegistrationModel? studentform,
@@ -57,7 +66,21 @@ class HomeController extends GetxController {
       token: token!,
       requset: studentform!,
     );
+
+    saveFormToStorage(studentform);
+    print(box.read('formData'));
+
     // print("ctrl request== ${studentform.boardUniversity}");
+    Fluttertoast.showToast(
+      msg: response.toString(),
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+
     Get.to(ApplicationFormPage(studentformdetail: studentform));
     return response;
   }

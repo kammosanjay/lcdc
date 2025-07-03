@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:lcdc_mobile_app/View/screens/signupPage/signup_controller.dart';
 import 'package:lcdc_mobile_app/constant/myshared_sharedprefrences.dart';
 import 'package:lcdc_mobile_app/modal/RequestModal/login.dart';
@@ -146,7 +147,11 @@ class UserRepositories {
     required String token,
     required StudentRegistrationModel requset,
   }) async {
-    var response = await apiService.uploadDataWithImageHttp(requset.toJson(),token: token);
+    var response = await apiService.uploadDataWithImageHttp(
+      requset.toJson(),
+      token: token,
+    );
+
     return response;
   }
 }

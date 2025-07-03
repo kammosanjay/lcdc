@@ -1,12 +1,14 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as box;
 import 'package:in_app_update/in_app_update.dart';
 import 'package:lcdc_mobile_app/View/screens/HomeScreen/home_controller.dart';
 import 'package:lcdc_mobile_app/constant/customWidget.dart';
 import 'package:lcdc_mobile_app/modal/RequestModal/student_threeStepFrom_request.dart';
-
+import 'package:path/path.dart' as p;
 import '../signupPage/signup_controller.dart';
 
 class ThreeStepForm extends StatefulWidget {
@@ -110,6 +112,12 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
   @override
   void initState() {
     super.initState();
+    //for setting  the category value after edit ,initialize here to get the info
+    final box = GetStorage();
+    Map<String, dynamic>? storedData = box.read('formData');
+    final formDetail = StudentRegistrationModel.fromJson(storedData!);
+
+
     signupController = Get.find<SignupController>();
     var fetch = signupController.studentDetails.value;
     regisC.text = fetch.enterenceNo.toString();
@@ -118,8 +126,76 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
     mobileController.text = fetch.mobileNo.toString();
     aadhaarController.text = fetch.aadharid.toString();
     fatherNameController.text = fetch.fathername.toString();
-    selectCategory.value = fetch.category.toString();
+    //for setting  the category value after edit ,initialize here to get the info
+    selectCategory.value = formDetail.category ?? fetch.category.toString();
     selectCourse.value = fetch.course.toString();
+
+    ///
+    ///
+    /// Instead of sqflite ,used Getstorage dependencies to store formfields  locally for edit
+    ///
+
+    void loadFormDataForEdit() {
+      print("storageData==>$storedData");
+
+      // Populate text fields
+      lurnController.text = formDetail.lurnCertificate ?? '';
+      mothernameController.text = formDetail.motherName ?? '';
+      fannualController.text = formDetail.annualIncomeRs ?? '';
+      mAnnualController.text = formDetail.motherAnnualIncomeRs ?? '';
+      lastExmController.text = formDetail.examinationName ?? "";
+      lastInstController.text = formDetail.institution ?? '';
+      nationalityController.text = formDetail.nationality ?? '';
+      BoarduniverController.text = formDetail.boardUniversity ?? "";
+      mmController.text = formDetail.maximumMarks ?? "";
+      OmController.text = formDetail.marksObtained ?? "";
+      perController.text = formDetail.marksPercentage ?? "";
+      fatherMobileNoController.text = formDetail.fatherMobileNo ?? "";
+      motherMobileNoCont.text = formDetail.motherMobileNumber ?? "";
+      presentAddressController.text = formDetail.presentAddress ?? "";
+      presentPinController.text = formDetail.presentPincode ?? '';
+      NRSController.text = formDetail.presentNearRailway ?? "";
+      NPSController.text = formDetail.presentNearPolice ?? "";
+      permanentAddController.text = formDetail.permanentAddress ?? "";
+      permanentPinController.text = formDetail.permanentPincode ?? "";
+      permanNRSController.text = formDetail.permanentNearRailway ?? "";
+      permanentNPSController.text = formDetail.permanentNearPolice ?? "";
+
+      // Populate dropdown values
+      selectFOccupation.value = formDetail.occupation ?? '';
+      selectMOccupation.value = formDetail.motherOccupation ?? '';
+      selectYear.value = formDetail.passingYear ?? '';
+      selectBloodGroup.value = formDetail.bloodGroup ?? '';
+      selectReligon.value = formDetail.religion ?? '';
+      selectCaste.value = formDetail.caste ?? "";
+      selectYear.value = formDetail.passingYear ?? "";
+      selectCategory.value = formDetail.category ?? "";
+
+      // Populate file paths
+
+      candidatefileName.value = p.basename(
+        formDetail.casteCertificatePath ?? "",
+      );
+      candidatefilePath.value = formDetail.casteCertificatePath ?? "";
+      intermediatefileName.value = p.basename(
+        formDetail.interMarksheetPath ?? "",
+      );
+      intermediatefilePath.value = formDetail.interMarksheetPath ?? "";
+      aadharfileName.value = p.basename(formDetail.addressProofPath ?? "");
+      aadharfilePath.value = formDetail.addressProofPath ?? "";
+      candidateSignaturefileName.value = p.basename(
+        formDetail.studentSignaturePath ?? "",
+      );
+      candidateSignaturefilePath.value = formDetail.studentSignaturePath ?? "";
+      domicilefileName.value = p.basename(
+        formDetail.domicileCertificatePath ?? "",
+      );
+      domicilefilePath.value = formDetail.domicileCertificatePath ?? "";
+      castefileName.value = p.basename(formDetail.casteCertificatePath ?? "");
+      castefilePath.value = formDetail.casteCertificatePath ?? "";
+    }
+
+    loadFormDataForEdit();
   }
 
   List<String> category = [
@@ -146,16 +222,6 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
   }
 
   List<String> domicile = ['UP', 'Outside UP'];
-
-  // List<String> occupation = [
-  //   '1-Private Sector',
-  //   '2-Government Sector',
-  //   '3-Self Employed',
-  //   '4-Student',
-  //   '5-House Wife',
-  //   '6-Unemployed',
-  //   '7-Other',
-  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -288,7 +354,6 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                             ),
                           );
 
-                          
                           print('lurnCertificate: ${lurnController.text}');
                           print('registrationNumber: ${regisC.text}');
                           print('candidateName: ${nameController.text}');
@@ -314,9 +379,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                           print(
                             'domicileCertificatePath: ${domicilefilePath.value}',
                           );
-                          print(
-                            'casteCertificatePath: ${castefilePath.value}',
-                          );
+                          print('casteCertificatePath: ${castefilePath.value}');
                           print('bloodGroup: ${selectBloodGroup.value}');
                           print('religion: ${selectReligon.value}');
                           print('caste: ${selectCaste.value}');
@@ -499,6 +562,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           // Dropdown for Registration No
           CustomWidgets.customTextFeild(
             context: context,
+            isReadyOnly: true,
             focusNode: _focusReg,
             keyboardtype: TextInputType.text,
             controller: regisC,
@@ -509,6 +573,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               return null;
             },
             hint: "Registration No",
+
             icon: Image.asset("assets/images/regis.png"),
             iconColor: Colors.lightBlue,
             action: TextInputAction.next,
@@ -519,6 +584,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             context: context,
             name: 'name',
             controller: nameController,
+            isReadyOnly: true,
             keyboardtype: TextInputType.text,
             validate: (value) {
               if (value == null || value.isEmpty) {
@@ -543,6 +609,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                 child: CustomWidgets.customDropdownField(
                   context: context,
                   items: signupController.gender,
+                  readOnly: true,
                   selectedItem: signupController.studentDetails.value.gender,
                   onChanged: (value) {
                     gender = value.toString();
@@ -614,6 +681,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             name: 'email',
             hint: 'Enter your email',
             controller: emailController,
+            isReadyOnly: true,
             keyboardtype: TextInputType.emailAddress,
             validate: (value) {
               if (value == null || value.isEmpty) {
@@ -632,6 +700,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             context: context,
             name: 'mobile',
             controller: mobileController,
+            isReadyOnly: true,
             hint: 'Enter your mobile number',
             keyboardtype: TextInputType.number,
             validate: (usermobile) {
@@ -651,6 +720,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           CustomWidgets.customTextFeild(
             context: context,
             name: 'aadhaar',
+            isReadyOnly: true,
             controller: aadhaarController,
             keyboardtype: TextInputType.number,
             validate: (usermobile) {
@@ -669,6 +739,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           CustomWidgets.customTextFeild(
             context: context,
             name: 'father name',
+            isReadyOnly: true,
             controller: fatherNameController,
             keyboardtype: TextInputType.text,
             validate: (value) {
@@ -917,6 +988,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               visible: selectDegree.value == "UG",
               child: CustomWidgets.customDropdownField(
                 context: context,
+                readOnly: true,
                 items: signupController.course,
                 selectedItem:
                     signupController.course.contains(selectCourse.value)
@@ -1009,6 +1081,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
 
             return CustomWidgets.customDropdownField(
               context: context,
+              readOnly: true,
               items: signupController.category,
               selectedItem:
                   signupController.category.contains(selectCategory.value)

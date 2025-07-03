@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:lcdc_mobile_app/View/screens/HomeScreen/new_home_screen.dart';
 import 'package:lcdc_mobile_app/modal/RequestModal/student_threeStepFrom_request.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
@@ -44,6 +47,7 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
 
     pdf.addPage(
       pw.MultiPage(
+        margin: pw.EdgeInsets.all(5),
         pageFormat: PdfPageFormat.a4,
         build:
             (pw.Context context) => [
@@ -55,7 +59,7 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
                   pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.center,
                     children: [
-                      pw.Image(logo, height: 100),
+                      pw.Image(logo, height: 30),
                       pw.SizedBox(width: 10),
                       pw.Column(
                         mainAxisAlignment: pw.MainAxisAlignment.center,
@@ -64,31 +68,44 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
                           pw.Text(
                             "LUCKNOW CHRISTIAN COLLEGE",
                             style: pw.TextStyle(
-                              fontSize: 18,
+                              fontSize: 10,
                               fontWeight: pw.FontWeight.bold,
                             ),
                           ),
                           pw.Text(
                             "(AN ASSOCIATE POST GRADUATE COLLEGE OF LUCKNOW UNIVERSITY)",
+                            style: pw.TextStyle(
+                              fontSize: 6,
+                              fontWeight: pw.FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),
                     ],
                   ),
 
-                  pw.SizedBox(height: 10),
+                  pw.SizedBox(height: 5),
                   pw.Text(
                     "APPLICATION FOR ADMISSION\nSESSION : 2025–2026\nB.A. Semester - 1\nLURN : dgdsagsa\nPayment Type: Online",
                     textAlign: pw.TextAlign.center,
+                    style: pw.TextStyle(
+                      fontSize: 5,
+                      fontWeight: pw.FontWeight.bold,
+                    ),
                   ),
                   pw.SizedBox(height: 5),
                   pw.Text(
                     "Payment Id: pay_0ca6988NuvTFMsH (02-07-2025 11:50:34)",
                     textAlign: pw.TextAlign.center,
+                    style: pw.TextStyle(
+                      fontSize: 5,
+                      fontWeight: pw.FontWeight.bold,
+                    ),
                   ),
-                  pw.SizedBox(height: 20),
+                  pw.SizedBox(height: 10),
 
                   pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.center,
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
                       pw.Expanded(
@@ -227,15 +244,21 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
                       pw.Column(
                         children: [
                           // pw.Image(student as pw.ImageProvider),
-                          pw.Image(stude, height: 200, width: 100),
+                          pw.Image(stude, height: 100, width: 80),
                           pw.SizedBox(height: 5),
-                          pw.Text("Candidate Photo"),
+                          pw.Text(
+                            "Candidate Photo",
+                            style: pw.TextStyle(
+                              fontSize: 8,
+                              fontWeight: pw.FontWeight.bold,
+                            ),
+                          ),
                         ],
                       ),
                     ],
                   ),
 
-                  pw.SizedBox(height: 20),
+                  pw.SizedBox(height: 8),
 
                   pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
@@ -243,27 +266,43 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
                       pw.Column(
                         children: [
                           // pw.Image(intmark as pw.ImageProvider),
-                          pw.Image(inter, height: 200, width: 100),
-                          pw.Text("Intermediate Marksheet"),
+                          pw.Image(inter, height: 50, width: 80),
+                          pw.Text(
+                            "Intermediate Marksheet",
+                            style: pw.TextStyle(
+                              fontSize: 8,
+                              fontWeight: pw.FontWeight.bold,
+                            ),
+                          ),
                         ],
                       ),
                       pw.Column(
                         children: [
                           // pw.Image(addpath as pw.ImageProvider),
-                          pw.Image(addproof, height: 200, width: 100),
-                          pw.Text("Address Proof"),
+                          pw.Image(addproof, height: 50, width: 80),
+                          pw.Text(
+                            "Address Proof",
+                            style: pw.TextStyle(
+                              fontSize: 8,
+                              fontWeight: pw.FontWeight.bold,
+                            ),
+                          ),
                         ],
                       ),
                     ],
                   ),
 
-                  pw.SizedBox(height: 20),
+                  pw.SizedBox(height: 8),
 
                   pw.Text(
-                    "I certify that the particulars given by me in this Application Form are correct...",
+                    "I certify that the particulars given by me in this Application Form are correct to the best of my knowledge and belief; any mistake/misinformation detected at the time of counseling or at any later stage will result in the cancellation of my Admission. I have carefully read the information/Prospectus of LCDC-2025-2026 and agree to abide by the terms and conditions laid down therein. Further, it is entirely my responsibility for admission to Under Graduate Courses of B.A./B.Sc.(Maths)/B.Sc.(Bio)/B.Com in respect of qualification and entitlement for admission against reserved category, if claimed, should be to the satisfaction of LCDC. Further, I undertake that I will be visiting the website (http://lcdc.edu.in) regularly for any information and I declare that all the information regarding Online Admission of LCDC-2025-2026, provided on the college website will be treated as served. I also understand that the application fees paid will not be refunded at any cost.",
                     textAlign: pw.TextAlign.justify,
+                    style: pw.TextStyle(
+                      fontSize: 6,
+                      fontWeight: pw.FontWeight.bold,
+                    ),
                   ),
-                  pw.SizedBox(height: 20),
+                  pw.SizedBox(height: 10),
                   pw.Text(
                     "Your Application form submission process is completed successfully...",
                     style: pw.TextStyle(
@@ -271,14 +310,20 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
                       fontWeight: pw.FontWeight.bold,
                     ),
                   ),
-                  pw.SizedBox(height: 20),
+                  pw.SizedBox(height: 10),
                   pw.Align(
                     alignment: pw.Alignment.centerRight,
                     child: pw.Column(
                       children: [
                         // pw.Image(sign as pw.ImageProvider),
-                        pw.Image(sign, height: 200, width: 100),
-                        pw.Text("Full Signature of the Student"),
+                        pw.Image(sign, height: 35),
+                        pw.Text(
+                          "Full Signature of the Student",
+                          style: pw.TextStyle(
+                            fontSize: 8,
+                            fontWeight: pw.FontWeight.bold,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -296,8 +341,21 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
   pw.TableRow pdfsave(String label, String value) {
     return pw.TableRow(
       children: [
-        pw.Padding(padding: const pw.EdgeInsets.all(4), child: pw.Text(label)),
-        pw.Padding(padding: const pw.EdgeInsets.all(4), child: pw.Text(value)),
+        pw.Padding(
+          padding: const pw.EdgeInsets.only(left: 20, right: 100),
+          child: pw.Text(
+            label,
+            style: pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold),
+          ),
+        ),
+
+        pw.Padding(
+          padding: const pw.EdgeInsets.all(4),
+          child: pw.Text(
+            value,
+            style: pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold),
+          ),
+        ),
       ],
     );
   }
@@ -325,6 +383,8 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
   @override
   Widget build(BuildContext context) {
     var formDetail = widget.studentformdetail;
+    var h = MediaQuery.of(context).size.height;
+    var w = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(title: const Text("Application Form"), centerTitle: true),
@@ -610,9 +670,40 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
                 onPressed: () {
                   printDocument(formDetail: formDetail);
                 },
-                child: const Text("Print Now"),
+                style: ElevatedButton.styleFrom(
+                  fixedSize: Size(w * 0.3, h * 0.06),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  backgroundColor:
+                      Colors.indigo, // You can set different color for Back
+                ),
+                child: Text(
+                  'Print',
+                  style: GoogleFonts.poppins(
+                    textStyle: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                ),
               ),
-              ElevatedButton(onPressed: () {}, child: const Text("Edit")),
+              ElevatedButton(
+                onPressed: () {
+                  Get.to(ThreeStepForm());
+                },
+                style: ElevatedButton.styleFrom(
+                  fixedSize: Size(w * 0.3, h * 0.06),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  backgroundColor:
+                      Colors.indigo, // You can set different color for Back
+                ),
+                child: Text(
+                  'Edit',
+                  style: GoogleFonts.poppins(
+                    textStyle: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                ),
+              ),
             ],
           ),
         ],
@@ -647,15 +738,15 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
     } else if (studentPhotoPath.startsWith("http")) {
       return Image.network(
         studentPhotoPath,
-        height: 100,
-        width: 100,
+        height: 80,
+        width: 80,
         fit: BoxFit.cover,
       );
     } else {
       return Image.file(
         File(studentPhotoPath),
-        height: 100,
-        width: 100,
+        height: 80,
+        width: 80,
         fit: BoxFit.cover,
       );
     }
