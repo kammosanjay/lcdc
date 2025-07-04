@@ -182,11 +182,7 @@ class _RegistrationDetailsPageState extends State<RegistrationDetailsPage> {
                 ),
                 buildRow("Father's Name", studentInfo.fathername.toString()),
                 buildRow("Mobile Number", studentInfo.mobileNo.toString()),
-                buildRow(
-                  "Mobile Status",
-                  "Verified",
-                  valueColor: Colors.green,
-                ),
+                buildRow("Mobile Status", "Verified", valueColor: Colors.green),
                 buildRow("Email-Id", studentInfo.emailid.toString()),
                 buildRow("Gender", studentInfo.gender.toString()),
                 buildRow("Date of birth", studentInfo.dateofbirth.toString()),

@@ -81,7 +81,20 @@ class UserRepositories {
 
     return response;
   }
+  ///
+  ///
+static Future<Map<String, dynamic>> fetchePGSelected() async {
+    var response = await apiService.getData(ApiConstraints.pgSelected);
 
+    return response;
+  }
+  ///
+  ///
+ static Future<Map<String, dynamic>> fetcheBPEDSelected() async {
+    var response = await apiService.getData(ApiConstraints.bpedSelected);
+
+    return response;
+  }
   ///
   ///
   static Future<Map<String, dynamic>> fetcheOtp({

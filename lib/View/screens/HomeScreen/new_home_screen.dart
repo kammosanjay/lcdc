@@ -109,14 +109,11 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
   late SignupController signupController;
   HomeController homeController = Get.put(HomeController());
   StudentRegistrationModel mdl = StudentRegistrationModel();
+
   @override
   void initState() {
     super.initState();
     //for setting  the category value after edit ,initialize here to get the info
-    final box = GetStorage();
-    Map<String, dynamic>? storedData = box.read('formData');
-    final formDetail = StudentRegistrationModel.fromJson(storedData!);
-
 
     signupController = Get.find<SignupController>();
     var fetch = signupController.studentDetails.value;
@@ -127,75 +124,76 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
     aadhaarController.text = fetch.aadharid.toString();
     fatherNameController.text = fetch.fathername.toString();
     //for setting  the category value after edit ,initialize here to get the info
-    selectCategory.value = formDetail.category ?? fetch.category.toString();
+    selectCategory.value = fetch.category.toString();
     selectCourse.value = fetch.course.toString();
 
     ///
     ///
     /// Instead of sqflite ,used Getstorage dependencies to store formfields  locally for edit
-    ///
+    final box = GetStorage();
 
-    void loadFormDataForEdit() {
-      print("storageData==>$storedData");
-
-      // Populate text fields
-      lurnController.text = formDetail.lurnCertificate ?? '';
-      mothernameController.text = formDetail.motherName ?? '';
-      fannualController.text = formDetail.annualIncomeRs ?? '';
-      mAnnualController.text = formDetail.motherAnnualIncomeRs ?? '';
-      lastExmController.text = formDetail.examinationName ?? "";
-      lastInstController.text = formDetail.institution ?? '';
-      nationalityController.text = formDetail.nationality ?? '';
-      BoarduniverController.text = formDetail.boardUniversity ?? "";
-      mmController.text = formDetail.maximumMarks ?? "";
-      OmController.text = formDetail.marksObtained ?? "";
-      perController.text = formDetail.marksPercentage ?? "";
-      fatherMobileNoController.text = formDetail.fatherMobileNo ?? "";
-      motherMobileNoCont.text = formDetail.motherMobileNumber ?? "";
-      presentAddressController.text = formDetail.presentAddress ?? "";
-      presentPinController.text = formDetail.presentPincode ?? '';
-      NRSController.text = formDetail.presentNearRailway ?? "";
-      NPSController.text = formDetail.presentNearPolice ?? "";
-      permanentAddController.text = formDetail.permanentAddress ?? "";
-      permanentPinController.text = formDetail.permanentPincode ?? "";
-      permanNRSController.text = formDetail.permanentNearRailway ?? "";
-      permanentNPSController.text = formDetail.permanentNearPolice ?? "";
-
-      // Populate dropdown values
-      selectFOccupation.value = formDetail.occupation ?? '';
-      selectMOccupation.value = formDetail.motherOccupation ?? '';
-      selectYear.value = formDetail.passingYear ?? '';
-      selectBloodGroup.value = formDetail.bloodGroup ?? '';
-      selectReligon.value = formDetail.religion ?? '';
-      selectCaste.value = formDetail.caste ?? "";
-      selectYear.value = formDetail.passingYear ?? "";
+    Map<String, dynamic>? storedData = box.read('formData');
+    if (storedData != null) {
+      final formDetail = StudentRegistrationModel.fromJson(storedData);
+      loadFormDataForEdit(formDetail);
       selectCategory.value = formDetail.category ?? "";
-
-      // Populate file paths
-
-      candidatefileName.value = p.basename(
-        formDetail.casteCertificatePath ?? "",
-      );
-      candidatefilePath.value = formDetail.casteCertificatePath ?? "";
-      intermediatefileName.value = p.basename(
-        formDetail.interMarksheetPath ?? "",
-      );
-      intermediatefilePath.value = formDetail.interMarksheetPath ?? "";
-      aadharfileName.value = p.basename(formDetail.addressProofPath ?? "");
-      aadharfilePath.value = formDetail.addressProofPath ?? "";
-      candidateSignaturefileName.value = p.basename(
-        formDetail.studentSignaturePath ?? "",
-      );
-      candidateSignaturefilePath.value = formDetail.studentSignaturePath ?? "";
-      domicilefileName.value = p.basename(
-        formDetail.domicileCertificatePath ?? "",
-      );
-      domicilefilePath.value = formDetail.domicileCertificatePath ?? "";
-      castefileName.value = p.basename(formDetail.casteCertificatePath ?? "");
-      castefilePath.value = formDetail.casteCertificatePath ?? "";
     }
+  }
 
-    loadFormDataForEdit();
+  loadFormDataForEdit(StudentRegistrationModel formDetail) {
+    // Populate text fields
+    lurnController.text = formDetail.lurnCertificate ?? '';
+    mothernameController.text = formDetail.motherName ?? '';
+    fannualController.text = formDetail.annualIncomeRs ?? '';
+    mAnnualController.text = formDetail.motherAnnualIncomeRs ?? '';
+    lastExmController.text = formDetail.examinationName ?? "";
+    lastInstController.text = formDetail.institution ?? '';
+    nationalityController.text = formDetail.nationality ?? '';
+    BoarduniverController.text = formDetail.boardUniversity ?? "";
+    mmController.text = formDetail.maximumMarks ?? "";
+    OmController.text = formDetail.marksObtained ?? "";
+    perController.text = formDetail.marksPercentage ?? "";
+    fatherMobileNoController.text = formDetail.fatherMobileNo ?? "";
+    motherMobileNoCont.text = formDetail.motherMobileNumber ?? "";
+    presentAddressController.text = formDetail.presentAddress ?? "";
+    presentPinController.text = formDetail.presentPincode ?? '';
+    NRSController.text = formDetail.presentNearRailway ?? "";
+    NPSController.text = formDetail.presentNearPolice ?? "";
+    permanentAddController.text = formDetail.permanentAddress ?? "";
+    permanentPinController.text = formDetail.permanentPincode ?? "";
+    permanNRSController.text = formDetail.permanentNearRailway ?? "";
+    permanentNPSController.text = formDetail.permanentNearPolice ?? "";
+
+    // Populate dropdown values
+    selectFOccupation.value = formDetail.occupation ?? '';
+    selectMOccupation.value = formDetail.motherOccupation ?? '';
+    selectYear.value = formDetail.passingYear ?? '';
+    selectBloodGroup.value = formDetail.bloodGroup ?? '';
+    selectReligon.value = formDetail.religion ?? '';
+    selectCaste.value = formDetail.caste ?? "";
+    selectYear.value = formDetail.passingYear ?? "";
+    selectCategory.value = formDetail.category ?? "";
+
+    // Populate file paths
+
+    candidatefileName.value = p.basename(formDetail.casteCertificatePath ?? "");
+    candidatefilePath.value = formDetail.casteCertificatePath ?? "";
+    intermediatefileName.value = p.basename(
+      formDetail.interMarksheetPath ?? "",
+    );
+    intermediatefilePath.value = formDetail.interMarksheetPath ?? "";
+    aadharfileName.value = p.basename(formDetail.addressProofPath ?? "");
+    aadharfilePath.value = formDetail.addressProofPath ?? "";
+    candidateSignaturefileName.value = p.basename(
+      formDetail.studentSignaturePath ?? "",
+    );
+    candidateSignaturefilePath.value = formDetail.studentSignaturePath ?? "";
+    domicilefileName.value = p.basename(
+      formDetail.domicileCertificatePath ?? "",
+    );
+    domicilefilePath.value = formDetail.domicileCertificatePath ?? "";
+    castefileName.value = p.basename(formDetail.casteCertificatePath ?? "");
+    castefilePath.value = formDetail.casteCertificatePath ?? "";
   }
 
   List<String> category = [
@@ -499,7 +497,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         children: [
-          SizedBox(height: 20),
+          // SizedBox(height: 20),
 
           // Dropdown for Degree
           Obx(() {
@@ -514,6 +512,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                 courseTypeList.map((e) => e.toUpperCase()).toList();
             return CustomWidgets.customDropdownField(
               context: context,
+              label: 'Degree',
               items: upperCaseItems,
               selectedItem:
                   upperCaseItems.contains(selectDegree.value.toUpperCase())
@@ -541,7 +540,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           // Dropdown for LURN
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'lurnController',
+            label: 'LURN',
             controller: lurnController,
             keyboardtype: TextInputType.text,
             validate: (value) {
@@ -563,6 +562,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           CustomWidgets.customTextFeild(
             context: context,
             isReadyOnly: true,
+            label: 'Registration No',
             focusNode: _focusReg,
             keyboardtype: TextInputType.text,
             controller: regisC,
@@ -582,7 +582,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           // Dropdown for Name
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'name',
+            label: 'Your Name',
             controller: nameController,
             isReadyOnly: true,
             keyboardtype: TextInputType.text,
@@ -610,6 +610,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                   context: context,
                   items: signupController.gender,
                   readOnly: true,
+                  label: 'Gender',
                   selectedItem: signupController.studentDetails.value.gender,
                   onChanged: (value) {
                     gender = value.toString();
@@ -634,40 +635,57 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                       }
                     });
                   },
-                  child: Container(
-                    height: h * 0.0735,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Obx(
-                          () => Text(
-                            // "${selectedDate.value!.day}/${selectedDate.value!.month}/${selectedDate.value!.year}",
-                            signupController.studentDetails.value.dateofbirth
-                                .toString(),
-                            style: GoogleFonts.poppins(
-                              textStyle: TextStyle(
-                                color: Colors.black.withOpacity(0.6),
-                                fontSize: 16,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "DOB",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        height: h * 0.0735,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Obx(
+                              () => Text(
+                                // "${selectedDate.value!.day}/${selectedDate.value!.month}/${selectedDate.value!.year}",
+                                signupController
+                                    .studentDetails
+                                    .value
+                                    .dateofbirth
+                                    .toString(),
+                                style: GoogleFonts.poppins(
+                                  textStyle: TextStyle(
+                                    color: Colors.black.withOpacity(0.6),
+                                    fontSize: 16,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            Image.asset(
+                              "assets/images/date.png",
+                              width: 24,
+                              height: 24,
+                              color: const Color.fromARGB(255, 52, 64, 73),
+                            ),
+                          ],
                         ),
-                        Image.asset(
-                          "assets/images/date.png",
-                          width: 24,
-                          height: 24,
-                          color: const Color.fromARGB(255, 52, 64, 73),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -678,7 +696,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           SizedBox(height: 20),
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'email',
+            label: 'Email',
             hint: 'Enter your email',
             controller: emailController,
             isReadyOnly: true,
@@ -698,7 +716,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           SizedBox(height: 20),
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'mobile',
+            label: 'Your Mobile',
             controller: mobileController,
             isReadyOnly: true,
             hint: 'Enter your mobile number',
@@ -719,7 +737,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           SizedBox(height: 20),
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'aadhaar',
+            label: 'Aadhaar',
             isReadyOnly: true,
             controller: aadhaarController,
             keyboardtype: TextInputType.number,
@@ -738,7 +756,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           SizedBox(height: 20),
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'father name',
+            label: 'Father Name',
             isReadyOnly: true,
             controller: fatherNameController,
             keyboardtype: TextInputType.text,
@@ -759,7 +777,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           // Dropdown for Father's Annual Income
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'Annual Income',
+            label: 'Annual Income',
             controller: fannualController,
             keyboardtype: TextInputType.text,
             validate: (value) {
@@ -780,6 +798,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             () => CustomWidgets.customDropdownField(
               context: context,
               items: homeController.occupation,
+              label: 'Father Occupation',
               selectedItem:
                   homeController.occupation.contains(selectFOccupation.value)
                       ? selectFOccupation.value
@@ -811,7 +830,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               visible: selectDegree.value == "B.P.Ed",
               child: CustomWidgets.customTextFeild(
                 context: context,
-                name: 'Fathermobile',
+                label: 'Father mobile',
                 controller: fatherMobileNoController,
 
                 keyboardtype: TextInputType.number,
@@ -835,7 +854,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           // Show when not B.P.Ed
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'Mother name',
+            label: 'Mother Name',
             controller: mothernameController,
             keyboardtype: TextInputType.text,
             validate: (value) {
@@ -862,7 +881,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               visible: selectDegree.value == "B.P.Ed",
               child: CustomWidgets.customTextFeild(
                 context: context,
-                name: 'Nationality',
+                label: 'Nationality',
                 controller: nationalityController,
                 keyboardtype: TextInputType.text,
                 validate: (value) {
@@ -883,7 +902,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           SizedBox(height: 20),
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'Annual Income',
+            label: 'Annual Income',
             controller: mAnnualController,
             keyboardtype: TextInputType.text,
             validate: (value) {
@@ -929,6 +948,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             () => CustomWidgets.customDropdownField(
               context: context,
               items: homeController.motheroccupation,
+              label: 'Mother Occupation',
               selectedItem:
                   homeController.motheroccupation.contains(
                         selectMOccupation.value,
@@ -961,7 +981,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             if (selectDegree.value == 'B.P.Ed') {
               return CustomWidgets.customTextFeild(
                 context: context,
-                name: 'motherMobileNo',
+                label: 'Mother Mobile',
                 controller: motherMobileNoCont,
 
                 keyboardtype: TextInputType.number,
@@ -988,10 +1008,12 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               visible: selectDegree.value == "UG",
               child: CustomWidgets.customDropdownField(
                 context: context,
+
                 readOnly: true,
-                items: signupController.course,
+                items: signupController.ugCourse,
+                label: 'Course',
                 selectedItem:
-                    signupController.course.contains(selectCourse.value)
+                    signupController.ugCourse.contains(selectCourse.value)
                         ? selectCourse.value
                         : null,
                 // signupController.studentDetails.value.course,
@@ -1018,12 +1040,10 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               visible: selectDegree.value == "PG",
               child: CustomWidgets.customDropdownField(
                 context: context,
-                items: ['M.A(English)', 'M.Sc(Chemistry)'],
+                items: signupController.pgCourse,
+                label: "Course",
                 selectedItem:
-                    [
-                          'M.A(English)',
-                          'M.Sc(Chemistry)',
-                        ].contains(selectCourse.value)
+                    signupController.pgCourse.contains(selectCourse.value)
                         ? selectCourse.value
                         : null,
                 onChanged: (value) {
@@ -1049,9 +1069,10 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               visible: selectDegree.value == "B.P.Ed",
               child: CustomWidgets.customDropdownField(
                 context: context,
-                items: ['B.P.Ed.'],
+                items: signupController.bpedCourse,
+                label: "Course",
                 selectedItem:
-                    ['B.P.Ed.'].contains(selectCourse.value)
+                    signupController.bpedCourse.contains(selectCourse.value)
                         ? selectCourse.value
                         : null,
                 onChanged: (value) {
@@ -1083,6 +1104,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               context: context,
               readOnly: true,
               items: signupController.category,
+              label: 'Category',
               selectedItem:
                   signupController.category.contains(selectCategory.value)
                       ? selectCategory.value
@@ -1095,7 +1117,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               },
               validate: (userC) {
                 if (userC == null || userC.isEmpty) {
-                  return "   Please select Degree";
+                  return "   Please select Category";
                 }
                 return null;
               },
@@ -1115,6 +1137,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               visible: selectDegree.value == "B.P.Ed",
               child: CustomWidgets.customDropdownField(
                 context: context,
+                label: 'Domicile Certificate',
                 items: domicile,
                 selectedItem:
                     domicile.contains(selectDomicile.value)
@@ -1178,32 +1201,47 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                   print("Selected path: ${domicilefilePath.value}");
                 }
               },
-              child: Container(
-                height: 55,
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                  border: Border.all(color: Colors.grey.shade400),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        domicilefileName.value.isNotEmpty
-                            ? domicilefileName.value
-                            : "Domicile Certificate (jpg, png, gif)",
-                        style: TextStyle(
-                          color: Colors.black.withOpacity(0.7),
-                          fontSize: 16,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Domicile Certificate",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
                     ),
-                    Icon(Icons.upload_file, color: Colors.blue),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 10),
+
+                  Container(
+                    height: 55,
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey.shade400),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            domicilefileName.value.isNotEmpty
+                                ? domicilefileName.value
+                                : "Domicile Certificate (jpg, png, gif)",
+                            style: TextStyle(
+                              color: Colors.black.withOpacity(0.7),
+                              fontSize: 16,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Icon(Icons.upload_file, color: Colors.blue),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             );
           }),
@@ -1227,32 +1265,48 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                   print("Selected path: ${castefilePath.value}");
                 }
               },
-              child: Container(
-                height: 55,
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                  border: Border.all(color: Colors.grey.shade400),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        castefileName.value.isNotEmpty
-                            ? castefileName.value
-                            : "Caste Certificate (jpg, png, gif)",
-                        style: TextStyle(
-                          color: Colors.black.withOpacity(0.7),
-                          fontSize: 16,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+
+                children: [
+                  Text(
+                    "Caste Certificate",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
                     ),
-                    Icon(Icons.upload_file, color: Colors.blue),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 10),
+
+                  Container(
+                    height: 55,
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey.shade400),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            castefileName.value.isNotEmpty
+                                ? castefileName.value
+                                : "Caste Certificate (jpg, png, gif)",
+                            style: TextStyle(
+                              color: Colors.black.withOpacity(0.7),
+                              fontSize: 16,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Icon(Icons.upload_file, color: Colors.blue),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             );
           }),
@@ -1268,12 +1322,12 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         children: [
-          SizedBox(height: 20),
-
+          // SizedBox(height: 20),
           Obx(
             () => CustomWidgets.customDropdownField(
               context: context,
               items: homeController.bloodgroup,
+              label: 'Blood Group',
               selectedItem:
                   homeController.bloodgroup.contains(selectBloodGroup.value)
                       ? selectBloodGroup.value
@@ -1304,6 +1358,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             visible: selectDegree.value == "B.P.Ed",
             child: CustomWidgets.customTextFeild(
               context: context,
+              label: 'Category',
               // focusNode: _lastExmFocus,
               keyboardtype: TextInputType.text,
               controller: categoryController,
@@ -1329,6 +1384,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             return CustomWidgets.customDropdownField(
               context: context,
               items: homeController.religion,
+              label: 'Religion',
               selectedItem:
                   homeController.religion.contains(selectReligon.value)
                       ? selectReligon.value
@@ -1360,6 +1416,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             () => CustomWidgets.customDropdownField(
               context: context,
               items: homeController.caste,
+              label: 'Caste',
               selectedItem:
                   homeController.caste.contains(selectCaste.value)
                       ? selectCaste.value
@@ -1431,7 +1488,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
 
             return CustomWidgets.customTextFeild(
               context: context,
-              name: 'Nationality',
+              label: 'Nationality',
               controller: nationalityController,
               keyboardtype: TextInputType.text,
               validate: (value) {
@@ -1454,6 +1511,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           CustomWidgets.customTextFeild(
             context: context,
             focusNode: _lastExmFocus,
+            label: 'Last Examination Passed',
             keyboardtype: TextInputType.text,
             controller: lastExmController,
             validate: (userC) {
@@ -1471,7 +1529,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           SizedBox(height: 20),
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'Last Institution Attended',
+            label: 'Last Institution Attended',
             controller: lastInstController,
             keyboardtype: TextInputType.text,
             validate: (value) {
@@ -1492,7 +1550,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
 
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'Board',
+            label: 'Board/University',
             hint: 'Board/University',
             controller: BoarduniverController,
             keyboardtype: TextInputType.text,
@@ -1511,6 +1569,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           SizedBox(height: 20),
           CustomWidgets.customDropdownField(
             context: context,
+            label: 'Passing Year',
             items: homeController.passingyear,
             selectedItem:
                 homeController.passingyear.contains(selectYear.value)
@@ -1545,7 +1604,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           SizedBox(height: 20),
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'maxmarks',
+            label: 'Maximum Marks',
             controller: mmController,
             hint: 'Maximum Marks*',
             keyboardtype: TextInputType.number,
@@ -1564,7 +1623,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           SizedBox(height: 20),
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'Obtained Marks*',
+            label: 'Obtained Marks*',
             controller: OmController,
             keyboardtype: TextInputType.number,
             validate: (value) {
@@ -1583,7 +1642,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           SizedBox(height: 20),
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'Percentage(%)*',
+            label: 'Percentage(%)*',
             controller: perController,
             keyboardtype: TextInputType.number,
             validate: (value) {
@@ -1615,7 +1674,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             visible: selectDegree.value == "B.P.Ed",
             child: CustomWidgets.customTextFeild(
               context: context,
-              name: 'Name of Game Participated**',
+              label: 'Name of Game Participated**',
               controller: GparticipatedController,
               keyboardtype: TextInputType.text,
               validate: (value) {
@@ -1658,6 +1717,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               visible: selectDegree.value == "B.P.Ed",
               child: CustomWidgets.customDropdownField(
                 context: context,
+                label: 'Lebel of Participation',
                 items: ["1st-level", "2nd-level", "3rd-level", "4th-level"],
                 selectedItem:
                     [
@@ -1873,7 +1933,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             }
             return CustomWidgets.customTextFeild(
               context: context,
-              name: 'fatherMobileNo',
+              label: "Father's Mobile",
               controller: fatherMobileNoController,
               keyboardtype: TextInputType.number,
               validate: (value) {
@@ -1903,6 +1963,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             }
             return CustomWidgets.customTextFeild(
               context: context,
+              label: "Mother's Mobile",
               keyboardtype: TextInputType.number,
               controller: motherMobileNoCont,
               validate: (userC) {
@@ -1921,7 +1982,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           SizedBox(height: 20),
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'Present Address',
+            label: 'Present Address',
             controller: presentAddressController,
             maxLines: 5,
             keyboardtype: TextInputType.text,
@@ -1944,7 +2005,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
 
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'pincode',
+            label: 'Pincode',
             hint: 'Pincode',
             controller: presentPinController,
             keyboardtype: TextInputType.number,
@@ -1963,7 +2024,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           SizedBox(height: 20),
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'nearest railway station',
+            label: 'Nearest Railway Station',
             hint: 'Nearest Railway Station',
 
             controller: NRSController,
@@ -1983,7 +2044,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           SizedBox(height: 20),
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'nearest police station',
+            label: 'Nearest Police Station',
             hint: 'Nearest Police Station',
 
             controller: NPSController,
@@ -2001,12 +2062,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             action: TextInputAction.done,
           ),
           SizedBox(height: 20),
-          Text(
-            "Aadhaar Card",
-            style: GoogleFonts.poppins(
-              textStyle: TextStyle(color: Colors.white, fontSize: 12),
-            ),
-          ),
+
           SizedBox(height: 10),
           Obx(
             () => GestureDetector(
@@ -2022,32 +2078,45 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                   print("Selected path: ${aadharfilePath.value}");
                 }
               },
-              child: Container(
-                height: 55,
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                  border: Border.all(color: Colors.grey.shade400),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        aadharfileName.value.isNotEmpty
-                            ? aadharfileName.value
-                            : "Aadhaar Card (jpg, png, gif)",
-                        style: TextStyle(
-                          color: Colors.black.withOpacity(0.7),
-                          fontSize: 16,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Aadhar Card",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
                     ),
-                    Icon(Icons.upload_file, color: Colors.blue),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    height: 55,
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey.shade400),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            aadharfileName.value.isNotEmpty
+                                ? aadharfileName.value
+                                : "Aadhaar Card (jpg, png, gif)",
+                            style: TextStyle(
+                              color: Colors.black.withOpacity(0.7),
+                              fontSize: 16,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Icon(Icons.upload_file, color: Colors.blue),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -2099,7 +2168,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           SizedBox(height: 10),
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'Permanent Address',
+            label: 'Permanent Address',
             controller:
                 isChecked ? presentAddressController : permanentAddController,
             maxLines: 5,
@@ -2123,7 +2192,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
 
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'pincode',
+            label: 'Pincode',
             hint: 'Pincode',
             controller: permanentPinController,
             keyboardtype: TextInputType.number,
@@ -2142,7 +2211,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           SizedBox(height: 20),
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'nearest railway station',
+            label: 'Nearest Railway Dtation',
             hint: 'Nearest Railway Station',
 
             controller: permanNRSController,
@@ -2162,7 +2231,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           SizedBox(height: 20),
           CustomWidgets.customTextFeild(
             context: context,
-            name: 'nearest police station',
+            label: 'Nearest Police Station',
             hint: 'Nearest Police Station',
 
             controller: permanentNPSController,
@@ -2181,12 +2250,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           ),
 
           SizedBox(height: 20),
-          Text(
-            "Candidate Photo*",
-            style: GoogleFonts.poppins(
-              textStyle: TextStyle(color: Colors.white, fontSize: 14),
-            ),
-          ),
+
           SizedBox(height: 10),
           Obx(
             () => GestureDetector(
@@ -2202,32 +2266,46 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                   print("Selected path: ${candidatefilePath.value}");
                 }
               },
-              child: Container(
-                height: 55,
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                  border: Border.all(color: Colors.grey.shade400),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        candidatefileName.value.isNotEmpty
-                            ? candidatefileName.value
-                            : "Candidate Photo (jpg, png, gif)",
-                        style: TextStyle(
-                          color: Colors.black.withOpacity(0.7),
-                          fontSize: 16,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Candidate Photo",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
                     ),
-                    Icon(Icons.upload_file, color: Colors.blue),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 10),
+
+                  Container(
+                    height: 55,
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey.shade400),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            candidatefileName.value.isNotEmpty
+                                ? candidatefileName.value
+                                : "Candidate Photo (jpg, png, gif)",
+                            style: TextStyle(
+                              color: Colors.black.withOpacity(0.7),
+                              fontSize: 16,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Icon(Icons.upload_file, color: Colors.blue),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -2239,12 +2317,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             ),
           ),
           SizedBox(height: 20),
-          Text(
-            "Candidate Signature*",
-            style: GoogleFonts.poppins(
-              textStyle: TextStyle(color: Colors.white, fontSize: 14),
-            ),
-          ),
+
           SizedBox(height: 10),
           Obx(
             () => GestureDetector(
@@ -2261,32 +2334,45 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                   print("Selected path: ${candidateSignaturefilePath.value}");
                 }
               },
-              child: Container(
-                height: 55,
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                  border: Border.all(color: Colors.grey.shade400),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        candidateSignaturefileName.value.isNotEmpty
-                            ? candidateSignaturefileName.value
-                            : "Candidate Signature (jpg, png, gif)",
-                        style: TextStyle(
-                          color: Colors.black.withOpacity(0.7),
-                          fontSize: 16,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Candidate Signature",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
                     ),
-                    Icon(Icons.upload_file, color: Colors.blue),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    height: 55,
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey.shade400),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            candidateSignaturefileName.value.isNotEmpty
+                                ? candidateSignaturefileName.value
+                                : "Candidate Signature (jpg, png, gif)",
+                            style: TextStyle(
+                              color: Colors.black.withOpacity(0.7),
+                              fontSize: 16,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Icon(Icons.upload_file, color: Colors.blue),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

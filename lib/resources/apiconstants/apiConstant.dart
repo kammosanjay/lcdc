@@ -14,6 +14,10 @@ class ApiConstraints {
   static const String getOtp = "$databaseUrl/verify-otp";
   static const String ugSelected =
       "$databaseUrl/get-ug-registration-all-options";
+  static const String pgSelected =
+      "$databaseUrl/get-pg-registration-all-options";
+  static const String bpedSelected =
+      "$databaseUrl/get-bped-registration-all-options";
   static const String studentInfo = "$databaseUrl/student";
   static const String paymentOrder = "$databaseUrl/create-order";
   static const String resendOTP = "$databaseUrl/resend-otp";

@@ -26,9 +26,22 @@ class CustomWidgets {
     Widget? suffIcons,
     TextInputAction? action,
     bool isReadyOnly = false,
+    String label = "",
+    var fontSize,
+    var fontwgt,
   }) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Text(
+          label,
+          style: TextStyle(
+            color: color ?? Colors.white,
+            fontSize: fontSize ?? 16,
+            fontWeight: fontwgt ?? FontWeight.w600,
+          ),
+        ),
+        SizedBox(height: 10),
         Card(
           color: Colors.white,
           margin: EdgeInsets.zero,
@@ -95,49 +108,70 @@ class CustomWidgets {
     AutovalidateMode? autovalidateMode,
     bool readOnly = false,
     var validate,
+    String label = "",
+    var fontSize,
+    var fontwgt,
   }) {
-    return Card(
-      color: readOnly ? Colors.grey.shade400 : Colors.white,
-      margin: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      elevation: 5,
-      child: DropdownButtonFormField<T>(
-        value: selectedItem,
-        isExpanded: true,
-        focusNode: focusNode,
-
-        validator: validate,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        icon: suffixIcon,
-        decoration: InputDecoration(
-          prefixIcon: icon,
-          prefixIconColor: iconColor,
-          constraints: BoxConstraints(
-            maxHeight: 60,
-
-            maxWidth: width ?? MediaQuery.of(context).size.width,
-          ),
-          hintText: hint,
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.transparent),
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.blue),
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            color: color ?? Colors.white,
+            fontSize: fontSize ?? 16,
+            fontWeight: fontwgt ?? FontWeight.w600,
           ),
         ),
-        items:
-            items.map((T value) {
-              return DropdownMenuItem<T>(
-                value: value,
-                child: Text(value.toString()),
-              );
-            }).toList(),
-        onChanged: readOnly ? null : onChanged,
-      ),
+        SizedBox(height: 10),
+        Card(
+          color: readOnly ? Colors.grey.shade400 : Colors.white,
+          margin: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          elevation: 5,
+          child: DropdownButtonFormField<T>(
+            value: selectedItem,
+            isExpanded: true,
+            focusNode: focusNode,
+            selectedItemBuilder: (BuildContext context) {
+              return items.map<Widget>((T item) {
+                return Text("$item");
+              }).toList();
+            },
+            validator: validate,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            icon: suffixIcon,
+            decoration: InputDecoration(
+              prefixIcon: icon,
+              prefixIconColor: iconColor,
+              constraints: BoxConstraints(
+                maxHeight: 60,
+
+                maxWidth: width ?? MediaQuery.of(context).size.width,
+              ),
+              hintText: hint,
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+            ),
+            items:
+                items.map((T value) {
+                  return DropdownMenuItem<T>(
+                    value: value,
+                    child: Text(value.toString()),
+                  );
+                }).toList(),
+            onChanged: readOnly ? null : onChanged,
+          ),
+        ),
+      ],
     );
   }
 

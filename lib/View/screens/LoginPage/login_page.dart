@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:lcdc_mobile_app/View/screens/LoginPage/login_controller.dart';
+import 'package:lcdc_mobile_app/View/screens/signupPage/signup_controller.dart';
 import 'package:lcdc_mobile_app/constant/customWidget.dart';
 import 'package:lcdc_mobile_app/constant/myshared_sharedprefrences.dart';
 import 'package:lcdc_mobile_app/database/dbHelper.dart';
@@ -28,6 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   final FocusNode _focusCaptcha = FocusNode();
   RxBool isChecked = false.obs;
   RxBool isPhone = false.obs;
+  RxString selectDegree = "UG".obs;
   String captchaCode = '';
   RxString? loginType = "".obs;
   LoginController loginController = Get.put(LoginController());
@@ -38,6 +40,8 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController mobileC = TextEditingController();
   TextEditingController regisC = TextEditingController();
   TextEditingController captchaC = TextEditingController();
+
+  SignupController signupController = Get.find<SignupController>();
 
   DBHelper? dbHelper;
   @override
@@ -90,36 +94,53 @@ class _LoginPageState extends State<LoginPage> {
                   child: ListView(
                     shrinkWrap: true,
                     children: [
-                      CustomWidgets.customDropdownField(
-                        context: context,
-                        focusNode: _focusLoginAs,
+                      Obx(() {
+                        final courseTypeList = signupController.courseType;
 
-                        items: ['UG', 'PG', 'B.P.Ed'],
-                        selectedItem:
-                            ['UG', 'PG', 'B.P.Ed'].contains(loginType!.value)
-                                ? loginType!.value
-                                : null,
-                        suffixIcon: Image.asset("assets/images/dropArrow.png"),
-                        onChanged: (value) {
-                          loginType!.value = value.toString();
-                        },
+                        // Show loading or empty state if courseType is not yet loaded
+                        if (courseTypeList == null || courseTypeList.isEmpty) {
+                          return SizedBox(); // or SizedBox(), or 'Select Degree' hint
+                        }
 
-                        validate: (userC) {
-                          if (userC == null || userC.isEmpty) {
-                            return "   Please select a login type";
-                          }
-                          return null;
-                        },
-                        hint: 'Login as',
-                        icon: Image.asset("assets/images/student_as.png"),
-                        iconColor: Colors.lightBlue,
-                      ),
+                        final upperCaseItems =
+                            courseTypeList.map((e) => e.toUpperCase()).toList();
+
+                        return CustomWidgets.customDropdownField(
+                          context: context,
+                          items: upperCaseItems,
+                          label: "Login",
+
+                          selectedItem:
+                              upperCaseItems.contains(
+                                    selectDegree.value.toUpperCase(),
+                                  )
+                                  ? selectDegree.value.toUpperCase()
+                                  : null,
+                          onChanged: (value) {
+                            if (value != null) {
+                              selectDegree.value = value;
+                            }
+                            print(selectDegree.value);
+                          },
+                          validate: (userC) {
+                            if (userC == null || userC.isEmpty) {
+                              return "   Please select a login type";
+                            }
+                            return null;
+                          },
+                          hint: 'Select Degree',
+                          icon: Image.asset("assets/images/student_as.png"),
+                          suffixIcon: Image.asset(
+                            "assets/images/dropArrow.png",
+                          ),
+                        );
+                      }),
 
                       SizedBox(height: h * 0.02),
                       CustomWidgets.customTextFeild(
                         context: context,
                         focusNode: _focusMobile,
-
+                        label: 'Mobile Number',
                         controller: mobileC,
 
                         keyboardtype: TextInputType.text,
@@ -139,6 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                       CustomWidgets.customTextFeild(
                         context: context,
                         focusNode: _focusReg,
+                        label: 'Registration No',
                         keyboardtype: TextInputType.text,
                         controller: regisC,
 
@@ -211,7 +233,7 @@ class _LoginPageState extends State<LoginPage> {
                         context: context,
                         focusNode: _focusCaptcha,
                         controller: captchaC,
-
+                        label: 'Enter Captcha',
                         keyboardtype: TextInputType.text,
                         validate: (userC) {
                           if (userC == null ||

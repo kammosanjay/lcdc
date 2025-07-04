@@ -99,6 +99,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   return CustomWidgets.customDropdownField(
                     context: context,
                     items: upperCaseItems,
+                    label: "Course Type",
+                    color: Colors.white,
+
                     selectedItem:
                         upperCaseItems.contains(
                               selectDegree.value.toUpperCase(),
@@ -127,7 +130,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 /// Student name
                 CustomWidgets.customTextFeild(
                   context: context,
-                  name: 'name',
+                  label: 'Your Name',
                   controller: nameController,
                   keyboardtype: TextInputType.name,
 
@@ -153,6 +156,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   context: context,
                   name: 'father name',
                   controller: fatherNameController,
+                  label: 'Father Name',
                   keyboardtype: TextInputType.name,
                   validate: (value) {
                     if (value == null || value.isEmpty) {
@@ -173,7 +177,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ///
                 CustomWidgets.customTextFeild(
                   context: context,
-                  name: 'mobile',
+                  label: 'Your Mobile Number',
                   controller: mobileController,
                   hint: 'Enter your mobile number',
                   keyboardtype: TextInputType.phone,
@@ -195,7 +199,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ///
                 CustomWidgets.customTextFeild(
                   context: context,
-                  name: 'aadhaar',
+                  label: 'Aadhaar',
                   controller: aadhaarController,
                   keyboardtype: TextInputType.number,
                   validate: (value) {
@@ -220,9 +224,12 @@ class _SignupScreenState extends State<SignupScreen> {
                     visible: selectDegree.value == "UG",
                     child: CustomWidgets.customDropdownField(
                       context: context,
-                      items: signupController.course,
+                      label: 'Course',
+                      items: signupController.ugCourse,
                       selectedItem:
-                          signupController.course.contains(selectCourse!.value)
+                          signupController.ugCourse.contains(
+                                selectCourse!.value,
+                              )
                               ? selectCourse!.value
                               : null,
                       validate: (userC) {
@@ -251,12 +258,11 @@ class _SignupScreenState extends State<SignupScreen> {
                     visible: selectDegree.value == "PG",
                     child: CustomWidgets.customDropdownField(
                       context: context,
-                      items: ['M.A(English)', 'M.Sc(Chemistry)'],
+                      items: signupController.pgCourse,
                       selectedItem:
-                          [
-                                'M.A(English)',
-                                'M.Sc(Chemistry)',
-                              ].contains(selectCourse!.value)
+                          signupController.pgCourse.contains(
+                                selectCourse!.value,
+                              )
                               ? selectCourse!.value
                               : null,
                       onChanged: (value) {
@@ -277,9 +283,11 @@ class _SignupScreenState extends State<SignupScreen> {
                     visible: selectDegree.value == "BPED",
                     child: CustomWidgets.customDropdownField(
                       context: context,
-                      items: ['BPED'],
+                      items: signupController.bpedCourse,
                       selectedItem:
-                          ['BPED'].contains(selectCourse!.value)
+                          signupController.bpedCourse.contains(
+                                selectCourse!.value,
+                              )
                               ? selectCourse!.value
                               : null,
                       validate: (userC) {
@@ -310,6 +318,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       child: CustomWidgets.customDropdownField(
                         context: context,
                         items: signupController.gender,
+                        label: 'Gender',
                         // validate: (userC) {
                         //   if (userC == null || userC.isEmpty) {
                         //     return "  Invalid";
@@ -354,38 +363,59 @@ class _SignupScreenState extends State<SignupScreen> {
                             }
                           });
                         },
-                        child: Container(
-                          height: h * 0.0735,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 12,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Obx(
-                                () => Text(
-                                  "${selectedDate.value!.day}/${selectedDate.value!.month}/${selectedDate.value!.year}",
-                                  style: GoogleFonts.poppins(
-                                    textStyle: TextStyle(
-                                      color: Colors.black.withOpacity(0.6),
-                                      fontSize: 16,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "DOB",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+
+                            Container(
+                              height: h * 0.0735,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 12,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Obx(
+                                    () => Text(
+                                      "${selectedDate.value!.day}/${selectedDate.value!.month}/${selectedDate.value!.year}",
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                          color: Colors.black.withOpacity(0.6),
+                                          fontSize: 16,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
+                                  Image.asset(
+                                    "assets/images/date.png",
+                                    width: 24,
+                                    height: 24,
+                                    color: const Color.fromARGB(
+                                      255,
+                                      52,
+                                      64,
+                                      73,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Image.asset(
-                                "assets/images/date.png",
-                                width: 24,
-                                height: 24,
-                                color: const Color.fromARGB(255, 52, 64, 73),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -397,7 +427,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ///Email
                 CustomWidgets.customTextFeild(
                   context: context,
-                  name: 'email',
+                  label: 'Email',
                   hint: 'Enter your email',
                   controller: emailController,
                   keyboardtype: TextInputType.emailAddress,
@@ -420,6 +450,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ///Category
                 CustomWidgets.customDropdownField(
                   context: context,
+                  label: 'Category',
                   items: signupController.category,
                   // Replace with your list of items
                   selectedItem:
@@ -495,7 +526,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 SizedBox(height: 20),
                 CustomWidgets.customTextFeild(
                   context: context,
-                  name: 'Captcha',
+                  label: 'Captcha',
                   hint: 'Enter your Captcha',
                   controller: captchaController,
                   validate: (userC) {

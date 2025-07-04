@@ -14,7 +14,9 @@ class SignupController extends GetxController {
   ///
   // var courseType = CourseType().obs;
   var courseType = [].obs;
-  var course = [].obs;
+  var ugCourse = [].obs;
+  var pgCourse = [].obs;
+  var bpedCourse = [].obs;
   var gender = [].obs;
   var category = [].obs;
   var messages = "".obs;
@@ -28,8 +30,10 @@ class SignupController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    ifUgSelected();
     courseTypeList();
+    ifUgSelected();
+    ifPgSelected();
+    ifBPEDSelected();
   }
 
   ///
@@ -126,9 +130,44 @@ class SignupController extends GetxController {
     print("REs======>" + allres.toString());
     gender.value = response['data']['gender'] as List;
     category.value = response['data']['category'] as List;
-    course.value = response['data']['course'] as List;
+    ugCourse.value = response['data']['course'] as List;
 
-    print("Gender==>$gender\n Category==>$category\n Course==>$course");
+    print("Gender==>$gender\n Category==>$category\n Course==>$ugCourse");
+
+    return allres;
+  }
+
+  ///
+  /// for PG
+  Future<Map<String, dynamic>> ifPgSelected() async {
+    final response = await UserRepositories.fetchePGSelected();
+
+    // courseType.value = CourseType.fromJson(response);
+    Map<String, dynamic> allres = response;
+    print("REs======>" + allres.toString());
+    gender.value = response['data']['gender'] as List;
+    category.value = response['data']['category'] as List;
+    pgCourse.value = response['data']['course'] as List;
+
+    print("Gender==>$gender\n Category==>$category\n Course==>$pgCourse");
+
+    return allres;
+  }
+
+  ///for bped
+  ///
+  ///
+  Future<Map<String, dynamic>> ifBPEDSelected() async {
+    final response = await UserRepositories.fetcheBPEDSelected();
+
+    // courseType.value = CourseType.fromJson(response);
+    Map<String, dynamic> allres = response;
+    print("REs======>" + allres.toString());
+    gender.value = response['data']['gender'] as List;
+    category.value = response['data']['category'] as List;
+    bpedCourse.value = response['data']['course'] as List;
+
+    print("Gender==>$gender\n Category==>$category\n Course==>$bpedCourse");
 
     return allres;
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'package:lcdc_mobile_app/View/screens/signupPage/signup_binding.dart';
 
@@ -8,6 +9,7 @@ import 'package:lcdc_mobile_app/resources/mypagenames/mypage_names.dart';
 import 'package:lcdc_mobile_app/resources/myroutes/myroutes_pages.dart';
 
 void main() async {
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
