@@ -55,6 +55,7 @@ class UserRepositories {
       token: currtoken,
     );
     print("Testig 2" + response.toString());
+    
     return response;
   }
 
@@ -81,20 +82,23 @@ class UserRepositories {
 
     return response;
   }
+
   ///
   ///
-static Future<Map<String, dynamic>> fetchePGSelected() async {
+  static Future<Map<String, dynamic>> fetchePGSelected() async {
     var response = await apiService.getData(ApiConstraints.pgSelected);
 
     return response;
   }
+
   ///
   ///
- static Future<Map<String, dynamic>> fetcheBPEDSelected() async {
+  static Future<Map<String, dynamic>> fetcheBPEDSelected() async {
     var response = await apiService.getData(ApiConstraints.bpedSelected);
 
     return response;
   }
+
   ///
   ///
   static Future<Map<String, dynamic>> fetcheOtp({

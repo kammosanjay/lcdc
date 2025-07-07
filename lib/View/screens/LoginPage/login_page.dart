@@ -337,10 +337,10 @@ class _LoginPageState extends State<LoginPage> {
 
   String generateCaptcha6() {
     const chars =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#\$%^&*';
+        '215454614350521354671670654897481961785460445685627027658489787804865167';
     final rand = Random.secure();
     return List.generate(
-      6,
+      4,
       (index) => chars[rand.nextInt(chars.length)],
     ).join();
   }

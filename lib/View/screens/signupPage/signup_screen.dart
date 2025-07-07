@@ -258,6 +258,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     visible: selectDegree.value == "PG",
                     child: CustomWidgets.customDropdownField(
                       context: context,
+                      label: 'Course',
                       items: signupController.pgCourse,
                       selectedItem:
                           signupController.pgCourse.contains(
@@ -283,6 +284,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     visible: selectDegree.value == "BPED",
                     child: CustomWidgets.customDropdownField(
                       context: context,
+                      label: 'Course',
                       items: signupController.bpedCourse,
                       selectedItem:
                           signupController.bpedCourse.contains(
@@ -648,10 +650,10 @@ class _SignupScreenState extends State<SignupScreen> {
 
   String generateCaptcha6() {
     const chars =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#\$%^&*';
+        '05631457521765758136231514318176721881270589879809345164565718894';
     final rand = Random.secure();
     return List.generate(
-      6,
+      4,
       (index) => chars[rand.nextInt(chars.length)],
     ).join();
   }

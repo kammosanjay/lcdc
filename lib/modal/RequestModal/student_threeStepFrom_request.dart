@@ -42,6 +42,9 @@ class StudentRegistrationModel {
   String? studentPhotoPath;
   String? studentSignaturePath;
   String? interMarksheetPath;
+  String? graduationMarksPath;
+  String? ugPart2SemMarksheet;
+  String? highschoolMarksheet;
 
   StudentRegistrationModel({
     this.registrationNumber,
@@ -87,6 +90,9 @@ class StudentRegistrationModel {
     this.studentPhotoPath,
     this.studentSignaturePath,
     this.interMarksheetPath,
+    this.graduationMarksPath,
+    this.ugPart2SemMarksheet,
+    this.highschoolMarksheet,
   });
   factory StudentRegistrationModel.fromJson(Map<String, dynamic> json) {
     return StudentRegistrationModel(
@@ -133,6 +139,9 @@ class StudentRegistrationModel {
       studentPhotoPath: json['studentphoto'] ?? "",
       studentSignaturePath: json['studentsignature'] ?? "",
       interMarksheetPath: json['intermarksheet'] ?? "",
+      graduationMarksPath: json['graduatemarksheet'] ?? "",
+      ugPart2SemMarksheet: json['ugparttwomarksheet'] ?? "",
+      highschoolMarksheet: json['highschoolmarksheet'] ?? "",
     );
   }
 
@@ -181,6 +190,9 @@ class StudentRegistrationModel {
     data['studentphoto'] = studentPhotoPath;
     data['studentsignature'] = studentSignaturePath;
     data['intermarksheet'] = interMarksheetPath;
+    data['ugparttwomarksheet'] = ugPart2SemMarksheet;
+    data['highschoolmarksheet'] = highschoolMarksheet;
+    data['graduatemarksheet'] = graduationMarksPath;
     return data;
   }
 }

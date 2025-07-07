@@ -194,6 +194,15 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
     domicilefilePath.value = formDetail.domicileCertificatePath ?? "";
     castefileName.value = p.basename(formDetail.casteCertificatePath ?? "");
     castefilePath.value = formDetail.casteCertificatePath ?? "";
+
+    highSchMarkfileName.value = p.basename(
+      formDetail.highschoolMarksheet ?? "",
+    );
+    highSchMarkfilePath.value = formDetail.highschoolMarksheet ?? "";
+    gra2yrfileName.value = p.basename(formDetail.graduationMarksPath ?? "");
+    gra2yrfilePath.value = formDetail.graduationMarksPath ?? "";
+    ugpart2fileName.value = p.basename(formDetail.ugPart2SemMarksheet ?? "");
+    ugpart2filePath.value = formDetail.ugPart2SemMarksheet ?? "";
   }
 
   List<String> category = [
@@ -348,80 +357,23 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                               studentPhotoPath: candidatefilePath.value,
                               studentSignaturePath:
                                   candidateSignaturefilePath.value,
-                              interMarksheetPath: intermediatefilePath.value,
+                              interMarksheetPath:
+                                  selectDegree.value == 'UG'
+                                      ? intermediatefilePath.value
+                                      : null,
+                              highschoolMarksheet:
+                                  selectDegree.value == 'PG'
+                                      ? highSchMarkfilePath.value
+                                      : null,
+                              graduationMarksPath:
+                                  selectDegree.value == 'PG'
+                                      ? graduatinMarkfilePath.value
+                                      : null,
+                              ugPart2SemMarksheet:
+                                  selectDegree.value == 'PG'
+                                      ? ugpart2filePath.value
+                                      : null,
                             ),
-                          );
-
-                          print('lurnCertificate: ${lurnController.text}');
-                          print('registrationNumber: ${regisC.text}');
-                          print('candidateName: ${nameController.text}');
-                          print(
-                            'gender: ${signupController.studentDetails.value.gender}',
-                          );
-                          print(
-                            'dateOfBirth: ${signupController.studentDetails.value.dateofbirth}',
-                          );
-                          print('emailId: ${emailController.text}');
-                          print('mobileNumber: ${mobileController.text}');
-                          print('aadharId: ${aadhaarController.text}');
-                          print('fatherName: ${fatherNameController.text}');
-                          print('annualIncomeRs: ${fannualController.text}');
-                          print('occupation: ${selectFOccupation.value}');
-                          print('motherName: ${mothernameController.text}');
-                          print(
-                            'motherAnnualIncomeRs: ${mAnnualController.text}',
-                          );
-                          print('motherOccupation: ${selectMOccupation.value}');
-                          print('course: ${selectCourse.value}');
-                          print('category: ${selectCategory.value}');
-                          print(
-                            'domicileCertificatePath: ${domicilefilePath.value}',
-                          );
-                          print('casteCertificatePath: ${castefilePath.value}');
-                          print('bloodGroup: ${selectBloodGroup.value}');
-                          print('religion: ${selectReligon.value}');
-                          print('caste: ${selectCaste.value}');
-                          print('nationality: ${nationalityController.text}');
-                          print('examinationName: ${lastExmController.text}');
-                          print('institution: ${lastInstController.text}');
-                          print(
-                            'boardUniversity: ${BoarduniverController.text}',
-                          );
-                          print('passingYear: ${selectYear.value}');
-                          print('maximumMarks: ${mmController.text}');
-                          print('marksObtained: ${OmController.text}');
-                          print('marksPercentage: ${perController.text}');
-                          print(
-                            'fatherMobileNo: ${fatherMobileNoController.text}',
-                          );
-                          print(
-                            'motherMobileNumber: ${motherMobileNoCont.text}',
-                          );
-                          print(
-                            'presentAddress: ${presentAddressController.text}',
-                          );
-                          print('presentPincode: ${presentPinController.text}');
-                          print('presentNearRailway: ${NRSController.text}');
-                          print('presentNearPolice: ${NPSController.text}');
-                          print('addressProofPath: ${aadharfileName.value}');
-                          print(
-                            'permanentAddress: ${isChecked ? presentAddressController.text : permanentAddController.text}',
-                          );
-                          print(
-                            'permanentNearPolice: ${permanentNPSController.text}',
-                          );
-                          print(
-                            'permanentNearRailway: ${permanNRSController.text}',
-                          );
-                          print(
-                            'permanentPincode: ${permanentPinController.text}',
-                          );
-                          print('studentPhotoPath: ${candidatefilePath.value}');
-                          print(
-                            'studentSignaturePath: ${candidateSignaturefilePath.value}',
-                          );
-                          print(
-                            'interMarksheetPath: ${intermediatefilePath.value}',
                           );
                         }
                       } else {
@@ -1922,11 +1874,11 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         children: [
-          Obx(() {
-            return selectDegree.value == 'B.P.Ed'
-                ? SizedBox.shrink() // Hide SizedBox
-                : SizedBox(height: 20); // Show when not B.P.Ed
-          }),
+          // Obx(() {
+          //   return selectDegree.value == 'B.P.Ed'
+          //       ? SizedBox.shrink() // Hide SizedBox
+          //       : SizedBox(height: 20); // Show when not B.P.Ed
+          // }),
           Obx(() {
             if (selectDegree.value == 'B.P.Ed') {
               return SizedBox.shrink(); // Hides the widget
@@ -2078,7 +2030,8 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                   print("Selected path: ${aadharfilePath.value}");
                 }
               },
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "Aadhar Card",
@@ -2251,7 +2204,6 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
 
           SizedBox(height: 20),
 
-          SizedBox(height: 10),
           Obx(
             () => GestureDetector(
               onTap: () async {
@@ -2266,7 +2218,8 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                   print("Selected path: ${candidatefilePath.value}");
                 }
               },
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "Candidate Photo",
@@ -2318,7 +2271,6 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           ),
           SizedBox(height: 20),
 
-          SizedBox(height: 10),
           Obx(
             () => GestureDetector(
               onTap: () async {
@@ -2334,7 +2286,8 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                   print("Selected path: ${candidateSignaturefilePath.value}");
                 }
               },
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "Candidate Signature",
@@ -2446,12 +2399,13 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           //
           //high school mark
           Obx(() {
-            return selectDegree.value == 'B.P.Ed'
+            return selectDegree.value == 'B.P.Ed' || selectDegree.value == 'PG'
                 ? SizedBox(height: 20) // Hide SizedBox
                 : SizedBox.shrink(); // Show when not B.P.Ed
           }),
           Visibility(
-            visible: selectDegree.value == "B.P.Ed",
+            visible:
+                selectDegree.value == 'B.P.Ed' || selectDegree.value == 'PG',
             child: Text(
               "High School Marksheet*",
               style: GoogleFonts.poppins(
@@ -2460,12 +2414,13 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             ),
           ),
           Obx(() {
-            return selectDegree.value == 'B.P.Ed'
+            return selectDegree.value == 'B.P.Ed' || selectDegree.value == 'PG'
                 ? SizedBox(height: 10) // Hide SizedBox
                 : SizedBox.shrink(); // Show when not B.P.Ed
           }),
           Visibility(
-            visible: selectDegree.value == "B.P.Ed",
+            visible:
+                selectDegree.value == 'B.P.Ed' || selectDegree.value == 'PG',
             child: Obx(
               () => GestureDetector(
                 onTap: () async {

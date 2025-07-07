@@ -241,6 +241,9 @@ class _RegistrationDetailsPageState extends State<RegistrationDetailsPage> {
                         await signupController.createOrderByRazorPay();
 
                         var paymentInfo = signupController.paymentOrder.value;
+                        print(paymentInfo.amountPaid.toString());
+                        print(paymentInfo.amountPaid.toString());
+                        print(paymentInfo.razorKey.toString());
 
                         // 2. Defensive check (handle null safely)
                         if (paymentInfo.amountPaid == null ||

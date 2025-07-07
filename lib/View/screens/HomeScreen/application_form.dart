@@ -1,8 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+
 import 'package:flutter/services.dart';
+
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart' as pw;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lcdc_mobile_app/View/screens/HomeScreen/new_home_screen.dart';
 import 'package:lcdc_mobile_app/modal/RequestModal/student_threeStepFrom_request.dart';
@@ -19,6 +23,10 @@ class ApplicationFormPage extends StatefulWidget {
 }
 
 class _ApplicationFormPageState extends State<ApplicationFormPage> {
+  bool ifUGselected = true;
+  bool ifPGselected = true;
+  bool ifBPEDselected = true;
+
   Future<void> printDocument({
     required StudentRegistrationModel formDetail,
   }) async {
@@ -31,23 +39,29 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
     final pw.MemoryImage logo = await imageFromAssetBundle(
       'assets/images/lcdc_logo.png',
     );
-    final pw.MemoryImage stude = await loadFileImage(
-      formDetail.studentPhotoPath!,
+    final pw.MemoryImage? stude = await loadFileImage(
+      formDetail.studentPhotoPath,
     );
-    final pw.MemoryImage inter = await loadFileImage(
-      formDetail.interMarksheetPath!,
+    final pw.MemoryImage? inter = await loadFileImage(
+      formDetail.interMarksheetPath,
     );
-    final pw.MemoryImage sign = await loadFileImage(
-      formDetail.studentSignaturePath!,
+    final pw.MemoryImage? sign = await loadFileImage(
+      formDetail.studentSignaturePath,
     );
-    final pw.MemoryImage addproof = await loadFileImage(
-      formDetail.addressProofPath!,
+    final pw.MemoryImage? addproof = await loadFileImage(
+      formDetail.addressProofPath,
+    );
+    final pw.MemoryImage? graduation = await loadFileImage(
+      formDetail.graduationMarksPath,
+    );
+    final pw.MemoryImage? highSchool = await loadFileImage(
+      formDetail.highschoolMarksheet,
     );
     final pdf = pw.Document();
 
     pdf.addPage(
       pw.MultiPage(
-        margin: pw.EdgeInsets.all(5),
+        margin: pw.EdgeInsets.all(10),
         pageFormat: PdfPageFormat.a4,
         build:
             (pw.Context context) => [
@@ -63,19 +77,19 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
                       pw.SizedBox(width: 10),
                       pw.Column(
                         mainAxisAlignment: pw.MainAxisAlignment.center,
-                        crossAxisAlignment: pw.CrossAxisAlignment.center,
+                        crossAxisAlignment: pw.CrossAxisAlignment.start,
                         children: [
                           pw.Text(
                             "LUCKNOW CHRISTIAN COLLEGE",
                             style: pw.TextStyle(
-                              fontSize: 10,
+                              fontSize: 18,
                               fontWeight: pw.FontWeight.bold,
                             ),
                           ),
                           pw.Text(
                             "(AN ASSOCIATE POST GRADUATE COLLEGE OF LUCKNOW UNIVERSITY)",
                             style: pw.TextStyle(
-                              fontSize: 6,
+                              fontSize: 8,
                               fontWeight: pw.FontWeight.bold,
                             ),
                           ),
@@ -86,10 +100,10 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
 
                   pw.SizedBox(height: 5),
                   pw.Text(
-                    "APPLICATION FOR ADMISSION\nSESSION : 2025–2026\nB.A. Semester - 1\nLURN : dgdsagsa\nPayment Type: Online",
+                    "APPLICATION FOR ADMISSION\nSESSION : 2025-2026\nB.A. Semester - 1\nLURN : dgdsagsa\nPayment Type: Online",
                     textAlign: pw.TextAlign.center,
                     style: pw.TextStyle(
-                      fontSize: 5,
+                      fontSize: 8,
                       fontWeight: pw.FontWeight.bold,
                     ),
                   ),
@@ -98,7 +112,7 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
                     "Payment Id: pay_0ca6988NuvTFMsH (02-07-2025 11:50:34)",
                     textAlign: pw.TextAlign.center,
                     style: pw.TextStyle(
-                      fontSize: 5,
+                      fontSize: 8,
                       fontWeight: pw.FontWeight.bold,
                     ),
                   ),
@@ -124,7 +138,7 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
                               formDetail.candidateName.toString(),
                             ),
                             pdfsave(
-                              "3. Father’s Name",
+                              "3. Father's Name",
                               formDetail.fatherName.toString(),
                             ),
                             pdfsave(
@@ -136,7 +150,7 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
                               formDetail.occupation.toString(),
                             ),
                             pdfsave(
-                              "6. Mother’s Name",
+                              "6. Mother's Name",
                               formDetail.motherName.toString(),
                             ),
                             pdfsave(
@@ -229,11 +243,11 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
                               formDetail.aadharId.toString(),
                             ),
                             pdfsave(
-                              "30. Father Mobile",
+                              "30. Father's Mobile",
                               formDetail.fatherMobileNo.toString(),
                             ),
                             pdfsave(
-                              "31. Mother Mobile",
+                              "31. Mother's Mobile",
                               formDetail.motherMobileNumber.toString(),
                             ),
                             // add all rows similarly...
@@ -244,65 +258,299 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
                       pw.Column(
                         children: [
                           // pw.Image(student as pw.ImageProvider),
-                          pw.Image(stude, height: 100, width: 80),
-                          pw.SizedBox(height: 5),
-                          pw.Text(
-                            "Candidate Photo",
-                            style: pw.TextStyle(
-                              fontSize: 8,
-                              fontWeight: pw.FontWeight.bold,
+                          if (stude != null)
+                            pw.Column(
+                              children: [
+                                pw.ClipRRect(
+                                  horizontalRadius: 5,
+                                  verticalRadius: 5,
+
+                                  child: pw.Image(stude, height: 144, width: 144),
+                                ),
+
+                                pw.Text(
+                                  "Candidate Photo",
+                                  style: pw.TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: pw.FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
+                          // pw.SizedBox(height: 10),
+                          // pw.Column(
+                          //   children: [
+                          //     // pw.Image(intmark as pw.ImageProvider),
+                          //     if (inter != null)
+                          //       pw.Column(
+                          //         children: [
+                          //           pw.ClipRRect(
+                          //             horizontalRadius: 5,
+                          //             verticalRadius: 5,
+                          //             child: pw.Image(
+                          //               inter,
+                          //               height: 50,
+                          //               width: 80,
+                          //             ),
+                          //           ),
+                          //           pw.Image(inter, height: 50, width: 80),
+                          //           pw.Text(
+                          //             "Intermediate Marksheet",
+                          //             style: pw.TextStyle(
+                          //               fontSize: 8,
+                          //               fontWeight: pw.FontWeight.bold,
+                          //             ),
+                          //           ),
+                          //         ],
+                          //       ),
+                          //   ],
+                          // ),
+                          // pw.SizedBox(height: 10),
+                          // pw.Column(
+                          //   children: [
+                          //     // pw.Image(intmark as pw.ImageProvider),
+                          //     if (graduation != null)
+                          //       pw.Column(
+                          //         children: [
+                          //           pw.ClipRRect(
+                          //             horizontalRadius: 5,
+                          //             verticalRadius: 5,
+                          //             child: pw.Image(
+                          //               graduation,
+                          //               height: 50,
+                          //               width: 80,
+                          //             ),
+                          //           ),
+
+                          //           pw.Text(
+                          //             "Graduation Marksheet",
+                          //             style: pw.TextStyle(
+                          //               fontSize: 8,
+                          //               fontWeight: pw.FontWeight.bold,
+                          //             ),
+                          //           ),
+                          //         ],
+                          //       ),
+                          //   ],
+                          // ),
+                          // pw.SizedBox(height: 10),
+                          // pw.Column(
+                          //   children: [
+                          //     // pw.Image(intmark as pw.ImageProvider),
+                          //     if (highSchool != null)
+                          //       pw.Column(
+                          //         children: [
+                          //           pw.ClipRRect(
+                          //             horizontalRadius: 5,
+                          //             verticalRadius: 5,
+                          //             child: pw.Image(
+                          //               highSchool,
+                          //               height: 50,
+                          //               width: 80,
+                          //             ),
+                          //           ),
+
+                          //           pw.Text(
+                          //             "HighSchool Marksheet",
+                          //             style: pw.TextStyle(
+                          //               fontSize: 8,
+                          //               fontWeight: pw.FontWeight.bold,
+                          //             ),
+                          //           ),
+                          //         ],
+                          //       ),
+                          //   ],
+                          // ),
+                          // pw.SizedBox(height: 10),
+                          // pw.Column(
+                          //   children: [
+                          //     // pw.Image(addpath as pw.ImageProvider),
+                          //     if (addproof != null)
+                          //       pw.Column(
+                          //         children: [
+                          //           pw.ClipRRect(
+                          //             horizontalRadius: 5,
+                          //             verticalRadius: 5,
+                          //             child: pw.Image(
+                          //               addproof,
+                          //               height: 50,
+                          //               width: 80,
+                          //             ),
+                          //           ),
+
+                          //           pw.Text(
+                          //             "Address Proof",
+                          //             style: pw.TextStyle(
+                          //               fontSize: 8,
+                          //               fontWeight: pw.FontWeight.bold,
+                          //             ),
+                          //           ),
+                          //         ],
+                          //       ),
+                          //   ],
+                          // ),
                         ],
                       ),
                     ],
                   ),
 
-                  pw.SizedBox(height: 8),
+                  pw.SizedBox(height: 10),
 
                   pw.Row(
-                    mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
                     children: [
                       pw.Column(
                         children: [
                           // pw.Image(intmark as pw.ImageProvider),
-                          pw.Image(inter, height: 50, width: 80),
-                          pw.Text(
-                            "Intermediate Marksheet",
-                            style: pw.TextStyle(
-                              fontSize: 8,
-                              fontWeight: pw.FontWeight.bold,
+                          if (inter != null)
+                            pw.Column(
+                              children: [
+                                pw.ClipRRect(
+                                  horizontalRadius: 5,
+                                  verticalRadius: 5,
+                                  child: pw.Image(inter, height: 50, width: 80),
+                                ),
+
+                                pw.Text(
+                                  "Intermediate Marksheet",
+                                  style: pw.TextStyle(
+                                    fontSize: 8,
+                                    fontWeight: pw.FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
+                        ],
+                      ),
+                      pw.Column(
+                        children: [
+                          // pw.Image(intmark as pw.ImageProvider),
+                          if (graduation != null)
+                            pw.Column(
+                              children: [
+                                pw.ClipRRect(
+                                  horizontalRadius: 5,
+                                  verticalRadius: 5,
+                                  child: pw.Image(
+                                    graduation,
+                                    height: 50,
+                                    width: 80,
+                                  ),
+                                ),
+
+                                pw.Text(
+                                  "Graduation Marksheet",
+                                  style: pw.TextStyle(
+                                    fontSize: 8,
+                                    fontWeight: pw.FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                        ],
+                      ),
+                      pw.Column(
+                        children: [
+                          // pw.Image(intmark as pw.ImageProvider),
+                          if (highSchool != null)
+                            pw.Column(
+                              children: [
+                                pw.ClipRRect(
+                                  horizontalRadius: 5,
+                                  verticalRadius: 5,
+                                  child: pw.Image(
+                                    highSchool,
+                                    height: 50,
+                                    width: 80,
+                                  ),
+                                ),
+
+                                pw.Text(
+                                  "HighSchool Marksheet",
+                                  style: pw.TextStyle(
+                                    fontSize: 8,
+                                    fontWeight: pw.FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
                         ],
                       ),
                       pw.Column(
                         children: [
                           // pw.Image(addpath as pw.ImageProvider),
-                          pw.Image(addproof, height: 50, width: 80),
-                          pw.Text(
-                            "Address Proof",
-                            style: pw.TextStyle(
-                              fontSize: 8,
-                              fontWeight: pw.FontWeight.bold,
+                          if (addproof != null)
+                            pw.Column(
+                              children: [
+                                pw.ClipRRect(
+                                  horizontalRadius: 5,
+                                  verticalRadius: 5,
+                                  child: pw.Image(
+                                    addproof,
+                                    height: 50,
+                                    width: 80,
+                                  ),
+                                ),
+
+                                pw.Text(
+                                  "Address Proof",
+                                  style: pw.TextStyle(
+                                    fontSize: 8,
+                                    fontWeight: pw.FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
                         ],
                       ),
                     ],
                   ),
-
-                  pw.SizedBox(height: 8),
-
-                  pw.Text(
-                    "I certify that the particulars given by me in this Application Form are correct to the best of my knowledge and belief; any mistake/misinformation detected at the time of counseling or at any later stage will result in the cancellation of my Admission. I have carefully read the information/Prospectus of LCDC-2025-2026 and agree to abide by the terms and conditions laid down therein. Further, it is entirely my responsibility for admission to Under Graduate Courses of B.A./B.Sc.(Maths)/B.Sc.(Bio)/B.Com in respect of qualification and entitlement for admission against reserved category, if claimed, should be to the satisfaction of LCDC. Further, I undertake that I will be visiting the website (http://lcdc.edu.in) regularly for any information and I declare that all the information regarding Online Admission of LCDC-2025-2026, provided on the college website will be treated as served. I also understand that the application fees paid will not be refunded at any cost.",
-                    textAlign: pw.TextAlign.justify,
-                    style: pw.TextStyle(
-                      fontSize: 6,
-                      fontWeight: pw.FontWeight.bold,
+                  // pw.SizedBox(height: 8),
+                  if (formDetail.course!.contains('B.A') ||
+                      formDetail.course!.contains('B.Com') ||
+                      formDetail.course!.contains('B.Sc(Bio)') ||
+                      formDetail.course!.contains('B.Sc(Maths)')) ...[
+                    pw.Padding(
+                      padding: pw.EdgeInsets.all(2),
+                      child: pw.Text(
+                        "I certify that the particulars given by me in this Application Form are correct to the best of my knowledge and belief; any mistake/misinformation detected at the time of counseling or at any later stage will result in the cancellation of my Admission. I have carefully read the information/Prospectus of LCDC-2025-2026 and agree to abide by the terms and conditions laid down therein. Further, it is entirely my responsibility for admission to Under Graduate Courses of B.A./B.Sc.(Maths)/B.Sc.(Bio)/B.Com in respect of qualification and entitlement for admission against reserved category, if claimed, should be to the satisfaction of LCDC. Further, I undertake that I will be visiting the website (http://lcdc.edu.in) regularly for any information and I declare that all the information regarding Online Admission of LCDC-2025-2026, provided on the college website will be treated as served. I also understand that the application fees paid will not be refunded at any cost.",
+                        textAlign: pw.TextAlign.justify,
+                        style: pw.TextStyle(
+                          fontSize: 5,
+                          fontWeight: pw.FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  ),
-                  pw.SizedBox(height: 10),
+                  ],
+                  if (formDetail.course!.contains('M.A. (English)') ||
+                      formDetail.course!.contains('M.Sc.(Chemistry)')) ...[
+                    pw.Padding(
+                      padding: pw.EdgeInsets.all(2),
+                      child: pw.Text(
+                        "I certify that the particulars given by me in this Application Form are correct to the best of my knowledge and belief; any mistake/misinformation detected at the time of counseling or at any later stage will result in the cancellation of my Admission. I have carefully read the information/Prospectus of LCDC-2025-2026 and agree to abide by the terms and conditions laid down therein. Further, it is entirely my responsibility for admission to Post Graduate Courses of M.Sc.(Chemistry)/M.A.(English) in respect of qualification and entitlement for admission against reserved category, if claimed, should be to the satisfaction of LCDC. Further, I undertake that I will be visiting the website (http://lcdc.edu.in) regularly for any information and I declare that all the information regarding Online Admission of LCDC-2025-2026, provided on the college website will be treated as served. I also understand that the application fees paid will not be refunded at any cost.",
+                        textAlign: pw.TextAlign.justify,
+                        style: pw.TextStyle(
+                          fontSize: 5,
+                          fontWeight: pw.FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                  if (formDetail.course!.contains('B.P.Ed.')) ...[
+                    pw.Padding(
+                      padding: pw.EdgeInsets.all(2),
+                      child: pw.Text(
+                        "I hereby declare that all the above information given by me is true and accurate. There is no criminal case pending in any court of Law against me. If any information is found incorrect or misleading, my candidature shall be liable to be cancellation by the College at any time and I shall not be entitled for refund of any fee paid by me to the College.",
+                        textAlign: pw.TextAlign.justify,
+                        style: pw.TextStyle(
+                          fontSize: 5,
+                          fontWeight: pw.FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+
+                  pw.SizedBox(height: 2),
                   pw.Text(
                     "Your Application form submission process is completed successfully...",
                     style: pw.TextStyle(
@@ -310,20 +558,30 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
                       fontWeight: pw.FontWeight.bold,
                     ),
                   ),
-                  pw.SizedBox(height: 10),
+                  pw.SizedBox(height: 5),
                   pw.Align(
                     alignment: pw.Alignment.centerRight,
                     child: pw.Column(
                       children: [
                         // pw.Image(sign as pw.ImageProvider),
-                        pw.Image(sign, height: 35),
-                        pw.Text(
-                          "Full Signature of the Student",
-                          style: pw.TextStyle(
-                            fontSize: 8,
-                            fontWeight: pw.FontWeight.bold,
+                        if (sign != null)
+                          pw.Column(
+                            children: [
+                              pw.ClipRRect(
+                                horizontalRadius: 5,
+                                verticalRadius: 5,
+                                child: pw.Image(sign, height: 20, width: 80),
+                              ),
+
+                              pw.Text(
+                                "Full Signature of the Student",
+                                style: pw.TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: pw.FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
                       ],
                     ),
                   ),
@@ -345,7 +603,7 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
           padding: const pw.EdgeInsets.only(left: 20, right: 100),
           child: pw.Text(
             label,
-            style: pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold),
+            style: pw.TextStyle(fontSize:8, fontWeight: pw.FontWeight.bold),
           ),
         ),
 
@@ -369,10 +627,20 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
     }
   }
 
-  Future<pw.MemoryImage> loadFileImage(String filePath) async {
-    final File file = File(filePath);
-    final Uint8List bytes = await file.readAsBytes();
-    return pw.MemoryImage(bytes);
+  // Future<pw.MemoryImage> loadFileImage(String filePath) async {
+  //   final File file = File(filePath);
+  //   final Uint8List bytes = await file.readAsBytes();
+  //   return pw.MemoryImage(bytes);
+  // }
+  Future<pw.MemoryImage?> loadFileImage(String? path) async {
+    if (path == null || path.isEmpty) return null;
+
+    final file = File(path);
+    if (await file.exists()) {
+      final bytes = await file.readAsBytes();
+      return pw.MemoryImage(bytes);
+    }
+    return null;
   }
 
   Future<pw.MemoryImage> imageFromAssetBundle(String path) async {
@@ -576,12 +844,43 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Column(
-                children: [
-                  buildCandidatePhoto(formDetail.interMarksheetPath),
+              Visibility(
+                visible:
+                    formDetail.course!.contains('B.A') ||
+                    formDetail.course!.contains('B.Com') ||
+                    formDetail.course!.contains('B.Sc(Bio)') ||
+                    formDetail.course!.contains('B.Sc(Maths)'),
+                child: Column(
+                  children: [
+                    buildCandidatePhoto(formDetail.interMarksheetPath),
 
-                  const Text("Intermediate Marksheet"),
-                ],
+                    const Text("Certificate"),
+                  ],
+                ),
+              ),
+              Visibility(
+                visible:
+                    formDetail.course!.contains('M.A.(English)') ||
+                    formDetail.course!.contains('M.Sc.(Chemistry)'),
+                child: Column(
+                  children: [
+                    buildCandidatePhoto(formDetail.graduationMarksPath),
+
+                    const Text("UG Certificate"),
+                  ],
+                ),
+              ),
+              Visibility(
+                visible:
+                    formDetail.course!.contains('M.A. (English)') ||
+                    formDetail.course!.contains('M.Sc.(Chemistry)'),
+                child: Column(
+                  children: [
+                    buildCandidatePhoto(formDetail.highschoolMarksheet),
+
+                    const Text("10th Certificate"),
+                  ],
+                ),
               ),
               Column(
                 children: [
@@ -611,8 +910,8 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
           ),
           Visibility(
             visible:
-                formDetail.course!.contains('M.A(English)') ||
-                formDetail.course!.contains('M.Sc(Chemistry)'),
+                formDetail.course!.contains('M.A. (English)') ||
+                formDetail.course!.contains('M.Sc.(Chemistry)'),
 
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),

@@ -195,6 +195,9 @@ class ApiService {
         'studentphoto',
         'studentsignature',
         'intermarksheet',
+        'highschoolmarksheet',
+        'graduatemarksheet',
+        'ugparttwomarksheet'
       ];
 
       for (String key in fileFields) {
