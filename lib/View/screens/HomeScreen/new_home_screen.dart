@@ -9,7 +9,9 @@ import 'package:lcdc_mobile_app/View/screens/HomeScreen/home_controller.dart';
 import 'package:lcdc_mobile_app/constant/customWidget.dart';
 import 'package:lcdc_mobile_app/modal/RequestModal/student_threeStepFrom_request.dart';
 import 'package:path/path.dart' as p;
+import 'package:url_launcher/url_launcher.dart';
 import '../signupPage/signup_controller.dart';
+import 'package:url_launcher/link.dart';
 
 class ThreeStepForm extends StatefulWidget {
   @override
@@ -110,6 +112,24 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
   HomeController homeController = Get.put(HomeController());
   StudentRegistrationModel mdl = StudentRegistrationModel();
 
+  void launchURL() async {
+    final Uri url = Uri.parse("https://lkounivadm.samarth.edu.in/");
+    if (!await launchUrl(url, mode: LaunchMode.inAppWebView)) {
+      throw 'Could not launch $url';
+    }
+  }
+
+  void launchURLforImageResize() async {
+    final Uri url = Uri.parse("https://image.pi7.org/compress-image-to-100kb");
+    if (!await launchUrl(url, mode: LaunchMode.inAppWebView)) {
+      throw 'Could not launch $url';
+    }
+  }
+
+  Map<String, String> domicileDisplayMap = {
+    'UP': 'UP',
+    'OtherThansUP': 'Other than UP',
+  };
   @override
   void initState() {
     super.initState();
@@ -137,6 +157,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
       final formDetail = StudentRegistrationModel.fromJson(storedData);
       loadFormDataForEdit(formDetail);
       selectCategory.value = formDetail.category ?? "";
+      box.remove('formData');
     }
   }
 
@@ -199,8 +220,10 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
       formDetail.highschoolMarksheet ?? "",
     );
     highSchMarkfilePath.value = formDetail.highschoolMarksheet ?? "";
-    gra2yrfileName.value = p.basename(formDetail.graduationMarksPath ?? "");
-    gra2yrfilePath.value = formDetail.graduationMarksPath ?? "";
+    graduatinMarkfileName.value = p.basename(
+      formDetail.graduationMarksPath ?? "",
+    );
+    graduatinMarkfilePath.value = formDetail.graduationMarksPath ?? "";
     ugpart2fileName.value = p.basename(formDetail.ugPart2SemMarksheet ?? "");
     ugpart2filePath.value = formDetail.ugPart2SemMarksheet ?? "";
   }
@@ -326,8 +349,8 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                               motherOccupation: selectMOccupation.value,
                               course: selectCourse.value,
                               category: selectCategory.value,
-                              domicileCertificatePath: domicilefilePath.value,
-                              casteCertificatePath: castefilePath.value,
+                              // domicileCertificatePath: domicilefilePath.value,
+                              // casteCertificatePath: castefilePath.value,
                               bloodGroup: selectBloodGroup.value,
                               religion: selectReligon.value,
                               caste: selectCaste.value,
@@ -346,6 +369,32 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                               presentNearRailway: NRSController.text,
                               presentNearPolice: NPSController.text,
                               addressProofPath: aadharfilePath.value,
+                              alreadystudent:
+                                  selectDegree.value == "BPED"
+                                      ? selectStudent.value
+                                      : null,
+                              candidateDomicile:
+                                  selectDegree.value == "BPED"
+                                      ? selectDomicile.value
+                                      : null,
+                              nameOfGame:
+                                  selectDegree.value == "BPED"
+                                      ? GparticipatedController.text
+                                      : null,
+                              levelofparticipation:
+                                  selectDegree.value == "BPED"
+                                      ? selectLevel.value
+                                      : null,
+                              positionheld:
+                                  selectDegree.value == "BPED"
+                                      ? selectPosition.value
+                                      : null,
+                              skillTest:
+                                  selectDegree.value == "BPED"
+                                      ? selectSkillTest.value
+                                      : null,
+
+                              // sportscertificate: ,
                               permanentAddress:
                                   isChecked
                                       ? presentAddressController.text
@@ -361,18 +410,36 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                                   selectDegree.value == 'UG'
                                       ? intermediatefilePath.value
                                       : null,
+                              domicileCertificatePath:
+                                  selectDegree.value == 'UG' ||
+                                          selectDegree.value == "PG"
+                                      ? domicilefilePath.value
+                                      : null,
+                              casteCertificatePath:
+                                  selectDegree.value == 'UG' ||
+                                          selectDegree.value == "PG" ||
+                                          selectDegree.value == "BPED"
+                                      ? castefilePath.value
+                                      : null,
                               highschoolMarksheet:
-                                  selectDegree.value == 'PG'
+                                  selectDegree.value == 'PG' ||
+                                          selectDegree.value == "BPED"
                                       ? highSchMarkfilePath.value
                                       : null,
                               graduationMarksPath:
-                                  selectDegree.value == 'PG'
+                                  selectDegree.value == 'PG' ||
+                                          selectDegree.value == "BPED"
                                       ? graduatinMarkfilePath.value
                                       : null,
                               ugPart2SemMarksheet:
                                   selectDegree.value == 'PG'
                                       ? ugpart2filePath.value
                                       : null,
+                              sportscertificate:
+                                  selectDegree.value == 'BPED'
+                                      ? gamefilePath.value
+                                      : null,
+                                  
                             ),
                           );
                         }
@@ -508,6 +575,16 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             iconColor: Colors.blue,
 
             action: TextInputAction.next,
+          ),
+          SizedBox(height: 5),
+          GestureDetector(
+            onTap: () {
+              launchURL();
+            },
+            child: Text(
+              "Proceed to Generate LURN",
+              style: TextStyle(color: Colors.redAccent),
+            ),
           ),
           SizedBox(height: 20),
           // Dropdown for Registration No
@@ -772,14 +849,14 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             ),
           ),
           Obx(() {
-            return selectDegree.value == 'B.P.Ed'
+            return selectDegree.value == 'BPED'
                 ? SizedBox(height: 20) // Hide SizedBox
                 : SizedBox.shrink(); // Show when not B.P.Ed
           }), // Hide SizedBox
           // Show when not B.P.Ed
           Obx(
             () => Visibility(
-              visible: selectDegree.value == "B.P.Ed",
+              visible: selectDegree.value == "BPED",
               child: CustomWidgets.customTextFeild(
                 context: context,
                 label: 'Father mobile',
@@ -823,14 +900,14 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             action: TextInputAction.next,
           ),
           Obx(() {
-            return selectDegree.value == 'B.P.Ed'
+            return selectDegree.value == 'BPED'
                 ? SizedBox(height: 20) // Hides the widget
                 : SizedBox.shrink(); // Show when not B.P.Ed
           }),
 
           Obx(
             () => Visibility(
-              visible: selectDegree.value == "B.P.Ed",
+              visible: selectDegree.value == "BPED",
               child: CustomWidgets.customTextFeild(
                 context: context,
                 label: 'Nationality',
@@ -924,13 +1001,13 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             ),
           ),
           Obx(() {
-            return selectDegree.value == 'B.P.Ed'
+            return selectDegree.value == 'BPED'
                 ? SizedBox(height: 20) // Hide SizedBox
                 : SizedBox.shrink(); // Show when not B.P.Ed
           }), // Hide SizedBox
           // Show when not B.P.Ed
           Obx(() {
-            if (selectDegree.value == 'B.P.Ed') {
+            if (selectDegree.value == 'BPED') {
               return CustomWidgets.customTextFeild(
                 context: context,
                 label: 'Mother Mobile',
@@ -1018,7 +1095,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           ),
           Obx(
             () => Visibility(
-              visible: selectDegree.value == "B.P.Ed",
+              visible: selectDegree.value == "BPED",
               child: CustomWidgets.customDropdownField(
                 context: context,
                 items: signupController.bpedCourse,
@@ -1048,7 +1125,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           SizedBox(height: 20),
 
           Obx(() {
-            if (selectDegree.value == 'B.P.Ed') {
+            if (selectDegree.value == 'BPED') {
               return SizedBox.shrink(); // Hides the widget
             }
 
@@ -1080,21 +1157,23 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           }),
 
           Obx(() {
-            return selectDegree.value == 'B.P.Ed'
+            return selectDegree.value == 'BPED'
                 ? SizedBox.shrink() // Hide SizedBox
                 : SizedBox(height: 20); // Show when not B.P.Ed
           }),
           Obx(
             () => Visibility(
-              visible: selectDegree.value == "B.P.Ed",
+              visible: selectDegree.value == "BPED",
               child: CustomWidgets.customDropdownField(
                 context: context,
                 label: 'Domicile Certificate',
-                items: domicile,
+                items: homeController.stdDomicile,
+
                 selectedItem:
-                    domicile.contains(selectDomicile.value)
+                    homeController.stdDomicile.contains(selectDomicile.value)
                         ? selectDomicile.value
                         : null,
+                // selectedItem: domicileDisplayMap[selectDomicile.value] ?? selectDomicile.value,
                 onChanged: (value) {
                   if (value != null) {
                     selectDomicile.value = value;
@@ -1114,14 +1193,14 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             ),
           ),
           Obx(() {
-            if (selectDegree.value == 'B.P.Ed') {
+            if (selectDegree.value == 'BPED') {
               return SizedBox(height: 20); // Hides the widget
             }
             return SizedBox.shrink();
           }), // Show when not B.P.Ed}),
 
           Obx(() {
-            if (selectDegree.value == 'B.P.Ed') {
+            if (selectDegree.value == 'BPED') {
               return SizedBox.shrink(); // Hides the widget
             }
             return Padding(
@@ -1136,7 +1215,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           }),
           Obx(() {
             // Replace this with your actual selected course variable
-            if (selectDegree.value == 'B.P.Ed') {
+            if (selectDegree.value == 'BPED') {
               return SizedBox.shrink(); // Hides the widget
             }
 
@@ -1200,7 +1279,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
 
           SizedBox(height: 20),
           Obx(() {
-            if (selectDegree.value == 'B.P.Ed') {
+            if (selectDegree.value == 'BPED') {
               return SizedBox.shrink(); // Hides the widget
             }
 
@@ -1302,12 +1381,12 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             ),
           ),
           Visibility(
-            visible: selectDegree.value == "B.P.Ed",
+            visible: selectDegree.value == "BPED",
             child: SizedBox(height: 20),
           ),
 
           Visibility(
-            visible: selectDegree.value == "B.P.Ed",
+            visible: selectDegree.value == "BPED",
             child: CustomWidgets.customTextFeild(
               context: context,
               label: 'Category',
@@ -1329,9 +1408,9 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           ),
           SizedBox(height: 20),
           Obx(() {
-            if (selectDegree.value == 'B.P.Ed') {
-              return SizedBox.shrink(); // Hides the widget
-            }
+            // if (selectDegree.value == 'BPED') {
+            //   return SizedBox.shrink(); // Hides the widget
+            // }
 
             return CustomWidgets.customDropdownField(
               context: context,
@@ -1358,8 +1437,9 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               suffixIcon: Image.asset("assets/images/dropArrow.png"),
             );
           }),
+          SizedBox(height: 20),
           Obx(() {
-            return selectDegree.value == 'B.P.Ed'
+            return selectDegree.value == 'BPED'
                 ? SizedBox.shrink() // Hide SizedBox
                 : SizedBox(height: 20); // Show when not B.P.Ed
           }),
@@ -1393,18 +1473,19 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
 
           //Bped for skill test
           Obx(() {
-            return selectDegree.value == 'B.P.Ed'
+            return selectDegree.value == 'BPED'
                 ? SizedBox(height: 20) // Hide SizedBox
                 : SizedBox.shrink(); // Show when not B.P.Ed
           }),
 
           Obx(() {
-            if (selectDegree.value == 'B.P.Ed') {
+            if (selectDegree.value == 'BPED') {
               return CustomWidgets.customDropdownField(
                 context: context,
-                items: ["1st", "2nd", "3rd", "4th"],
+                items: homeController.skillTest,
+                label: 'Skill Test',
                 selectedItem:
-                    ["1st", "2nd", "3rd", "4th"].contains(selectSkillTest.value)
+                    homeController.skillTest.contains(selectSkillTest.value)
                         ? selectSkillTest.value
                         : null,
                 onChanged: (value) {
@@ -1429,12 +1510,12 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
 
           //
           Obx(() {
-            return selectDegree.value == 'B.P.Ed'
+            return selectDegree.value == 'BPED'
                 ? SizedBox.shrink() // Hide SizedBox
                 : SizedBox(height: 20); // Show when not B.P.Ed
           }),
           Obx(() {
-            if (selectDegree.value == 'B.P.Ed') {
+            if (selectDegree.value == 'BPED') {
               return SizedBox.shrink(); // Hides the widget
             }
 
@@ -1618,12 +1699,12 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             ),
           ),
           Obx(() {
-            return selectDegree.value == 'B.P.Ed'
+            return selectDegree.value == 'BPED'
                 ? SizedBox(height: 20) // Hide SizedBox
                 : SizedBox.shrink(); // Show when not B.P.Ed
           }),
           Visibility(
-            visible: selectDegree.value == "B.P.Ed",
+            visible: selectDegree.value == "BPED",
             child: CustomWidgets.customTextFeild(
               context: context,
               label: 'Name of Game Participated**',
@@ -1646,7 +1727,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           Padding(
             padding: const EdgeInsets.only(top: 5.0),
             child: Visibility(
-              visible: selectDegree.value == "B.P.Ed",
+              visible: selectDegree.value == "BPED",
               child: Align(
                 alignment: Alignment.centerRight,
                 child: Text(
@@ -1659,25 +1740,20 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             ),
           ),
           Obx(() {
-            return selectDegree.value == 'B.P.Ed'
+            return selectDegree.value == 'BPED'
                 ? SizedBox(height: 20) // Hide SizedBox
                 : SizedBox.shrink(); // Show when not B.P.Ed
           }),
 
           Obx(
             () => Visibility(
-              visible: selectDegree.value == "B.P.Ed",
+              visible: selectDegree.value == "BPED",
               child: CustomWidgets.customDropdownField(
                 context: context,
-                label: 'Lebel of Participation',
-                items: ["1st-level", "2nd-level", "3rd-level", "4th-level"],
+                label: 'Level of Participation',
+                items: homeController.lvlOfPtn,
                 selectedItem:
-                    [
-                          "1st-level",
-                          "2nd-level",
-                          "3rd-level",
-                          "4th-level",
-                        ].contains(selectLevel.value)
+                    homeController.lvlOfPtn.contains(selectLevel.value)
                         ? selectLevel.value
                         : null,
                 onChanged: (value) {
@@ -1692,36 +1768,27 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                   }
                   return null;
                 },
-                hint: 'Lebel of Participation*',
+                hint: 'Level of Participation*',
                 icon: Image.asset("assets/images/course.png"),
                 suffixIcon: Image.asset("assets/images/dropArrow.png"),
               ),
             ),
           ),
           Obx(() {
-            return selectDegree.value == 'B.P.Ed'
+            return selectDegree.value == 'BPED'
                 ? SizedBox(height: 20) // Hide SizedBox
                 : SizedBox.shrink(); // Show when not B.P.Ed
           }),
 
           Obx(
             () => Visibility(
-              visible: selectDegree.value == "B.P.Ed",
+              visible: selectDegree.value == "BPED",
               child: CustomWidgets.customDropdownField(
                 context: context,
-                items: [
-                  "1st-Position",
-                  "2nd-Position",
-                  "3rd-Position",
-                  "4th-Position",
-                ],
+                items: homeController.ptnHeld,
+                label: 'Position Held',
                 selectedItem:
-                    [
-                          "1st-Position",
-                          "2nd-Position",
-                          "3rd-Position",
-                          "4th-Position",
-                        ].contains(selectPosition.value)
+                    homeController.ptnHeld.contains(selectPosition.value)
                         ? selectPosition.value
                         : null,
                 onChanged: (value) {
@@ -1744,7 +1811,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           ),
 
           Visibility(
-            visible: selectDegree.value == "B.P.Ed",
+            visible: selectDegree.value == "BPED",
             child: Text(
               "*Only .jpg .jpeg .gif .png format and less than 100 kb file accepted.",
               style: GoogleFonts.poppins(
@@ -1753,95 +1820,103 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             ),
           ),
           Obx(() {
-            return selectDegree.value == 'B.P.Ed'
+            return selectDegree.value == 'BPED'
                 ? SizedBox(height: 20) // Hide SizedBox
                 : SizedBox.shrink(); // Show when not B.P.Ed
           }),
-          Visibility(
-            visible: selectDegree.value == "B.P.Ed",
-            child: Text(
-              "Upload 1 Game-Participation Certificate*",
-              style: GoogleFonts.poppins(
-                textStyle: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ),
+
           SizedBox(height: 10),
           Visibility(
-            visible: selectDegree.value == "B.P.Ed",
-            child: Obx(
-              () => GestureDetector(
-                onTap: () async {
-                  FilePickerResult? result = await FilePicker.platform
-                      .pickFiles(
-                        type: FileType.custom,
-                        allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
-                      );
+            visible: selectDegree.value == "BPED",
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Obx(
+                  () => GestureDetector(
+                    onTap: () async {
+                      FilePickerResult? result = await FilePicker.platform
+                          .pickFiles(
+                            type: FileType.custom,
+                            allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+                          );
 
-                  if (result != null) {
-                    gamefileName.value = result.files.single.name;
-                    gamefilePath.value = result.files.single.path ?? '';
-                    print("Selected path: ${gamefilePath.value}");
-                  }
-                },
-                child: Container(
-                  height: 55,
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey.shade400),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          gamefileName.value.isNotEmpty
-                              ? gamefileName.value
-                              : "Upload 1 Game-Participation Certificate*",
+                      if (result != null) {
+                        gamefileName.value = result.files.single.name;
+                        gamefilePath.value = result.files.single.path ?? '';
+                        print("Selected path: ${gamefilePath.value}");
+                      }
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Upload 1 Game-Participation Certificate',
                           style: TextStyle(
-                            color: Colors.black.withOpacity(0.7),
+                            color: Colors.white,
                             fontSize: 16,
+                            fontWeight: FontWeight.w600,
                           ),
-                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      Icon(Icons.upload_file, color: Colors.blue),
-                    ],
+                        SizedBox(height: 8),
+                        Container(
+                          height: 55,
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            border: Border.all(color: Colors.grey.shade400),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  gamefileName.value.isNotEmpty
+                                      ? gamefileName.value
+                                      : "Upload 1 Game-Participation Certificate*",
+                                  style: TextStyle(
+                                    color: Colors.black.withOpacity(0.7),
+                                    fontSize: 16,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Icon(Icons.upload_file, color: Colors.blue),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+                SizedBox(height: 10),
+                InkWell(
+                  onTap: () {
+                    launchURLforImageResize();
+                  },
+                  child: Text(
+                    'You can Resize Media using this click here',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
             ),
           ),
           Obx(() {
-            return selectDegree.value == 'B.P.Ed'
+            return selectDegree.value == 'BPED'
                 ? SizedBox(height: 20) // Hide SizedBox
-                : SizedBox.shrink(); // Show when not B.P.Ed
-          }),
-          Visibility(
-            visible: selectDegree.value == "B.P.Ed",
-            child: Text(
-              "Were You a Student of Lko. Christian Collage*",
-              style: GoogleFonts.poppins(
-                textStyle: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ),
-          Obx(() {
-            return selectDegree.value == 'B.P.Ed'
-                ? SizedBox(height: 10) // Hide SizedBox
                 : SizedBox.shrink(); // Show when not B.P.Ed
           }),
 
           Obx(
             () => Visibility(
-              visible: selectDegree.value == "B.P.Ed",
+              visible: selectDegree.value == "BPED",
               child: CustomWidgets.customDropdownField(
                 context: context,
-                items: ["Yes", "No"],
+                items: homeController.alyStudent,
+                label: 'Were You a Student of Lko. Christian Collage*',
                 selectedItem:
-                    ["Yes", "No"].contains(selectStudent.value)
+                    homeController.alyStudent.contains(selectStudent.value)
                         ? selectStudent.value
                         : null,
                 onChanged: (value) {
@@ -1880,7 +1955,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           //       : SizedBox(height: 20); // Show when not B.P.Ed
           // }),
           Obx(() {
-            if (selectDegree.value == 'B.P.Ed') {
+            if (selectDegree.value == 'BPED') {
               return SizedBox.shrink(); // Hides the widget
             }
             return CustomWidgets.customTextFeild(
@@ -1904,13 +1979,13 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             );
           }),
           Obx(() {
-            return selectDegree.value == 'B.P.Ed'
+            return selectDegree.value == 'BPED'
                 ? SizedBox.shrink() // Hide SizedBox
                 : SizedBox(height: 20); // Show when not B.P.Ed
           }),
 
           Obx(() {
-            if (selectDegree.value == 'B.P.Ed') {
+            if (selectDegree.value == 'BPED') {
               return SizedBox.shrink(); // Hides the widget
             }
             return CustomWidgets.customTextFeild(
@@ -1931,7 +2006,13 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               action: TextInputAction.next,
             );
           }),
-          SizedBox(height: 20),
+          // SizedBox(height: 20),
+          Obx(() {
+            if (selectDegree.value == "BPED") {
+              return SizedBox.shrink();
+            }
+            return SizedBox(height: 20);
+          }),
           CustomWidgets.customTextFeild(
             context: context,
             label: 'Present Address',
@@ -2204,63 +2285,79 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
 
           SizedBox(height: 20),
 
-          Obx(
-            () => GestureDetector(
-              onTap: () async {
-                FilePickerResult? result = await FilePicker.platform.pickFiles(
-                  type: FileType.custom,
-                  allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
-                );
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Obx(
+                () => GestureDetector(
+                  onTap: () async {
+                    FilePickerResult? result = await FilePicker.platform
+                        .pickFiles(
+                          type: FileType.custom,
+                          allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+                        );
 
-                if (result != null) {
-                  candidatefileName.value = result.files.single.name;
-                  candidatefilePath.value = result.files.single.path ?? '';
-                  print("Selected path: ${candidatefilePath.value}");
-                }
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Candidate Photo",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-
-                  Container(
-                    height: 55,
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey.shade400),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            candidatefileName.value.isNotEmpty
-                                ? candidatefileName.value
-                                : "Candidate Photo (jpg, png, gif)",
-                            style: TextStyle(
-                              color: Colors.black.withOpacity(0.7),
-                              fontSize: 16,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                    if (result != null) {
+                      candidatefileName.value = result.files.single.name;
+                      candidatefilePath.value = result.files.single.path ?? '';
+                      print("Selected path: ${candidatefilePath.value}");
+                    }
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Candidate Photo",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
-                        Icon(Icons.upload_file, color: Colors.blue),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 10),
+
+                      Container(
+                        height: 55,
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey.shade400),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                candidatefileName.value.isNotEmpty
+                                    ? candidatefileName.value
+                                    : "Candidate Photo (jpg, png, gif)",
+                                style: TextStyle(
+                                  color: Colors.black.withOpacity(0.7),
+                                  fontSize: 16,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Icon(Icons.upload_file, color: Colors.blue),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+              SizedBox(height: 10),
+              InkWell(
+                onTap: () {
+                  launchURLforImageResize();
+                },
+                child: Text(
+                  "You can Resize Media using this click here",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
           ),
           SizedBox(height: 10),
           Text(
@@ -2331,26 +2428,26 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           ),
           //Graduation 2nd
           Obx(() {
-            return selectDegree.value == 'B.P.Ed'
+            return selectDegree.value == 'BPED'
                 ? SizedBox(height: 20) // Hide SizedBox
                 : SizedBox.shrink(); // Show when not B.P.Ed
           }),
+          // Visibility(
+          //   visible: selectDegree.value == "BPED",
+          //   child: Text(
+          //     "Graduation 2nd Year(For App. Ca. Marksheet)*",
+          //     style: GoogleFonts.poppins(
+          //       textStyle: TextStyle(color: Colors.white, fontSize: 14),
+          //     ),
+          //   ),
+          // ),
+          // Obx(() {
+          //   return selectDegree.value == 'BPED'
+          //       ? SizedBox(height: 10) // Hide SizedBox
+          //       : SizedBox.shrink(); // Show when not B.P.Ed
+          // }),
           Visibility(
-            visible: selectDegree.value == "B.P.Ed",
-            child: Text(
-              "Graduation 2nd Year(For App. Ca. Marksheet)*",
-              style: GoogleFonts.poppins(
-                textStyle: TextStyle(color: Colors.white, fontSize: 14),
-              ),
-            ),
-          ),
-          Obx(() {
-            return selectDegree.value == 'B.P.Ed'
-                ? SizedBox(height: 10) // Hide SizedBox
-                : SizedBox.shrink(); // Show when not B.P.Ed
-          }),
-          Visibility(
-            visible: selectDegree.value == "B.P.Ed",
+            visible: selectDegree.value == "BPED",
             child: Obx(
               () => GestureDetector(
                 onTap: () async {
@@ -2366,32 +2463,46 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                     print("Selected path: ${gra2yrfilePath.value}");
                   }
                 },
-                child: Container(
-                  height: 55,
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey.shade400),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          gra2yrfileName.value.isNotEmpty
-                              ? gra2yrfilePath.value
-                              : "Graduation 2nd Year (jpg, png, gif)",
-                          style: TextStyle(
-                            color: Colors.black.withOpacity(0.7),
-                            fontSize: 16,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Graduation/5th Semester(For Apperaring Candidate)Marksheet',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
-                      Icon(Icons.upload_file, color: Colors.blue),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      height: 55,
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey.shade400),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              gra2yrfileName.value.isNotEmpty
+                                  ? gra2yrfileName.value
+                                  : "Graduation 5th semester (jpg, png, gif)",
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.7),
+                                fontSize: 16,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Icon(Icons.upload_file, color: Colors.blue),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -2399,28 +2510,26 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           //
           //high school mark
           Obx(() {
-            return selectDegree.value == 'B.P.Ed' || selectDegree.value == 'PG'
+            return selectDegree.value == 'BPED' || selectDegree.value == 'PG'
                 ? SizedBox(height: 20) // Hide SizedBox
                 : SizedBox.shrink(); // Show when not B.P.Ed
           }),
+          // Visibility(
+          //   visible: selectDegree.value == 'BPED' || selectDegree.value == 'PG',
+          //   child: Text(
+          //     "High School Marksheet*",
+          //     style: GoogleFonts.poppins(
+          //       textStyle: TextStyle(color: Colors.white, fontSize: 14),
+          //     ),
+          //   ),
+          // ),
+          // Obx(() {
+          //   return selectDegree.value == 'BPED' || selectDegree.value == 'PG'
+          //       ? SizedBox(height: 10) // Hide SizedBox
+          //       : SizedBox.shrink(); // Show when not B.P.Ed
+          // }),
           Visibility(
-            visible:
-                selectDegree.value == 'B.P.Ed' || selectDegree.value == 'PG',
-            child: Text(
-              "High School Marksheet*",
-              style: GoogleFonts.poppins(
-                textStyle: TextStyle(color: Colors.white, fontSize: 14),
-              ),
-            ),
-          ),
-          Obx(() {
-            return selectDegree.value == 'B.P.Ed' || selectDegree.value == 'PG'
-                ? SizedBox(height: 10) // Hide SizedBox
-                : SizedBox.shrink(); // Show when not B.P.Ed
-          }),
-          Visibility(
-            visible:
-                selectDegree.value == 'B.P.Ed' || selectDegree.value == 'PG',
+            visible: selectDegree.value == 'BPED' || selectDegree.value == 'PG',
             child: Obx(
               () => GestureDetector(
                 onTap: () async {
@@ -2436,32 +2545,46 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                     print("Selected path: ${highSchMarkfilePath.value}");
                   }
                 },
-                child: Container(
-                  height: 55,
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey.shade400),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          highSchMarkfileName.value.isNotEmpty
-                              ? highSchMarkfileName.value
-                              : "High School Marksheet* (jpg, png, gif)",
-                          style: TextStyle(
-                            color: Colors.black.withOpacity(0.7),
-                            fontSize: 16,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'High School Marksheet',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
-                      Icon(Icons.upload_file, color: Colors.blue),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      height: 55,
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey.shade400),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              highSchMarkfileName.value.isNotEmpty
+                                  ? highSchMarkfileName.value
+                                  : "High School Marksheet* (jpg, png, gif)",
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.7),
+                                fontSize: 16,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Icon(Icons.upload_file, color: Colors.blue),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -2469,26 +2592,26 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           //
           // CasteCertificate
           Obx(() {
-            return selectDegree.value == 'B.P.Ed'
+            return selectDegree.value == 'BPED'
                 ? SizedBox(height: 20) // Hide SizedBox
                 : SizedBox.shrink(); // Show when not B.P.Ed
           }),
+          // Visibility(
+          //   visible: selectDegree.value == "BPED",
+          //   child: Text(
+          //     "Caste Certificate*",
+          //     style: GoogleFonts.poppins(
+          //       textStyle: TextStyle(color: Colors.white, fontSize: 14),
+          //     ),
+          //   ),
+          // ),
+          // Obx(() {
+          //   return selectDegree.value == 'BPED'
+          //       ? SizedBox(height: 10) // Hide SizedBox
+          //       : SizedBox.shrink(); // Show when not B.P.Ed
+          // }),
           Visibility(
-            visible: selectDegree.value == "B.P.Ed",
-            child: Text(
-              "Caste Certificate*",
-              style: GoogleFonts.poppins(
-                textStyle: TextStyle(color: Colors.white, fontSize: 14),
-              ),
-            ),
-          ),
-          Obx(() {
-            return selectDegree.value == 'B.P.Ed'
-                ? SizedBox(height: 10) // Hide SizedBox
-                : SizedBox.shrink(); // Show when not B.P.Ed
-          }),
-          Visibility(
-            visible: selectDegree.value == "B.P.Ed",
+            visible: selectDegree.value == "BPED",
             child: Obx(
               () => GestureDetector(
                 onTap: () async {
@@ -2504,44 +2627,58 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                     print("Selected path: ${castCertifilePath.value}");
                   }
                 },
-                child: Container(
-                  height: 55,
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey.shade400),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          castCertifileName.value.isNotEmpty
-                              ? castCertifileName.value
-                              : "Caste Certificate* (jpg, png, gif)",
-                          style: TextStyle(
-                            color: Colors.black.withOpacity(0.7),
-                            fontSize: 16,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Caste Certificate',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
-                      Icon(Icons.upload_file, color: Colors.blue),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      height: 55,
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey.shade400),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              castCertifileName.value.isNotEmpty
+                                  ? castCertifileName.value
+                                  : "Caste Certificate* (jpg, png, gif)",
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.7),
+                                fontSize: 16,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Icon(Icons.upload_file, color: Colors.blue),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
           //
           Obx(() {
-            return selectDegree.value == 'B.P.Ed'
+            return selectDegree.value == 'BPED'
                 ? SizedBox(height: 10) // Hide SizedBox
                 : SizedBox.shrink(); // Show when not B.P.Ed
           }),
           Visibility(
-            visible: selectDegree.value == "B.P.Ed",
+            visible: selectDegree.value == "BPED",
             child: Text(
               "*Only .jpg .jpeg .gif .png format and less than 100 kb\n file accepted.",
               style: GoogleFonts.poppins(
@@ -2825,7 +2962,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                 ),
               ),
               Visibility(
-                visible: selectDegree.value == "B.P.Ed",
+                visible: selectDegree.value == "BPED",
                 child: Expanded(
                   child: Text(
                     "  I hereby declare that all the above information given by me is true and accurate. There is no criminal case pending in any court of Law against me. If any information is found incorrect or misleading, my candidature shall be liable to be cancellation by the College at any time and I shall not be entitled for refund of any fee paid by me to the College.",

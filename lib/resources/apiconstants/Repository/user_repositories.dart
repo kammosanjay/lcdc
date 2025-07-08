@@ -55,7 +55,7 @@ class UserRepositories {
       token: currtoken,
     );
     print("Testig 2" + response.toString());
-    
+
     return response;
   }
 
@@ -157,6 +157,27 @@ class UserRepositories {
     return response;
   }
 
+  //For PG
+  //
+  static Future<Map<String, dynamic>> dropdownforPG({String? token}) async {
+    var response = await apiService.getData(
+      ApiConstraints.dropDownsforPG,
+      token: token,
+    );
+    print("dropdownforPG Response==>$response");
+    return response;
+  }
+
+  // for BPED
+  //
+  static Future<Map<String, dynamic>> dropdownforBPED({String? token}) async {
+    var response = await apiService.getData(
+      ApiConstraints.dropDownsforBPED,
+      token: token,
+    );
+    print("dropdownforBPED Response==>$response");
+    return response;
+  }
   //
   //
 

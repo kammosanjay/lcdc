@@ -45,6 +45,13 @@ class StudentRegistrationModel {
   String? graduationMarksPath;
   String? ugPart2SemMarksheet;
   String? highschoolMarksheet;
+  String? candidateDomicile;
+  String? skillTest;
+  String? nameOfGame;
+  String? levelofparticipation;
+  String? positionheld;
+  String? sportscertificate;
+  String? alreadystudent;
 
   StudentRegistrationModel({
     this.registrationNumber,
@@ -93,11 +100,25 @@ class StudentRegistrationModel {
     this.graduationMarksPath,
     this.ugPart2SemMarksheet,
     this.highschoolMarksheet,
+    this.alreadystudent,
+    this.candidateDomicile,
+    this.levelofparticipation,
+    this.nameOfGame,
+    this.positionheld,
+    this.skillTest,
+    this.sportscertificate,
   });
   factory StudentRegistrationModel.fromJson(Map<String, dynamic> json) {
     return StudentRegistrationModel(
       registrationNumber: json['registrationnumber'] ?? "",
       lurnCertificate: json['lurncertificate'] ?? "",
+      alreadystudent: json['alreadystudent'] ?? "",
+      candidateDomicile: json['candidateDomicile'] ?? "",
+      levelofparticipation: json['levelofparticipation'] ?? "",
+      nameOfGame: json['nameOfGame'] ?? "",
+      positionheld: json['positionheld'] ?? "",
+      skillTest: json['skillTest'] ?? "",
+      sportscertificate: json['sportscertificate'] ?? "",
       candidateName: json['candidatename'] ?? "",
       fatherName: json['fathername'] ?? "",
       annualIncomeRs: json['annualincomers'] ?? "",
@@ -150,6 +171,14 @@ class StudentRegistrationModel {
     data['registrationnumber'] = registrationNumber;
     data['lurncertificate'] = lurnCertificate;
     data['candidatename'] = candidateName;
+    data['alreadystudent'] = alreadystudent;
+    data['candidateDomicile'] = candidateDomicile;
+    data['skillTest'] = skillTest;
+    data['nameOfGame'] = nameOfGame;
+    data['levelofparticipation'] = levelofparticipation;
+    data['positionheld'] = positionheld;
+    data['sportscertificate'] = sportscertificate;
+
     data['fathername'] = fatherName;
     data['annualincomers'] = annualIncomeRs;
     data['occupation'] = occupation;

@@ -24,6 +24,8 @@ class ApiConstraints {
   static const String verifyPayment = "$databaseUrl/verify-payment";
   static const String loginApi = "$databaseUrl/login";
   static const String dropDownsforUg = "$databaseUrl/get-ug-admission-all-options";
+  static const String dropDownsforPG = "$databaseUrl/get-pg-admission-all-options";
+  static const String dropDownsforBPED = "$databaseUrl/get-bped-admission-all-options";
   static const String submitAppForm = "$databaseUrl/save-admission-details";
   
 

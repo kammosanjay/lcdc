@@ -92,7 +92,7 @@ class CustomWidgets {
   }
 
   // custom dropdown widget
-  static Widget customDropdownField<T>({
+  static Widget   customDropdownField<T>({
     required BuildContext context,
     required List<T> items,
     required T? selectedItem,

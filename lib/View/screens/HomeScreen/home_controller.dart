@@ -17,18 +17,23 @@ class HomeController extends GetxController {
   var religion = [].obs;
   var caste = [].obs;
   var passingyear = [].obs;
+  var stdDomicile = [].obs;
+  var skillTest = [].obs;
+  var lvlOfPtn = [].obs;
+  var ptnHeld = [].obs;
+  var alyStudent = [].obs;
 
   @override
   void onInit() {
     super.onInit();
 
     getdropdownforUG();
-    
+    getdropdownforPG();
+    getdropdownforBPED();
   }
-  
 
   ///
-  ///
+  ///for UG
   ///
   Future<Map<String, dynamic>> getdropdownforUG() async {
     var token = await SharedPrefsHelper.getToken();
@@ -44,7 +49,62 @@ class HomeController extends GetxController {
     caste.value = response['data']['caste'] as List;
     passingyear.value = response['data']['passingyear'] as List;
     print(
-      "bloodGroup==> $bloodgroup\nOccupation==>$occupation\n motherOc===>$motheroccupation\n reli===>$religion\n caste===> $caste\n passingyear==>$passingyear",
+      "***************UG Dropdown Options********************\n"
+      "bloodGroup==> $bloodgroup\nOccupation==>$occupation\n motherOc===>$motheroccupation\n reli===>$religion\n caste===> $caste\n passingyear==>$passingyear\n\n\n\n\n\n",
+    );
+
+    return allres;
+  }
+
+  ///
+  /// for PG
+  ///
+  Future<Map<String, dynamic>> getdropdownforPG() async {
+    var token = await SharedPrefsHelper.getToken();
+    final response = await UserRepositories.dropdownforPG(token: token);
+
+    // courseType.value = CourseType.fromJson(response);
+    Map<String, dynamic> allres = response;
+
+    occupation.value = response['data']['occupation'] as List;
+    motheroccupation.value = response['data']['motheroccupation'] as List;
+    bloodgroup.value = response['data']['bloodgroup'] as List;
+    religion.value = response['data']['religion'] as List;
+    caste.value = response['data']['caste'] as List;
+    passingyear.value = response['data']['passingyear'] as List;
+    print(
+      "***************PG Dropdown Options********************\n"
+      "bloodGroup==> $bloodgroup\nOccupation==>$occupation\n motherOc===>$motheroccupation\n reli===>$religion\n caste===> $caste\n passingyear==>$passingyear\n\n\n\n\n\n",
+    );
+
+    return allres;
+  }
+
+  ///
+  /// for BPED
+  ///
+  Future<Map<String, dynamic>> getdropdownforBPED() async {
+    var token = await SharedPrefsHelper.getToken();
+    final response = await UserRepositories.dropdownforBPED(token: token);
+
+    // courseType.value = CourseType.fromJson(response);
+    Map<String, dynamic> allres = response;
+
+    occupation.value = response['data']['occupation'] as List;
+    motheroccupation.value = response['data']['motheroccupation'] as List;
+    stdDomicile.value = response['data']['candidatedomicile'] as List;
+    bloodgroup.value = response['data']['bloodgroup'] as List;
+    religion.value = response['data']['religion'] as List;
+    caste.value = response['data']['caste'] as List;
+    passingyear.value = response['data']['passingyear'] as List;
+    skillTest.value = response['data']['skilltest'] as List;
+    lvlOfPtn.value = response['data']['levelofparticipation'] as List;
+    ptnHeld.value = response['data']['positionheld'] as List;
+    alyStudent.value = response['data']['alreadystudent'] as List;
+
+    print(
+      "***************BPED Dropdown Options********************\n"
+      "bloodGroup==> $bloodgroup\nOccupation==>$occupation\n motherOc===>$motheroccupation\n reli===>$religion\n caste===> $caste\n passingyear==>$passingyear\n\n\n\n\n\n",
     );
 
     return allres;
