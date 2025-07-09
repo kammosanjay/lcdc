@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -71,8 +72,8 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
   final RxString candidatefilePath = "".obs;
   final RxString candidateSignaturefileName = "".obs;
   final RxString candidateSignaturefilePath = "".obs;
-  final RxString gra2yrfileName = "".obs;
-  final RxString gra2yrfilePath = "".obs;
+  final RxString gra5thSemesterfileName = "".obs;
+  final RxString gra5thSemesterfilePath = "".obs;
   final RxString highSchMarkfileName = "".obs;
   final RxString highSchMarkfilePath = "".obs;
   final RxString castCertifileName = "".obs;
@@ -130,6 +131,95 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
     'UP': 'UP',
     'OtherThansUP': 'Other than UP',
   };
+
+  void printStudentFormValues() {
+    debugPrint('--- Student Form Data ---');
+    debugPrint('LURN Certificate: ${lurnController.text}');
+    debugPrint('Registration Number: ${regisC.text}');
+    debugPrint('Candidate Name: ${nameController.text}');
+    debugPrint('Gender: ${signupController.studentDetails.value.gender}');
+    debugPrint(
+      'Date of Birth: ${signupController.studentDetails.value.dateofbirth}',
+    );
+    debugPrint('Email ID: ${emailController.text}');
+    debugPrint('Mobile Number: ${mobileController.text}');
+    debugPrint('Aadhar ID: ${aadhaarController.text}');
+    debugPrint('Father Name: ${fatherNameController.text}');
+    debugPrint('Father Annual Income: ${fannualController.text}');
+    debugPrint('Father Occupation: ${selectFOccupation.value}');
+    debugPrint('Mother Name: ${mothernameController.text}');
+    debugPrint('Mother Annual Income: ${mAnnualController.text}');
+    debugPrint('Mother Occupation: ${selectMOccupation.value}');
+    debugPrint('Course: ${selectCourse.value}');
+    debugPrint('Category: ${selectCategory.value}');
+    debugPrint('Blood Group: ${selectBloodGroup.value}');
+    debugPrint('Religion: ${selectReligon.value}');
+    debugPrint('Caste: ${selectCaste.value}');
+    debugPrint('Nationality: ${nationalityController.text}');
+    debugPrint('Examination Name: ${lastExmController.text}');
+    debugPrint('Institution: ${lastInstController.text}');
+    debugPrint('Board/University: ${BoarduniverController.text}');
+    debugPrint('Passing Year: ${selectYear.value}');
+    debugPrint('Maximum Marks: ${mmController.text}');
+    debugPrint('Marks Obtained: ${OmController.text}');
+    debugPrint('Percentage: ${perController.text}');
+    debugPrint('Father Mobile No: ${fatherMobileNoController.text}');
+    debugPrint('Mother Mobile No: ${motherMobileNoCont.text}');
+    debugPrint('Present Address: ${presentAddressController.text}');
+    debugPrint('Present Pincode: ${presentPinController.text}');
+    debugPrint('Present Near Railway Station: ${NRSController.text}');
+    debugPrint('Present Near Police Station: ${NPSController.text}');
+    debugPrint('Address Proof Path: ${aadharfilePath.value}');
+    debugPrint(
+      'Already Student (BPED only): ${selectDegree.value == "BPED" ? selectStudent.value : "N/A"}',
+    );
+    debugPrint(
+      'Candidate Domicile (BPED only): ${selectDegree.value == "BPED" ? selectDomicile.value : "N/A"}',
+    );
+    debugPrint(
+      'Name of Game (BPED only): ${selectDegree.value == "BPED" ? GparticipatedController.text : "N/A"}',
+    );
+    debugPrint(
+      'Level of Participation (BPED only): ${selectDegree.value == "BPED" ? selectLevel.value : "N/A"}',
+    );
+    debugPrint(
+      'Position Held (BPED only): ${selectDegree.value == "BPED" ? selectPosition.value : "N/A"}',
+    );
+    debugPrint(
+      'Skill Test (BPED only): ${selectDegree.value == "BPED" ? selectSkillTest.value : "N/A"}',
+    );
+    debugPrint(
+      'Permanent Address: ${isChecked ? presentAddressController.text : permanentAddController.text}',
+    );
+    debugPrint('Permanent Near Police: ${permanentNPSController.text}');
+    debugPrint('Permanent Near Railway: ${permanNRSController.text}');
+    debugPrint('Permanent Pincode: ${permanentPinController.text}');
+    debugPrint('Student Photo Path: ${candidatefilePath.value}');
+    debugPrint('Student Signature Path: ${candidateSignaturefilePath.value}');
+    debugPrint(
+      'Intermediate Marksheet (UG only): ${selectDegree.value == "UG" ? intermediatefilePath.value : "N/A"}',
+    );
+    debugPrint(
+      'Domicile Certificate Path: ${(selectDegree.value == "UG" || selectDegree.value == "PG") ? domicilefilePath.value : "N/A"}',
+    );
+    debugPrint(
+      'Caste Certificate Path: ${(selectDegree.value == "UG" || selectDegree.value == "PG" || selectDegree.value == "BPED") ? castefilePath.value : "N/A"}',
+    );
+    debugPrint(
+      'Highschool Marksheet (PG/BPED only): ${(selectDegree.value == "PG" || selectDegree.value == "BPED") ? highSchMarkfilePath.value : "N/A"}',
+    );
+    debugPrint(
+      'Graduation Marks Path (PG/BPED only): ${(selectDegree.value == "PG" || selectDegree.value == "BPED") ? graduatinMarkfilePath.value : "N/A"}',
+    );
+    debugPrint(
+      'UG Part 2 Sem Marksheet (PG only): ${selectDegree.value == "PG" ? ugpart2filePath.value : "N/A"}',
+    );
+    debugPrint(
+      'Sports Certificate (BPED only): ${selectDegree.value == "BPED" ? gamefilePath.value : "N/A"}',
+    );
+    debugPrint('--- End of Form Data ---');
+  }
+
   @override
   void initState() {
     super.initState();
@@ -146,6 +236,18 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
     //for setting  the category value after edit ,initialize here to get the info
     selectCategory.value = fetch.category.toString();
     selectCourse.value = fetch.course.toString();
+    categoryController.text = fetch.category.toString();
+    if (selectCourse.value == "B.A." ||
+        selectCourse.value == "B.Com" ||
+        selectCourse.value == "B.Sc(Bio)" ||
+        selectCourse.value == " B.Sc(Maths)") {
+      selectDegree.value = "UG";
+    } else if (selectCourse.value == "M.A. (English)" ||
+        selectCourse.value == "M.Sc.(Chemistry)") {
+      selectDegree.value = "PG";
+    } else {
+      selectDegree.value = "BPED";
+    }
 
     ///
     ///
@@ -158,6 +260,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
       loadFormDataForEdit(formDetail);
       selectCategory.value = formDetail.category ?? "";
       box.remove('formData');
+      
     }
   }
 
@@ -184,6 +287,8 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
     permanentPinController.text = formDetail.permanentPincode ?? "";
     permanNRSController.text = formDetail.permanentNearRailway ?? "";
     permanentNPSController.text = formDetail.permanentNearPolice ?? "";
+    categoryController.text = formDetail.category ?? "";
+    GparticipatedController.text = formDetail.nameOfGame ?? "";
 
     // Populate dropdown values
     selectFOccupation.value = formDetail.occupation ?? '';
@@ -194,6 +299,11 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
     selectCaste.value = formDetail.caste ?? "";
     selectYear.value = formDetail.passingYear ?? "";
     selectCategory.value = formDetail.category ?? "";
+    selectDomicile.value = formDetail.candidateDomicile ?? "";
+    selectSkillTest.value = formDetail.skillTest ?? "";
+    selectLevel.value = formDetail.levelofparticipation ?? "";
+    selectPosition.value = formDetail.positionheld ?? "";
+    selectStudent.value = formDetail.alreadystudent ?? "";
 
     // Populate file paths
 
@@ -226,6 +336,15 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
     graduatinMarkfilePath.value = formDetail.graduationMarksPath ?? "";
     ugpart2fileName.value = p.basename(formDetail.ugPart2SemMarksheet ?? "");
     ugpart2filePath.value = formDetail.ugPart2SemMarksheet ?? "";
+    gra5thSemesterfileName.value = p.basename(
+      formDetail.graduationMarksPath ?? "",
+    );
+    gra5thSemesterfilePath.value = formDetail.graduationMarksPath ?? "";
+
+    gamefileName.value = p.basename(formDetail.sportscertificate ?? '');
+    gamefilePath.value = formDetail.sportscertificate ?? "";
+    castCertifileName.value = p.basename(formDetail.casteCertificatePath ?? "");
+    castCertifilePath.value = formDetail.casteCertificatePath ?? "";
   }
 
   List<String> category = [
@@ -252,6 +371,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
   }
 
   List<String> domicile = ['UP', 'Outside UP'];
+  RxBool readOnly = true.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -325,123 +445,148 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                           print("Step 2: ${_step2Controller.text}");
                           print("Step 3: ${_step3Controller.text}");
                           // Add your submit logic here
+                          if (isCheckedTerms) {
+                            homeController.submitForm(
+                              studentform: StudentRegistrationModel(
+                                lurnCertificate: lurnController.text,
+                                registrationNumber: regisC.text,
+                                candidateName: nameController.text,
+                                gender:
+                                    signupController
+                                        .studentDetails
+                                        .value
+                                        .gender,
+                                dateOfBirth:
+                                    signupController
+                                        .studentDetails
+                                        .value
+                                        .dateofbirth,
+                                emailId: emailController.text,
+                                mobileNumber: mobileController.text,
+                                aadharId: aadhaarController.text,
+                                fatherName: fatherNameController.text,
+                                annualIncomeRs: fannualController.text,
+                                occupation: selectFOccupation.value,
+                                motherName: mothernameController.text,
+                                motherAnnualIncomeRs: mAnnualController.text,
+                                motherOccupation: selectMOccupation.value,
+                                course: selectCourse.value,
+                                category: selectCategory.value,
+                                // domicileCertificatePath: domicilefilePath.value,
+                                // casteCertificatePath: castefilePath.value,
+                                bloodGroup: selectBloodGroup.value,
+                                religion: selectReligon.value,
+                                caste: selectCaste.value,
+                                nationality: nationalityController.text,
+                                examinationName: lastExmController.text,
+                                institution: lastInstController.text,
+                                boardUniversity: BoarduniverController.text,
+                                passingYear: selectYear.value,
+                                maximumMarks: mmController.text,
+                                marksObtained: OmController.text,
+                                marksPercentage: perController.text,
+                                fatherMobileNo: fatherMobileNoController.text,
+                                motherMobileNumber: motherMobileNoCont.text,
+                                presentAddress: presentAddressController.text,
+                                presentPincode: presentPinController.text,
+                                presentNearRailway: NRSController.text,
+                                presentNearPolice: NPSController.text,
+                                addressProofPath: aadharfilePath.value,
+                                alreadystudent:
+                                    selectDegree.value == "BPED"
+                                        ? selectStudent.value
+                                        : null,
+                                candidateDomicile:
+                                    selectDegree.value == "BPED"
+                                        ? selectDomicile.value
+                                        : null,
+                                nameOfGame:
+                                    selectDegree.value == "BPED"
+                                        ? GparticipatedController.text
+                                        : null,
+                                levelofparticipation:
+                                    selectDegree.value == "BPED"
+                                        ? selectLevel.value
+                                        : null,
+                                positionheld:
+                                    selectDegree.value == "BPED"
+                                        ? selectPosition.value
+                                        : null,
+                                skillTest:
+                                    selectDegree.value == "BPED"
+                                        ? selectSkillTest.value
+                                        : null,
 
-                          homeController.submitForm(
-                            studentform: StudentRegistrationModel(
-                              lurnCertificate: lurnController.text,
-                              registrationNumber: regisC.text,
-                              candidateName: nameController.text,
-                              gender:
-                                  signupController.studentDetails.value.gender,
-                              dateOfBirth:
-                                  signupController
-                                      .studentDetails
-                                      .value
-                                      .dateofbirth,
-                              emailId: emailController.text,
-                              mobileNumber: mobileController.text,
-                              aadharId: aadhaarController.text,
-                              fatherName: fatherNameController.text,
-                              annualIncomeRs: fannualController.text,
-                              occupation: selectFOccupation.value,
-                              motherName: mothernameController.text,
-                              motherAnnualIncomeRs: mAnnualController.text,
-                              motherOccupation: selectMOccupation.value,
-                              course: selectCourse.value,
-                              category: selectCategory.value,
-                              // domicileCertificatePath: domicilefilePath.value,
-                              // casteCertificatePath: castefilePath.value,
-                              bloodGroup: selectBloodGroup.value,
-                              religion: selectReligon.value,
-                              caste: selectCaste.value,
-                              nationality: nationalityController.text,
-                              examinationName: lastExmController.text,
-                              institution: lastInstController.text,
-                              boardUniversity: BoarduniverController.text,
-                              passingYear: selectYear.value,
-                              maximumMarks: mmController.text,
-                              marksObtained: OmController.text,
-                              marksPercentage: perController.text,
-                              fatherMobileNo: fatherMobileNoController.text,
-                              motherMobileNumber: motherMobileNoCont.text,
-                              presentAddress: presentAddressController.text,
-                              presentPincode: presentPinController.text,
-                              presentNearRailway: NRSController.text,
-                              presentNearPolice: NPSController.text,
-                              addressProofPath: aadharfilePath.value,
-                              alreadystudent:
-                                  selectDegree.value == "BPED"
-                                      ? selectStudent.value
-                                      : null,
-                              candidateDomicile:
-                                  selectDegree.value == "BPED"
-                                      ? selectDomicile.value
-                                      : null,
-                              nameOfGame:
-                                  selectDegree.value == "BPED"
-                                      ? GparticipatedController.text
-                                      : null,
-                              levelofparticipation:
-                                  selectDegree.value == "BPED"
-                                      ? selectLevel.value
-                                      : null,
-                              positionheld:
-                                  selectDegree.value == "BPED"
-                                      ? selectPosition.value
-                                      : null,
-                              skillTest:
-                                  selectDegree.value == "BPED"
-                                      ? selectSkillTest.value
-                                      : null,
+                                // sportscertificate: ,
+                                permanentAddress:
+                                    isChecked
+                                        ? presentAddressController.text
+                                        : permanentAddController.text,
 
-                              // sportscertificate: ,
-                              permanentAddress:
-                                  isChecked
-                                      ? presentAddressController.text
-                                      : permanentAddController.text,
+                                permanentNearPolice:
+                                    isChecked
+                                        ? NPSController.text
+                                        : permanentNPSController.text,
+                                permanentNearRailway:
+                                    isChecked
+                                        ? NRSController.text
+                                        : permanNRSController.text,
+                                permanentPincode:
+                                    isChecked
+                                        ? presentPinController.text
+                                        : permanentPinController.text,
+                                studentPhotoPath: candidatefilePath.value,
+                                studentSignaturePath:
+                                    candidateSignaturefilePath.value,
+                                interMarksheetPath:
+                                    selectDegree.value == 'UG'
+                                        ? intermediatefilePath.value
+                                        : null,
+                                domicileCertificatePath:
+                                    selectDegree.value == 'UG' ||
+                                            selectDegree.value == "PG"
+                                        ? domicilefilePath.value
+                                        : null,
+                                casteCertificatePath:
+                                    selectDegree.value == 'UG' ||
+                                            selectDegree.value == "PG"
+                                        ? castefilePath.value
+                                        : selectDegree.value == "BPED"
+                                        ? castCertifilePath.value
+                                        : null,
+                                highschoolMarksheet:
+                                    selectDegree.value == 'PG' ||
+                                            selectDegree.value == "BPED"
+                                        ? highSchMarkfilePath.value
+                                        : null,
+                                graduationMarksPath:
+                                    selectDegree.value == 'PG'
+                                        ? graduatinMarkfilePath.value
+                                        : selectDegree.value == "BPED"
+                                        ? gra5thSemesterfilePath.value
+                                        : null,
+                                ugPart2SemMarksheet:
+                                    selectDegree.value == 'PG'
+                                        ? ugpart2filePath.value
+                                        : null,
+                                sportscertificate:
+                                    selectDegree.value == 'BPED'
+                                        ? gamefilePath.value
+                                        : null,
+                              ),
+                            );
+                            printStudentFormValues();
+                          } else {
+                            Fluttertoast.showToast(
+                              msg: "Please Check Declearation!",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
 
-                              permanentNearPolice: permanentNPSController.text,
-                              permanentNearRailway: permanNRSController.text,
-                              permanentPincode: permanentPinController.text,
-                              studentPhotoPath: candidatefilePath.value,
-                              studentSignaturePath:
-                                  candidateSignaturefilePath.value,
-                              interMarksheetPath:
-                                  selectDegree.value == 'UG'
-                                      ? intermediatefilePath.value
-                                      : null,
-                              domicileCertificatePath:
-                                  selectDegree.value == 'UG' ||
-                                          selectDegree.value == "PG"
-                                      ? domicilefilePath.value
-                                      : null,
-                              casteCertificatePath:
-                                  selectDegree.value == 'UG' ||
-                                          selectDegree.value == "PG" ||
-                                          selectDegree.value == "BPED"
-                                      ? castefilePath.value
-                                      : null,
-                              highschoolMarksheet:
-                                  selectDegree.value == 'PG' ||
-                                          selectDegree.value == "BPED"
-                                      ? highSchMarkfilePath.value
-                                      : null,
-                              graduationMarksPath:
-                                  selectDegree.value == 'PG' ||
-                                          selectDegree.value == "BPED"
-                                      ? graduatinMarkfilePath.value
-                                      : null,
-                              ugPart2SemMarksheet:
-                                  selectDegree.value == 'PG'
-                                      ? ugpart2filePath.value
-                                      : null,
-                              sportscertificate:
-                                  selectDegree.value == 'BPED'
-                                      ? gamefilePath.value
-                                      : null,
-                                  
-                            ),
-                          );
+                              backgroundColor: Colors.green,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+                          }
                         }
                       } else {
                         details.onStepContinue!();
@@ -531,6 +676,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                 courseTypeList.map((e) => e.toUpperCase()).toList();
             return CustomWidgets.customDropdownField(
               context: context,
+              readOnly: true,
               label: 'Degree',
               items: upperCaseItems,
               selectedItem:
@@ -583,7 +729,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             },
             child: Text(
               "Proceed to Generate LURN",
-              style: TextStyle(color: Colors.redAccent),
+              style: TextStyle(color: Colors.white),
             ),
           ),
           SizedBox(height: 20),
@@ -650,12 +796,81 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                 ),
               ),
               SizedBox(width: 10),
+              // Flexible(
+              //   child: GestureDetector(
+              //     onTap: () {
+              //       showDatePicker(
+              //         context: context,
+              //         initialDate: DateTime(2000),
+              //         firstDate: DateTime(1900),
+              //         lastDate: DateTime(2030),
+              //       ).then((value) {
+              //         if (value != null) {
+              //           selectedDate.value = value;
+              //         }
+              //       });
+              //     },
+              //     child: Obx(
+              //       () => Column(
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         children: [
+              //           Text(
+              //             "DOB",
+              //             style: TextStyle(
+              //               color: Colors.white,
+              //               fontSize: 16,
+              //               fontWeight: FontWeight.w600,
+              //             ),
+              //           ),
+              //           SizedBox(height: 10),
+              //           Container(
+              //             height: h * 0.0735,
+              //             padding: const EdgeInsets.symmetric(
+              //               horizontal: 16,
+              //               vertical: 12,
+              //             ),
+              //             decoration: BoxDecoration(
+              //               color: Colors.white,
+              //               borderRadius: BorderRadius.circular(10),
+              //             ),
+              //             child: Row(
+              //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //               children: [
+              //                 Text(
+              //                   // "${selectedDate.value!.day}/${selectedDate.value!.month}/${selectedDate.value!.year}",
+              //                   signupController
+              //                       .studentDetails
+              //                       .value
+              //                       .dateofbirth
+              //                       .toString(),
+              //                   style: GoogleFonts.poppins(
+              //                     textStyle: TextStyle(
+              //                       color: Colors.black.withOpacity(0.6),
+              //                       fontSize: 16,
+              //                     ),
+              //                   ),
+              //                 ),
+
+              //                 Image.asset(
+              //                   "assets/images/date.png",
+              //                   width: 24,
+              //                   height: 24,
+              //                   color: const Color.fromARGB(255, 52, 64, 73),
+              //                 ),
+              //               ],
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
               Flexible(
                 child: GestureDetector(
                   onTap: () {
                     showDatePicker(
                       context: context,
-                      initialDate: DateTime(2000),
+                      initialDate: selectedDate.value ?? DateTime(2000),
                       firstDate: DateTime(1900),
                       lastDate: DateTime(2030),
                     ).then((value) {
@@ -664,34 +879,39 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                       }
                     });
                   },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "DOB",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                  child: Obx(
+                    () => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "DOB",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 10),
-                      Container(
-                        height: h * 0.0735,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Obx(
-                              () => Text(
-                                // "${selectedDate.value!.day}/${selectedDate.value!.month}/${selectedDate.value!.year}",
+                        SizedBox(height: 10),
+                        Container(
+                          height: h * 0.0735,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          decoration: BoxDecoration(
+                            color:
+                                Colors
+                                    .grey
+                                    .shade400, // 👈 grey background for read-only
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                // selectedDate.value != null
+                                //     ? "${selectedDate.value.day.toString().padLeft(2, '0')}/${selectedDate.value.month.toString().padLeft(2, '0')}/${selectedDate.value.year}"
+                                //     : "Select Date",
                                 signupController
                                     .studentDetails
                                     .value
@@ -704,17 +924,17 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                                   ),
                                 ),
                               ),
-                            ),
-                            Image.asset(
-                              "assets/images/date.png",
-                              width: 24,
-                              height: 24,
-                              color: const Color.fromARGB(255, 52, 64, 73),
-                            ),
-                          ],
+                              Image.asset(
+                                "assets/images/date.png",
+                                width: 24,
+                                height: 24,
+                                color: const Color.fromARGB(255, 52, 64, 73),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -1219,61 +1439,77 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               return SizedBox.shrink(); // Hides the widget
             }
 
-            return GestureDetector(
-              onTap: () async {
-                FilePickerResult? result = await FilePicker.platform.pickFiles(
-                  type: FileType.custom,
-                  allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
-                );
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    FilePickerResult? result = await FilePicker.platform
+                        .pickFiles(
+                          type: FileType.custom,
+                          allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+                        );
 
-                if (result != null) {
-                  domicilefileName.value = result.files.single.name;
-                  domicilefilePath.value = result.files.single.path ?? '';
-                  print("Selected path: ${domicilefilePath.value}");
-                }
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Domicile Certificate",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-
-                  Container(
-                    height: 55,
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey.shade400),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            domicilefileName.value.isNotEmpty
-                                ? domicilefileName.value
-                                : "Domicile Certificate (jpg, png, gif)",
-                            style: TextStyle(
-                              color: Colors.black.withOpacity(0.7),
-                              fontSize: 16,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                    if (result != null) {
+                      domicilefileName.value = result.files.single.name;
+                      domicilefilePath.value = result.files.single.path ?? '';
+                      print("Selected path: ${domicilefilePath.value}");
+                    }
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Domicile Certificate",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
-                        Icon(Icons.upload_file, color: Colors.blue),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 10),
+
+                      Container(
+                        height: 55,
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey.shade400),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                domicilefileName.value.isNotEmpty
+                                    ? domicilefileName.value
+                                    : "Domicile Certificate (jpg, png, gif)",
+                                style: TextStyle(
+                                  color: Colors.black.withOpacity(0.7),
+                                  fontSize: 16,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Icon(Icons.upload_file, color: Colors.blue),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                SizedBox(height: 10),
+                InkWell(
+                  onTap: () {
+                    launchURLforImageResize();
+                  },
+                  child: Text(
+                    "You can Resize Media using this click here",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
             );
           }),
 
@@ -1283,62 +1519,78 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               return SizedBox.shrink(); // Hides the widget
             }
 
-            return GestureDetector(
-              onTap: () async {
-                FilePickerResult? result = await FilePicker.platform.pickFiles(
-                  type: FileType.custom,
-                  allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
-                );
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    FilePickerResult? result = await FilePicker.platform
+                        .pickFiles(
+                          type: FileType.custom,
+                          allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+                        );
 
-                if (result != null) {
-                  castefileName.value = result.files.single.name;
-                  castefilePath.value = result.files.single.path ?? '';
-                  print("Selected path: ${castefilePath.value}");
-                }
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                    if (result != null) {
+                      castefileName.value = result.files.single.name;
+                      castefilePath.value = result.files.single.path ?? '';
+                      print("Selected path: ${castefilePath.value}");
+                    }
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
 
-                children: [
-                  Text(
-                    "Caste Certificate",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-
-                  Container(
-                    height: 55,
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey.shade400),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            castefileName.value.isNotEmpty
-                                ? castefileName.value
-                                : "Caste Certificate (jpg, png, gif)",
-                            style: TextStyle(
-                              color: Colors.black.withOpacity(0.7),
-                              fontSize: 16,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                    children: [
+                      Text(
+                        "Caste Certificate",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
-                        Icon(Icons.upload_file, color: Colors.blue),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 10),
+
+                      Container(
+                        height: 55,
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey.shade400),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                castefileName.value.isNotEmpty
+                                    ? castefileName.value
+                                    : "Caste Certificate (jpg, png, gif)",
+                                style: TextStyle(
+                                  color: Colors.black.withOpacity(0.7),
+                                  fontSize: 16,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Icon(Icons.upload_file, color: Colors.blue),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                SizedBox(height: 10),
+                InkWell(
+                  onTap: () {
+                    launchURLforImageResize();
+                  },
+                  child: Text(
+                    "You can Resize Media using this click here",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
             );
           }),
         ],
@@ -1963,6 +2215,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               label: "Father's Mobile",
               controller: fatherMobileNoController,
               keyboardtype: TextInputType.number,
+              maxLength: 10,
               validate: (value) {
                 if (value == null || value.isEmpty) {
                   return '   Father name*';
@@ -1993,6 +2246,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
               label: "Mother's Mobile",
               keyboardtype: TextInputType.number,
               controller: motherMobileNoCont,
+              maxLength: 10,
               validate: (userC) {
                 if (userC!.isEmpty) {
                   return "   Mother's Mobile*";
@@ -2098,60 +2352,76 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
 
           SizedBox(height: 10),
           Obx(
-            () => GestureDetector(
-              onTap: () async {
-                FilePickerResult? result = await FilePicker.platform.pickFiles(
-                  type: FileType.custom,
-                  allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
-                );
+            () => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    FilePickerResult? result = await FilePicker.platform
+                        .pickFiles(
+                          type: FileType.custom,
+                          allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+                        );
 
-                if (result != null) {
-                  aadharfileName.value = result.files.single.name;
-                  aadharfilePath.value = result.files.single.path ?? '';
-                  print("Selected path: ${aadharfilePath.value}");
-                }
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Aadhar Card",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    height: 55,
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey.shade400),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            aadharfileName.value.isNotEmpty
-                                ? aadharfileName.value
-                                : "Aadhaar Card (jpg, png, gif)",
-                            style: TextStyle(
-                              color: Colors.black.withOpacity(0.7),
-                              fontSize: 16,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                    if (result != null) {
+                      aadharfileName.value = result.files.single.name;
+                      aadharfilePath.value = result.files.single.path ?? '';
+                      print("Selected path: ${aadharfilePath.value}");
+                    }
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Aadhar Card",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
-                        Icon(Icons.upload_file, color: Colors.blue),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        height: 55,
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey.shade400),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                aadharfileName.value.isNotEmpty
+                                    ? aadharfileName.value
+                                    : "Aadhaar Card (jpg, png, gif)",
+                                style: TextStyle(
+                                  color: Colors.black.withOpacity(0.7),
+                                  fontSize: 16,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Icon(Icons.upload_file, color: Colors.blue),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                SizedBox(height: 10),
+                InkWell(
+                  onTap: () {
+                    launchURLforImageResize();
+                  },
+                  child: Text(
+                    "You can Resize Media using this click here",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
             ),
           ),
           SizedBox(height: 10),
@@ -2228,7 +2498,8 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             context: context,
             label: 'Pincode',
             hint: 'Pincode',
-            controller: permanentPinController,
+            controller:
+                isChecked ? presentPinController : permanentPinController,
             keyboardtype: TextInputType.number,
             validate: (value) {
               if (value == null || value.isEmpty) {
@@ -2248,7 +2519,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             label: 'Nearest Railway Dtation',
             hint: 'Nearest Railway Station',
 
-            controller: permanNRSController,
+            controller: isChecked ? NRSController : permanNRSController,
             keyboardtype: TextInputType.text,
             validate: (value) {
               if (value == null || value.isEmpty) {
@@ -2268,7 +2539,7 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
             label: 'Nearest Police Station',
             hint: 'Nearest Police Station',
 
-            controller: permanentNPSController,
+            controller: isChecked ? NPSController : permanentNPSController,
             keyboardtype: TextInputType.text,
             validate: (value) {
               if (value == null || value.isEmpty) {
@@ -2369,61 +2640,80 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           SizedBox(height: 20),
 
           Obx(
-            () => GestureDetector(
-              onTap: () async {
-                FilePickerResult? result = await FilePicker.platform.pickFiles(
-                  type: FileType.custom,
-                  allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
-                );
+            () => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    FilePickerResult? result = await FilePicker.platform
+                        .pickFiles(
+                          type: FileType.custom,
+                          allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+                        );
 
-                if (result != null) {
-                  candidateSignaturefileName.value = result.files.single.name;
-                  candidateSignaturefilePath.value =
-                      result.files.single.path ?? '';
-                  print("Selected path: ${candidateSignaturefilePath.value}");
-                }
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Candidate Signature",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    height: 55,
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey.shade400),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            candidateSignaturefileName.value.isNotEmpty
-                                ? candidateSignaturefileName.value
-                                : "Candidate Signature (jpg, png, gif)",
-                            style: TextStyle(
-                              color: Colors.black.withOpacity(0.7),
-                              fontSize: 16,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                    if (result != null) {
+                      candidateSignaturefileName.value =
+                          result.files.single.name;
+                      candidateSignaturefilePath.value =
+                          result.files.single.path ?? '';
+                      print(
+                        "Selected path: ${candidateSignaturefilePath.value}",
+                      );
+                    }
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Candidate Signature",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
-                        Icon(Icons.upload_file, color: Colors.blue),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        height: 55,
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey.shade400),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                candidateSignaturefileName.value.isNotEmpty
+                                    ? candidateSignaturefileName.value
+                                    : "Candidate Signature (jpg, png, gif)",
+                                style: TextStyle(
+                                  color: Colors.black.withOpacity(0.7),
+                                  fontSize: 16,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Icon(Icons.upload_file, color: Colors.blue),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                SizedBox(height: 10),
+                InkWell(
+                  onTap: () {
+                    launchURLforImageResize();
+                  },
+                  child: Text(
+                    "You can Resize Media using this click here",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
             ),
           ),
           //Graduation 2nd
@@ -2449,61 +2739,77 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           Visibility(
             visible: selectDegree.value == "BPED",
             child: Obx(
-              () => GestureDetector(
-                onTap: () async {
-                  FilePickerResult? result = await FilePicker.platform
-                      .pickFiles(
-                        type: FileType.custom,
-                        allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
-                      );
+              () => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      FilePickerResult? result = await FilePicker.platform
+                          .pickFiles(
+                            type: FileType.custom,
+                            allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+                          );
 
-                  if (result != null) {
-                    gra2yrfileName.value = result.files.single.name;
-                    gra2yrfilePath.value = result.files.single.path ?? '';
-                    print("Selected path: ${gra2yrfilePath.value}");
-                  }
-                },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Graduation/5th Semester(For Apperaring Candidate)Marksheet',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      height: 55,
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey.shade400),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              gra2yrfileName.value.isNotEmpty
-                                  ? gra2yrfileName.value
-                                  : "Graduation 5th semester (jpg, png, gif)",
-                              style: TextStyle(
-                                color: Colors.black.withOpacity(0.7),
-                                fontSize: 16,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                      if (result != null) {
+                        gra5thSemesterfileName.value = result.files.single.name;
+                        gra5thSemesterfilePath.value =
+                            result.files.single.path ?? '';
+                        print("Selected path: ${gra5thSemesterfilePath.value}");
+                      }
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Graduation/5th Semester(For Apperaring Candidate)Marksheet',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
                           ),
-                          Icon(Icons.upload_file, color: Colors.blue),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          height: 55,
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            border: Border.all(color: Colors.grey.shade400),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  gra5thSemesterfileName.value.isNotEmpty
+                                      ? gra5thSemesterfileName.value
+                                      : "Graduation 5th semester (jpg, png, gif)",
+                                  style: TextStyle(
+                                    color: Colors.black.withOpacity(0.7),
+                                    fontSize: 16,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Icon(Icons.upload_file, color: Colors.blue),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 10),
+                  InkWell(
+                    onTap: () {
+                      launchURLforImageResize();
+                    },
+                    child: Text(
+                      "You can Resize Media using this click here",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -2531,61 +2837,77 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           Visibility(
             visible: selectDegree.value == 'BPED' || selectDegree.value == 'PG',
             child: Obx(
-              () => GestureDetector(
-                onTap: () async {
-                  FilePickerResult? result = await FilePicker.platform
-                      .pickFiles(
-                        type: FileType.custom,
-                        allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
-                      );
+              () => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      FilePickerResult? result = await FilePicker.platform
+                          .pickFiles(
+                            type: FileType.custom,
+                            allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+                          );
 
-                  if (result != null) {
-                    highSchMarkfileName.value = result.files.single.name;
-                    highSchMarkfilePath.value = result.files.single.path ?? '';
-                    print("Selected path: ${highSchMarkfilePath.value}");
-                  }
-                },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'High School Marksheet',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      height: 55,
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey.shade400),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              highSchMarkfileName.value.isNotEmpty
-                                  ? highSchMarkfileName.value
-                                  : "High School Marksheet* (jpg, png, gif)",
-                              style: TextStyle(
-                                color: Colors.black.withOpacity(0.7),
-                                fontSize: 16,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                      if (result != null) {
+                        highSchMarkfileName.value = result.files.single.name;
+                        highSchMarkfilePath.value =
+                            result.files.single.path ?? '';
+                        print("Selected path: ${highSchMarkfilePath.value}");
+                      }
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'High School Marksheet',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
                           ),
-                          Icon(Icons.upload_file, color: Colors.blue),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          height: 55,
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            border: Border.all(color: Colors.grey.shade400),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  highSchMarkfileName.value.isNotEmpty
+                                      ? highSchMarkfileName.value
+                                      : "High School Marksheet* (jpg, png, gif)",
+                                  style: TextStyle(
+                                    color: Colors.black.withOpacity(0.7),
+                                    fontSize: 16,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Icon(Icons.upload_file, color: Colors.blue),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 10),
+                  InkWell(
+                    onTap: () {
+                      launchURLforImageResize();
+                    },
+                    child: Text(
+                      "You can Resize Media using this click here",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -2613,61 +2935,77 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           Visibility(
             visible: selectDegree.value == "BPED",
             child: Obx(
-              () => GestureDetector(
-                onTap: () async {
-                  FilePickerResult? result = await FilePicker.platform
-                      .pickFiles(
-                        type: FileType.custom,
-                        allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
-                      );
+              () => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      FilePickerResult? result = await FilePicker.platform
+                          .pickFiles(
+                            type: FileType.custom,
+                            allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+                          );
 
-                  if (result != null) {
-                    castCertifileName.value = result.files.single.name;
-                    castCertifilePath.value = result.files.single.path ?? '';
-                    print("Selected path: ${castCertifilePath.value}");
-                  }
-                },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Caste Certificate',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      height: 55,
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey.shade400),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              castCertifileName.value.isNotEmpty
-                                  ? castCertifileName.value
-                                  : "Caste Certificate* (jpg, png, gif)",
-                              style: TextStyle(
-                                color: Colors.black.withOpacity(0.7),
-                                fontSize: 16,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                      if (result != null) {
+                        castCertifileName.value = result.files.single.name;
+                        castCertifilePath.value =
+                            result.files.single.path ?? '';
+                        print("Selected path: ${castCertifilePath.value}");
+                      }
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Caste Certificate',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
                           ),
-                          Icon(Icons.upload_file, color: Colors.blue),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          height: 55,
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                            border: Border.all(color: Colors.grey.shade400),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  castCertifileName.value.isNotEmpty
+                                      ? castCertifileName.value
+                                      : "Caste Certificate* (jpg, png, gif)",
+                                  style: TextStyle(
+                                    color: Colors.black.withOpacity(0.7),
+                                    fontSize: 16,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Icon(Icons.upload_file, color: Colors.blue),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 10),
+                  InkWell(
+                    onTap: () {
+                      launchURLforImageResize();
+                    },
+                    child: Text(
+                      "You can Resize Media using this click here",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -2701,49 +3039,66 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           ),
           SizedBox(height: 10),
           Obx(
-            () => GestureDetector(
-              onTap: () async {
-                FilePickerResult? result = await FilePicker.platform.pickFiles(
-                  type: FileType.custom,
-                  allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
-                );
+            () => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    FilePickerResult? result = await FilePicker.platform
+                        .pickFiles(
+                          type: FileType.custom,
+                          allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+                        );
 
-                if (result != null) {
-                  graduatinMarkfileName.value = result.files.single.name;
-                  graduatinMarkfilePath.value = result.files.single.path ?? '';
-                  print("Selected path: ${graduatinMarkfilePath.value}");
-                }
-              },
-              child: Visibility(
-                visible: selectDegree.value == "PG",
-                child: Container(
-                  height: 55,
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey.shade400),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          graduatinMarkfileName.value.isNotEmpty
-                              ? graduatinMarkfileName.value
-                              : "Graduation/Marksheet (jpg, png, gif)",
-                          style: TextStyle(
-                            color: Colors.black.withOpacity(0.7),
-                            fontSize: 16,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                    if (result != null) {
+                      graduatinMarkfileName.value = result.files.single.name;
+                      graduatinMarkfilePath.value =
+                          result.files.single.path ?? '';
+                      print("Selected path: ${graduatinMarkfilePath.value}");
+                    }
+                  },
+                  child: Visibility(
+                    visible: selectDegree.value == "PG",
+                    child: Container(
+                      height: 55,
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey.shade400),
                       ),
-                      Icon(Icons.upload_file, color: Colors.blue),
-                    ],
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              graduatinMarkfileName.value.isNotEmpty
+                                  ? graduatinMarkfileName.value
+                                  : "Graduation/Marksheet (jpg, png, gif)",
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.7),
+                                fontSize: 16,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Icon(Icons.upload_file, color: Colors.blue),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                // SizedBox(height: 10),
+                // InkWell(
+                //   onTap: () {
+                //     launchURLforImageResize();
+                //   },
+                //   child: Text(
+                //     "You can Resize Media using this click here",
+                //     style: TextStyle(color: Colors.white),
+                //   ),
+                // ),
+              ],
             ),
           ),
           SizedBox(height: 10),
@@ -2773,49 +3128,65 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
           ),
           SizedBox(height: 10),
           Obx(
-            () => GestureDetector(
-              onTap: () async {
-                FilePickerResult? result = await FilePicker.platform.pickFiles(
-                  type: FileType.custom,
-                  allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
-                );
+            () => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    FilePickerResult? result = await FilePicker.platform
+                        .pickFiles(
+                          type: FileType.custom,
+                          allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+                        );
 
-                if (result != null) {
-                  ugpart2fileName.value = result.files.single.name;
-                  ugpart2filePath.value = result.files.single.path ?? '';
-                  print("Selected path: ${ugpart2filePath.value}");
-                }
-              },
-              child: Visibility(
-                visible: selectDegree.value == "PG",
-                child: Container(
-                  height: 55,
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey.shade400),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          ugpart2fileName.value.isNotEmpty
-                              ? ugpart2fileName.value
-                              : "UG part-2/5th Sem. Marksheet* (jpg, png, gif)",
-                          style: TextStyle(
-                            color: Colors.black.withOpacity(0.7),
-                            fontSize: 16,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                    if (result != null) {
+                      ugpart2fileName.value = result.files.single.name;
+                      ugpart2filePath.value = result.files.single.path ?? '';
+                      print("Selected path: ${ugpart2filePath.value}");
+                    }
+                  },
+                  child: Visibility(
+                    visible: selectDegree.value == "PG",
+                    child: Container(
+                      height: 55,
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey.shade400),
                       ),
-                      Icon(Icons.upload_file, color: Colors.blue),
-                    ],
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              ugpart2fileName.value.isNotEmpty
+                                  ? ugpart2fileName.value
+                                  : "UG part-2/5th Sem. Marksheet* (jpg, png, gif)",
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.7),
+                                fontSize: 16,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Icon(Icons.upload_file, color: Colors.blue),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                // SizedBox(height: 10),
+                // InkWell(
+                //   onTap: () {
+                //     launchURLforImageResize();
+                //   },
+                //   child: Text(
+                //     "You can Resize Media using this click here",
+                //     style: TextStyle(color: Colors.white),
+                //   ),
+                // ),
+              ],
             ),
           ),
           Obx(() {
@@ -2849,49 +3220,66 @@ class _ThreeStepFormState extends State<ThreeStepForm> {
                 : SizedBox.shrink(); // Show when not B.P.Ed
           }),
           Obx(
-            () => GestureDetector(
-              onTap: () async {
-                FilePickerResult? result = await FilePicker.platform.pickFiles(
-                  type: FileType.custom,
-                  allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
-                );
+            () => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    FilePickerResult? result = await FilePicker.platform
+                        .pickFiles(
+                          type: FileType.custom,
+                          allowedExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+                        );
 
-                if (result != null) {
-                  intermediatefileName.value = result.files.single.name;
-                  intermediatefilePath.value = result.files.single.path ?? '';
-                  print("Selected path: ${intermediatefilePath.value}");
-                }
-              },
-              child: Visibility(
-                visible: selectDegree.value == "UG",
-                child: Container(
-                  height: 55,
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey.shade400),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          intermediatefileName.value.isNotEmpty
-                              ? intermediatefileName.value
-                              : "Intermediate/equivalent Marksheet(jpg, png, gif)",
-                          style: TextStyle(
-                            color: Colors.black.withOpacity(0.7),
-                            fontSize: 16,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                    if (result != null) {
+                      intermediatefileName.value = result.files.single.name;
+                      intermediatefilePath.value =
+                          result.files.single.path ?? '';
+                      print("Selected path: ${intermediatefilePath.value}");
+                    }
+                  },
+                  child: Visibility(
+                    visible: selectDegree.value == "UG",
+                    child: Container(
+                      height: 55,
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey.shade400),
                       ),
-                      Icon(Icons.upload_file, color: Colors.blue),
-                    ],
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              intermediatefileName.value.isNotEmpty
+                                  ? intermediatefileName.value
+                                  : "Intermediate/equivalent Marksheet(jpg, png, gif)",
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.7),
+                                fontSize: 16,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Icon(Icons.upload_file, color: Colors.blue),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                SizedBox(height: 10),
+                InkWell(
+                  onTap: () {
+                    launchURLforImageResize();
+                  },
+                  child: Text(
+                    "You can Resize Media using this click here",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
             ),
           ),
           Obx(() {

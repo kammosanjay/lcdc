@@ -25,7 +25,7 @@ class ApplicationFormPage extends StatefulWidget {
 class _ApplicationFormPageState extends State<ApplicationFormPage> {
   bool ifUGselected = true;
   bool ifPGselected = true;
-  bool ifBPEDselected = true;
+  bool ifBPEDselected = false;
 
   Future<void> printDocument({
     required StudentRegistrationModel formDetail,
@@ -56,6 +56,9 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
     );
     final pw.MemoryImage? highSchool = await loadFileImage(
       formDetail.highschoolMarksheet,
+    );
+    final pw.MemoryImage? gradution5thSemster = await loadFileImage(
+      formDetail.graduationMarksPath,
     );
     final pdf = pw.Document();
 
@@ -100,7 +103,7 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
 
                   pw.SizedBox(height: 5),
                   pw.Text(
-                    "APPLICATION FOR ADMISSION\nSESSION : 2025-2026\nB.A. Semester - 1\nLURN : dgdsagsa\nPayment Type: Online",
+                    "APPLICATION FOR ADMISSION\nSESSION : 2025-2026\n${formDetail.course!.toString()}\nLURN : ${formDetail.lurnCertificate!.toString()}\nPayment Type: Online",
                     textAlign: pw.TextAlign.center,
                     style: pw.TextStyle(
                       fontSize: 8,
@@ -265,7 +268,11 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
                                   horizontalRadius: 5,
                                   verticalRadius: 5,
 
-                                  child: pw.Image(stude, height: 144, width: 144),
+                                  child: pw.Image(
+                                    stude,
+                                    height: 144,
+                                    width: 144,
+                                  ),
                                 ),
 
                                 pw.Text(
@@ -422,6 +429,35 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
                             ),
                         ],
                       ),
+
+                      pw.Column(
+                        children: [
+                          // pw.Image(intmark as pw.ImageProvider),
+                          if (gradution5thSemster != null)
+                            pw.Column(
+                              children: [
+                                pw.ClipRRect(
+                                  horizontalRadius: 5,
+                                  verticalRadius: 5,
+                                  child: pw.Image(
+                                    gradution5thSemster,
+                                    height: 50,
+                                    width: 80,
+                                  ),
+                                ),
+
+                                pw.Text(
+                                  "Graduation 5th Sem Marksheet",
+                                  style: pw.TextStyle(
+                                    fontSize: 8,
+                                    fontWeight: pw.FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                        ],
+                      ),
+
                       pw.Column(
                         children: [
                           // pw.Image(intmark as pw.ImageProvider),
@@ -449,10 +485,11 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
                             ),
                         ],
                       ),
+
                       pw.Column(
                         children: [
                           // pw.Image(intmark as pw.ImageProvider),
-                          if (highSchool != null)
+                          if (highSchool != null && ifBPEDselected)
                             pw.Column(
                               children: [
                                 pw.ClipRRect(
@@ -603,7 +640,7 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
           padding: const pw.EdgeInsets.only(left: 20, right: 100),
           child: pw.Text(
             label,
-            style: pw.TextStyle(fontSize:8, fontWeight: pw.FontWeight.bold),
+            style: pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold),
           ),
         ),
 
@@ -676,8 +713,8 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    "APPLICATION FOR ADMISSION\nSESSION : 2025–2026\nB.A. Semester - 1\nLURN : dgdsagsa\nPayment Type: Online",
+                  Text(
+                    "APPLICATION FOR ADMISSION\nSESSION : 2025-2026\n${formDetail.course!.toString()}\nLURN : ${formDetail.lurnCertificate}\nPayment Type: Online",
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 5),
@@ -859,8 +896,18 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
                 ),
               ),
               Visibility(
+                visible: formDetail.course!.contains('B.P.Ed.'),
+                child: Column(
+                  children: [
+                    buildCandidatePhoto(formDetail.graduationMarksPath),
+
+                    const Text("Graduation/Second Year Marksheet"),
+                  ],
+                ),
+              ),
+              Visibility(
                 visible:
-                    formDetail.course!.contains('M.A.(English)') ||
+                    formDetail.course!.contains('M.A. (English)') ||
                     formDetail.course!.contains('M.Sc.(Chemistry)'),
                 child: Column(
                   children: [
@@ -923,7 +970,7 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
             ),
           ),
           Visibility(
-            visible: formDetail.course!.contains('BPED'),
+            visible: formDetail.course!.contains('B.P.Ed.'),
 
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),

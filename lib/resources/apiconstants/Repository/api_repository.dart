@@ -180,7 +180,7 @@ class ApiService {
       // Add text fields
       request.forEach((key, value) async {
         if (value is String &&
-            !value.contains('/') &&
+            // !value.contains('/') &&
             !value.endsWith('.png') &&
             !value.endsWith('.jpg')) {
           multipartRequest.fields[key] = value;

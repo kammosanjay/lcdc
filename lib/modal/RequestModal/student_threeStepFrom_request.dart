@@ -113,11 +113,11 @@ class StudentRegistrationModel {
       registrationNumber: json['registrationnumber'] ?? "",
       lurnCertificate: json['lurncertificate'] ?? "",
       alreadystudent: json['alreadystudent'] ?? "",
-      candidateDomicile: json['candidateDomicile'] ?? "",
+      candidateDomicile: json['candidatedomicile'] ?? "",
       levelofparticipation: json['levelofparticipation'] ?? "",
-      nameOfGame: json['nameOfGame'] ?? "",
+      nameOfGame: json['nameofgame'] ?? "",
       positionheld: json['positionheld'] ?? "",
-      skillTest: json['skillTest'] ?? "",
+      skillTest: json['skilltest'] ?? "",
       sportscertificate: json['sportscertificate'] ?? "",
       candidateName: json['candidatename'] ?? "",
       fatherName: json['fathername'] ?? "",
@@ -172,9 +172,9 @@ class StudentRegistrationModel {
     data['lurncertificate'] = lurnCertificate;
     data['candidatename'] = candidateName;
     data['alreadystudent'] = alreadystudent;
-    data['candidateDomicile'] = candidateDomicile;
-    data['skillTest'] = skillTest;
-    data['nameOfGame'] = nameOfGame;
+    data['candidatedomicile'] = candidateDomicile;
+    data['skilltest'] = skillTest;
+    data['nameofgame'] = nameOfGame;
     data['levelofparticipation'] = levelofparticipation;
     data['positionheld'] = positionheld;
     data['sportscertificate'] = sportscertificate;

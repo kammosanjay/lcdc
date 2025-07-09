@@ -181,6 +181,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   controller: mobileController,
                   hint: 'Enter your mobile number',
                   keyboardtype: TextInputType.phone,
+                  maxLength: 10,
                   validate: (usermobile) {
                     if (usermobile.isEmpty || usermobile.length > 10) {
                       return "   Enter valid Mobile No";
@@ -202,6 +203,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   label: 'Aadhaar',
                   controller: aadhaarController,
                   keyboardtype: TextInputType.number,
+                  maxLength: 12,
                   validate: (value) {
                     if (value == null || value.length > 12) {
                       return 'Please enter 12-digit your Aadhaar number';

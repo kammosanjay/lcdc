@@ -10,6 +10,7 @@ import 'package:lcdc_mobile_app/resources/myroutes/myroutes_pages.dart';
 
 void main() async {
   await GetStorage.init();
+  // await GetStorage().erase();
   runApp(const MyApp());
 }
 

@@ -3,8 +3,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lcdc_mobile_app/View/screens/HomeScreen/application_form.dart';
+import 'package:lcdc_mobile_app/View/screens/HomeScreen/new_home_screen.dart';
 import 'package:lcdc_mobile_app/constant/myshared_sharedprefrences.dart';
 import 'package:lcdc_mobile_app/modal/RequestModal/student_threeStepFrom_request.dart';
+import 'package:lcdc_mobile_app/resources/mypagenames/mypage_names.dart';
 
 import '../../../resources/apiconstants/Repository/user_repositories.dart';
 
@@ -126,10 +128,11 @@ class HomeController extends GetxController {
       token: token!,
       requset: studentform!,
     );
-
+    // print("formsubmit$response");
     saveFormToStorage(studentform);
     print(box.read('formData'));
-
+    // var error = response['details']['message'];
+    // print("====>$error");
     // print("ctrl request== ${studentform.boardUniversity}");
     Fluttertoast.showToast(
       msg: response.toString(),
@@ -142,6 +145,7 @@ class HomeController extends GetxController {
     );
 
     Get.to(ApplicationFormPage(studentformdetail: studentform));
+
     return response;
   }
 }

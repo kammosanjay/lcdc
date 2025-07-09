@@ -50,6 +50,14 @@ class CustomWidgets {
           ),
           elevation: 5,
           child: TextFormField(
+            buildCounter: (
+              context, {
+              required currentLength,
+              required isFocused,
+              required maxLength,
+            }) {
+              return null;
+            },
             focusNode: focusNode,
             readOnly: isReadyOnly,
             autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -92,7 +100,7 @@ class CustomWidgets {
   }
 
   // custom dropdown widget
-  static Widget   customDropdownField<T>({
+  static Widget customDropdownField<T>({
     required BuildContext context,
     required List<T> items,
     required T? selectedItem,
